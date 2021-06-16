@@ -1,0 +1,23 @@
+<CustomTroopRoster>	
+	<!--
+		Below is the list of character ids that will be available when using the 'Ctrl + P' shortcut
+		You can add as much entries as you want and use character ids from native or custom modules
+		Most of the Native characters are located in 'Mount & Blade II Bannerlord\Modules\SandBoxCore\ModuleData\spnpccharacters.xml'
+	-->
+	<Character id="t1_generic_recruit" />
+	<Character id="t2_generic_footman" />
+	<Character id="t3_generic_infantry" />
+	<Character id="t4_generic_swordsman" />
+	<Character id="t5_generic_sergeant" />
+	<Character id="t3_generic_pikeman" />
+	<Character id="t4_generic_billman" />
+	<Character id="t5_generic_voulgier" />
+	<Character id="t4_generic_light_cavalry" />
+	<Character id="t5_generic_lancer" />
+	<Character id="t2_generic_forager" />
+	<Character id="t3_generic_bowman" />
+	<Character id="t4_generic_longbowman" />
+	<Character id="t5_generic_veteran_longbowman" />
+	<Character id="t4_generic_scout" />
+	<Character id="t5_generic_outrider" />	
+</CustomTroopRoster>

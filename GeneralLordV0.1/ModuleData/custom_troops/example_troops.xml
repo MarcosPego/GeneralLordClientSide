@@ -1,0 +1,806 @@
+﻿<NPCCharacters>
+	<!--
+		This xml document is an example of troop tree with informations about the used attributes.
+		Be sure to test your characters often, as an error in the xml will result in your mod not able to start, 
+		and it will be harder to debug a huge amount of modifications than just a unit or two.
+		
+		You can look in 'Encyclopedia => Units => Vlandia culture' to have an overview of this troop tree.
+		
+		If you want to create your own characters within this mod, create an additional file structured like this one in the 'custom_troops' folder.
+		If you want to add characters in your own mod, take a look at the SubModule.xml.
+		
+		For more examples, check 'Mount & Blade II Bannerlord\Modules\SandBoxCore\ModuleData\spnpccharacters.xml'
+	-->
+	
+	<!--	
+		Here is a description of the NPCCharacter attributes:
+	
+		id:
+		- the id of this particular unit
+		- need to be unique
+		- you can use it in "CustomTroopRosterSettings.xml" to determine the troops that will be available when using the 'Ctrl + P' shortcut
+		
+		default_group: 
+		- the formation this unit belongs to by default
+		- the availale groups and correspondig formation keys are:
+			Infantry (1)
+			Ranged (2)
+			Cavalry (3)
+			HorseArcher (4)
+			Skirmisher (5)
+			HeavyInfantry (6)
+			LightCavalry (7)
+			HeavyCavalry (8)
+		
+		level:
+		- the level of this unit
+		- this will determine the unit tier as following:
+			Level 0: Tier 0
+			Level 6: Tier 1
+			Level 11: Tier 2
+			Level 16: Tier 3
+			Level 21: Tier 4
+			Level 26: Tier 5
+			Level 31: Tier 6
+			
+		civilianTemplate:
+		- the id of the character to use when this unit is spawned in a civilian mission (do not forget the 'NPCCharacter.' before the character id)
+		- optional
+		
+		name:
+		- the name of the unit
+		- you can put a localization key in place of the '{=}'
+		- if no localization key has been entered, the default name will be used (the one after '{=}')
+		- note that '{=}' is optional if you don't use a key
+		
+		occupation:
+		- the occupation of this character (Bandit, Soldier, ...)
+		- for regular troops, will be 'Soldier'
+		
+		is_basic_troop:
+		- true mean this unit is the base of a troop tree (used for encyclopedia)
+		- not having this attribute is equivalent to setting it to false (see next characters)
+		
+		is_female:
+		- true mean this unit will be female
+		- not having this attribute is equivalent to setting it to false
+		
+		culture:
+		- the culture of this character (do not forget the 'Culture.' before the culture id)		
+	-->
+	<NPCCharacter
+		id="t1_generic_recruit"
+		default_group="Infantry"
+		level="6"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t1"
+		name="{=}Generic Recruit"
+		occupation="Soldier"
+		is_basic_troop="true"
+		culture="Culture.vlandia" >
+		<!--
+			The face template this unit will use
+			For more information about templates, look inside 'Mount & Blade II Bannerlord\Modules\SandBoxCore\ModuleData\spnpccharactertemplates.xml'
+		-->
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<!--
+			The skill values this unit will have
+			Can be used with a template
+			For more information about templates, look inside 'Mount & Blade II Bannerlord\Modules\SandBoxCore\ModuleData\spnpccharactertemplates.xml'
+		-->
+		<skills>
+			<skill id="Athletics" value="20" />
+			<skill id="Riding" value="5" />
+			<skill id="OneHanded" value="20" />
+			<skill id="TwoHanded" value="10" />
+			<skill id="Polearm" value="20" />
+			<skill id="Bow" value="5" />
+			<skill id="Crossbow" value="5" />
+			<skill id="Throwing" value="10" />
+		</skills>
+		<!--
+			The equipments and equipment sets this unit will use
+			To have an item slot optional, have an equipment set without it (like the 'Cape' slot in the example below, only present in the second set)
+			
+			Equipment out of set:
+			- equipments listed outside of an equipmentSet will always be present on the unit (see the 't4_generic_light_cavalry' later in this document)
+			- in the following example, 'empire_horseman_boots' could be declared out of the sets (but since this is not the way TaleWorlds is designing its units, I let it this way in this document)
+			
+			Randomization:
+			- the randomization will be done on each equipment set element, this is not an equipment set pick
+			- this means that in the following example, a unit could have a 'peasant_pitchfork_1_t1' (set 1) with a 'padded_cap' (set 2 or 3)
+			- this make it difficult to have a unit having different ranged weapon options (cause the weapons and quivers will be randomly distributed, so a unit can end up with a bow + bolts or crossbow + arrows), try having specialized unit
+			
+			The available slots are:
+			- Item0
+			- Item1
+			- Item2
+			- Item3
+			- Head
+			- Cape
+			- Body
+			- Gloves
+			- Leg
+			- Horse
+			- HorseHarness
+			
+			If you want your unit to hold a banner, use the slot "Item4" and the id "campaign_banner_small"
+			
+			Remember that the CustomTroopRoster mod allow you to use the 'Ctrl + E' shortcut to print your current equipment in 'CustomTroopRosterOutput.xml'
+		-->
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.peasant_pitchfork_1_t1" />
+			<equipment slot="Head" id="Item.leather_cap" />
+			<equipment slot="Body" id="Item.sackcloth_tunic" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.peasant_sickle_1_t1" />
+			<equipment slot="Head" id="Item.padded_cap" />
+			<equipment slot="Cape" id="Item.scarf" />
+			<equipment slot="Body" id="Item.long_woolen_tunic" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.peasant_pickaxe_1_t1" />
+			<equipment slot="Head" id="Item.padded_cap" />
+			<equipment slot="Body" id="Item.sackcloth_tunic" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<!--
+			The character ids this unit can be upgraded into
+			Having more than two upgrade_target will mess up the troop tree in the encyclopedia and crash the party screen (to avoid)	
+			Let empty if you don't want this unit to have upgrades
+		-->
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t2_generic_footman" />
+			<upgrade_target id="NPCCharacter.t2_generic_forager" />
+		</upgrade_targets>
+	</NPCCharacter>
+	
+	<!-- Shield Infantry -->
+	<NPCCharacter
+		id="t2_generic_footman"
+		default_group="Infantry"
+		level="11"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t1"
+		name="{=}Generic Footman"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="40" />
+			<skill id="Riding" value="15" />
+			<skill id="OneHanded" value="40" />
+			<skill id="TwoHanded" value="20" />
+			<skill id="Polearm" value="40" />
+			<skill id="Bow" value="15" />
+			<skill id="Crossbow" value="15" />
+			<skill id="Throwing" value="20" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.vlandia_axe_1_t3" />
+			<equipment slot="Item1" id="Item.western_spear_2_t2" />
+			<equipment slot="Item2" id="Item.worn_kite_shield" />
+			<equipment slot="Head" id="Item.nasal_cervelliere_over_padded_cap" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.leather_coat" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.vlandia_axe_1_t3" />
+			<equipment slot="Item1" id="Item.western_spear_2_t2" />
+			<equipment slot="Item2" id="Item.worn_kite_shield" />
+			<equipment slot="Head" id="Item.cervelliere_over_arming_coif" />
+			<equipment slot="Cape" id="Item.scarf" />
+			<equipment slot="Body" id="Item.leather_coat" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t3_generic_infantry" />
+			<upgrade_target id="NPCCharacter.t3_generic_pikeman" />
+		</upgrade_targets>
+	</NPCCharacter>	
+	<NPCCharacter
+		id="t3_generic_infantry"
+		default_group="Infantry"
+		level="16"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t3"
+		name="{=}Generic Infantry"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="70" />
+			<skill id="Riding" value="30" />
+			<skill id="OneHanded" value="70" />
+			<skill id="TwoHanded" value="40" />
+			<skill id="Polearm" value="70" />
+			<skill id="Bow" value="30" />
+			<skill id="Crossbow" value="30" />
+			<skill id="Throwing" value="40" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.large_franziskaa_axe_t3" />
+			<equipment slot="Item1" id="Item.western_spear_1_t2" />
+			<equipment slot="Item2" id="Item.ironrim_kite_shield" />
+			<equipment slot="Head" id="Item.segmented_skullcap_over_padded_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.padded_short_coat" />
+			<equipment slot="Gloves" id="Item.padded_mitten" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.large_franziskaa_axe_t3" />
+			<equipment slot="Item1" id="Item.western_spear_1_t2" />
+			<equipment slot="Item2" id="Item.ironrim_kite_shield" />
+			<equipment slot="Head" id="Item.segmented_skullcap_over_laced_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.padded_short_coat" />
+			<equipment slot="Gloves" id="Item.padded_mitten" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.large_franziskaa_axe_t3" />
+			<equipment slot="Item1" id="Item.western_spear_1_t2" />
+			<equipment slot="Item2" id="Item.ironrim_kite_shield" />
+			<equipment slot="Head" id="Item.segmented_skullcap_over_padded_cloth" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.padded_short_coat" />
+			<equipment slot="Gloves" id="Item.padded_mitten" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t4_generic_swordsman" />
+			<upgrade_target id="NPCCharacter.t4_generic_light_cavalry" />
+		</upgrade_targets>
+	</NPCCharacter>
+	<NPCCharacter
+		id="t4_generic_swordsman"
+		default_group="Infantry"
+		level="21"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t2"
+		name="{=}Generic Swordsman"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="100" />
+			<skill id="Riding" value="45" />
+			<skill id="OneHanded" value="100" />
+			<skill id="TwoHanded" value="60" />
+			<skill id="Polearm" value="100" />
+			<skill id="Bow" value="45" />
+			<skill id="Crossbow" value="45" />
+			<skill id="Throwing" value="60" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+			<equipment slot="Item1" id="Item.western_spear_3_t3" />
+			<equipment slot="Item2" id="Item.stronger_reinforced_kite_shield" />
+			<equipment slot="Head" id="Item.segmented_skullcap_over_mail_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.mail_shirt" />
+			<equipment slot="Gloves" id="Item.mail_mitten" />
+			<equipment slot="Leg" id="Item.mail_chausses" />
+		</equipmentSet>
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t5_generic_sergeant" />
+		</upgrade_targets>
+	</NPCCharacter>	
+	<NPCCharacter
+		id="t5_generic_sergeant"
+		default_group="Infantry"
+		level="26"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t3"
+		name="{=}Generic Sergeant"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="130" />
+			<skill id="Riding" value="60" />
+			<skill id="OneHanded" value="130" />
+			<skill id="TwoHanded" value="80" />
+			<skill id="Polearm" value="130" />
+			<skill id="Bow" value="60" />
+			<skill id="Crossbow" value="60" />
+			<skill id="Throwing" value="80" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.vlandia_sword_3_t4" />
+			<equipment slot="Item1" id="Item.western_spear_3_t3" />
+			<equipment slot="Item2" id="Item.tall_heater_shield" />
+			<equipment slot="Head" id="Item.visored_helmet_over_mail_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.white_coat_over_mail" />
+			<equipment slot="Gloves" id="Item.lordly_mail_mitten" />
+			<equipment slot="Leg" id="Item.strapped_mail_chausses" />
+		</equipmentSet>
+		<!--
+			Let upgrade_targets empty for top tier troops
+		-->
+		<upgrade_targets></upgrade_targets>
+	</NPCCharacter>
+
+	<!-- Polearm Infantry -->
+	<NPCCharacter
+		id="t3_generic_pikeman"
+		default_group="Infantry"
+		level="16"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t2"
+		name="{=}Generic Pikeman"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="70" />
+			<skill id="Riding" value="30" />
+			<skill id="OneHanded" value="70" />
+			<skill id="TwoHanded" value="40" />
+			<skill id="Polearm" value="70" />
+			<skill id="Bow" value="30" />
+			<skill id="Crossbow" value="30" />
+			<skill id="Throwing" value="40" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.large_franziskaa_axe_t3" />
+			<equipment slot="Item1" id="Item.vlandia_pike_1_t5" />
+			<equipment slot="Head" id="Item.kettle_helmet_over_padded_cap" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.padded_coat" />
+			<equipment slot="Gloves" id="Item.padded_mitten" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.large_franziskaa_axe_t3" />
+			<equipment slot="Item1" id="Item.vlandia_pike_1_t5" />
+			<equipment slot="Head" id="Item.kettle_helmet_over_arming_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.padded_coat" />
+			<equipment slot="Gloves" id="Item.padded_mitten" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t4_generic_billman" />
+		</upgrade_targets>
+	</NPCCharacter>
+	<NPCCharacter
+		id="t4_generic_billman"
+		default_group="Infantry"
+		level="21"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t2"
+		name="{=}Generic Billman"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="100" />
+			<skill id="Riding" value="45" />
+			<skill id="OneHanded" value="100" />
+			<skill id="TwoHanded" value="60" />
+			<skill id="Polearm" value="100" />
+			<skill id="Bow" value="45" />
+			<skill id="Crossbow" value="45" />
+			<skill id="Throwing" value="60" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.billhook_polearm_t2" />
+			<equipment slot="Head" id="Item.kettle_hat_over_mail_coif" />
+			<equipment slot="Cape" id="Item.padded_leather_shoulders" />
+			<equipment slot="Body" id="Item.vlandia_chainmail" />
+			<equipment slot="Gloves" id="Item.mail_mitten" />
+			<equipment slot="Leg" id="Item.mail_chausses" />
+		</equipmentSet>
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t5_generic_voulgier" />
+		</upgrade_targets>
+	</NPCCharacter>
+	<NPCCharacter
+		id="t5_generic_voulgier"
+		default_group="Infantry"
+		level="26"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t3"
+		name="{=}Generic Voulgier"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="130" />
+			<skill id="Riding" value="60" />
+			<skill id="OneHanded" value="130" />
+			<skill id="TwoHanded" value="80" />
+			<skill id="Polearm" value="130" />
+			<skill id="Bow" value="60" />
+			<skill id="Crossbow" value="60" />
+			<skill id="Throwing" value="80" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.vlandia_polearm_1_t5" />
+			<equipment slot="Head" id="Item.full_helm_over_mail_coif" />
+			<equipment slot="Cape" id="Item.padded_leather_shoulders" />
+			<equipment slot="Body" id="Item.white_coat_over_mail" />
+			<equipment slot="Gloves" id="Item.lordly_mail_mitten" />
+			<equipment slot="Leg" id="Item.strapped_mail_chausses" />
+		</equipmentSet>
+		<upgrade_targets></upgrade_targets>
+	</NPCCharacter>
+
+	<!-- Cavalry -->
+	<NPCCharacter
+		id="t4_generic_light_cavalry"
+		default_group="Cavalry"
+		level="21"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t2"
+		name="{=}Generic Light Cavalry"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="70" />
+			<skill id="Riding" value="100" />
+			<skill id="OneHanded" value="100" />
+			<skill id="TwoHanded" value="80" />
+			<skill id="Polearm" value="100" />
+			<skill id="Bow" value="45" />
+			<skill id="Crossbow" value="45" />
+			<skill id="Throwing" value="80" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.battle_axe_t4" />
+			<equipment slot="Item1" id="Item.vlandia_lance_2_t4" />
+			<equipment slot="Item2" id="Item.small_flat_heater_shield" />
+			<equipment slot="Head" id="Item.nasal_cervelliere_over_laced_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.leather_scale_armor" />
+			<equipment slot="Gloves" id="Item.padded_mitten" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.battle_axe_t4" />
+			<equipment slot="Item1" id="Item.vlandia_lance_2_t4" />
+			<equipment slot="Item2" id="Item.small_flat_heater_shield" />
+			<equipment slot="Head" id="Item.nasal_cervelliere_over_padded_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.leather_scale_armor" />
+			<equipment slot="Gloves" id="Item.padded_mitten" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<!--
+			In native xmls, horse equipments are most of the time set outside of the equipment sets
+			As said before, it means they will always be present on the unit
+		-->
+		<equipment slot="Horse" id="Item.vlandia_horse" />
+		<equipment slot="HorseHarness" id="Item.light_harness" />
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t5_generic_lancer" />
+		</upgrade_targets>
+	</NPCCharacter>
+	<NPCCharacter
+		id="t5_generic_lancer"
+		default_group="Cavalry"
+		level="26"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t3"
+		name="{=}Generic Lancer"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="80" />
+			<skill id="Riding" value="130" />
+			<skill id="OneHanded" value="130" />
+			<skill id="TwoHanded" value="80" />
+			<skill id="Polearm" value="130" />
+			<skill id="Bow" value="60" />
+			<skill id="Crossbow" value="60" />
+			<skill id="Throwing" value="80" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.vlandia_sword_4_t4" />
+			<equipment slot="Item1" id="Item.vlandia_lance_3_t5" />
+			<equipment slot="Item2" id="Item.heavy_horsemans_kite_shield" />
+			<equipment slot="Head" id="Item.nasal_cervelliere_over_mail_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.white_coat_over_mail" />
+			<equipment slot="Gloves" id="Item.mail_mitten" />
+			<equipment slot="Leg" id="Item.mail_cavalier_boots" />
+		</equipmentSet>
+		<equipment slot="Horse" id="Item.t2_vlandia_horse" />
+		<equipment slot="HorseHarness" id="Item.halfchain_barding" />
+		<upgrade_targets></upgrade_targets>
+	</NPCCharacter>
+	
+	<!-- Bowmen -->
+	<NPCCharacter
+		id="t2_generic_forager"
+		default_group="Ranged"
+		level="11"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t1"
+		name="{=}Generic Forager"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="40" />
+			<skill id="Riding" value="15" />
+			<skill id="OneHanded" value="40" />
+			<skill id="TwoHanded" value="15" />
+			<skill id="Polearm" value="20" />
+			<skill id="Bow" value="40" />
+			<skill id="Crossbow" value="20" />
+			<skill id="Throwing" value="20" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.hunting_bow" />
+			<equipment slot="Item1" id="Item.default_arrows" />
+			<equipment slot="Item2" id="Item.aserai_axe_1_t2" />
+			<equipment slot="Head" id="Item.aserai_civil_f_cape" />
+			<equipment slot="Cape" id="Item.battania_woodland_cloak" />
+			<equipment slot="Body" id="Item.tied_cloth_tunic" />
+			<equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.hunting_bow" />
+			<equipment slot="Item1" id="Item.default_arrows" />
+			<equipment slot="Item2" id="Item.aserai_axe_1_t2" />
+			<equipment slot="Head" id="Item.aserai_civil_f_cape" />
+			<equipment slot="Cape" id="Item.battania_woodland_cloak" />
+			<equipment slot="Body" id="Item.cloth_tunic" />
+			<equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t3_generic_bowman" />
+		</upgrade_targets>
+	</NPCCharacter>
+	<NPCCharacter
+		id="t3_generic_bowman"
+		default_group="Ranged"
+		level="16"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t2"
+		name="{=}Generic Bowman"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="70" />
+			<skill id="Riding" value="30" />
+			<skill id="OneHanded" value="70" />
+			<skill id="TwoHanded" value="30" />
+			<skill id="Polearm" value="40" />
+			<skill id="Bow" value="70" />
+			<skill id="Crossbow" value="40" />
+			<skill id="Throwing" value="40" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.glen_ranger_bow" />
+			<equipment slot="Item1" id="Item.default_arrows" />
+			<equipment slot="Item2" id="Item.short_sword_t3" />
+			<equipment slot="Head" id="Item.open_padded_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.tunic_with_rolled_cloth" />
+			<equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.glen_ranger_bow" />
+			<equipment slot="Item1" id="Item.default_arrows" />
+			<equipment slot="Item2" id="Item.short_sword_t3" />
+			<equipment slot="Head" id="Item.laced_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.tunic_with_rolled_cloth" />
+			<equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+			<equipment slot="Leg" id="Item.empire_horseman_boots" />
+		</equipmentSet>
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t4_generic_longbowman" />
+			<upgrade_target id="NPCCharacter.t4_generic_scout" />
+		</upgrade_targets>
+	</NPCCharacter>
+	<NPCCharacter
+		id="t4_generic_longbowman"
+		default_group="Ranged"
+		level="21"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t2"
+		name="{=}Generic Longbowman"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="100" />
+			<skill id="Riding" value="45" />
+			<skill id="OneHanded" value="100" />
+			<skill id="TwoHanded" value="45" />
+			<skill id="Polearm" value="60" />
+			<skill id="Bow" value="100" />
+			<skill id="Crossbow" value="60" />
+			<skill id="Throwing" value="60" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.lowland_longbow" />
+			<equipment slot="Item1" id="Item.bodkin_arrows_a" />
+			<equipment slot="Item2" id="Item.short_sword_t3" />
+			<equipment slot="Head" id="Item.segmented_skullcap_over_padded_cloth" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.gambeson_b" />
+			<equipment slot="Gloves" id="Item.padded_vambrace" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.lowland_longbow" />
+			<equipment slot="Item1" id="Item.bodkin_arrows_a" />
+			<equipment slot="Item2" id="Item.short_sword_t3" />
+			<equipment slot="Head" id="Item.segmented_skullcap_over_laced_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.gambeson_b" />
+			<equipment slot="Gloves" id="Item.padded_vambrace" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.lowland_longbow" />
+			<equipment slot="Item1" id="Item.bodkin_arrows_a" />
+			<equipment slot="Item2" id="Item.short_sword_t3" />
+			<equipment slot="Head" id="Item.segmented_skullcap_over_padded_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.aketon" />
+			<equipment slot="Gloves" id="Item.padded_vambrace" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t5_generic_veteran_longbowman" />
+		</upgrade_targets>
+	</NPCCharacter>
+	<NPCCharacter
+		id="t5_generic_veteran_longbowman"
+		default_group="Ranged"
+		level="26"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t3"
+		name="{=}Generic Veteran Longbowman"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="130" />
+			<skill id="Riding" value="60" />
+			<skill id="OneHanded" value="130" />
+			<skill id="TwoHanded" value="60" />
+			<skill id="Polearm" value="80" />
+			<skill id="Bow" value="130" />
+			<skill id="Crossbow" value="80" />
+			<skill id="Throwing" value="80" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.lowland_yew_bow" />
+			<equipment slot="Item1" id="Item.bodkin_arrows_a" />
+			<equipment slot="Item2" id="Item.short_sword_t3" />
+			<equipment slot="Head" id="Item.segmented_skullcap_over_mail_coif" />
+			<equipment slot="Cape" id="Item.hood" />
+			<equipment slot="Body" id="Item.mail_shirt" />
+			<equipment slot="Gloves" id="Item.padded_vambrace" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<upgrade_targets></upgrade_targets>
+	</NPCCharacter>
+
+	<!-- Mounted bowmen -->
+	<NPCCharacter
+		id="t4_generic_scout"
+		default_group="HorseArcher"
+		level="21"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t2"
+		name="{=}Generic Scout"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="70" />
+			<skill id="Riding" value="100" />
+			<skill id="OneHanded" value="100" />
+			<skill id="TwoHanded" value="45" />
+			<skill id="Polearm" value="60" />
+			<skill id="Bow" value="100" />
+			<skill id="Crossbow" value="60" />
+			<skill id="Throwing" value="60" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.composite_bow" />
+			<equipment slot="Item1" id="Item.bodkin_arrows_a" />
+			<equipment slot="Item2" id="Item.woodland_axe_t3" />
+			<equipment slot="Head" id="Item.segmented_cervelliere_over_padded_cloth" />
+			<equipment slot="Cape" id="Item.battania_civil_cape" />
+			<equipment slot="Body" id="Item.sleeveless_padded_short_coat" />
+			<equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.composite_bow" />
+			<equipment slot="Item1" id="Item.bodkin_arrows_a" />
+			<equipment slot="Item2" id="Item.woodland_axe_t3" />
+			<equipment slot="Head" id="Item.segmented_cervelliere_over_laced_coif" />
+			<equipment slot="Cape" id="Item.battania_woodland_cloak" />
+			<equipment slot="Body" id="Item.sleeveless_padded_short_coat" />
+			<equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+			<equipment slot="Leg" id="Item.leather_cavalier_boots" />
+		</equipmentSet>
+			<equipment slot="Horse" id="Item.vlandia_horse" />
+		<equipment slot="HorseHarness" id="Item.light_harness" />
+		<upgrade_targets>
+			<upgrade_target id="NPCCharacter.t5_generic_outrider" />
+		</upgrade_targets>
+	</NPCCharacter>
+	<NPCCharacter
+		id="t5_generic_outrider"
+		default_group="HorseArcher"
+		level="26"
+		civilianTemplate="NPCCharacter.vlandia_troop_civilian_template_t3"
+		name="{=}Generic Outrider"
+		occupation="Soldier"
+		culture="Culture.vlandia" >
+		<face>
+			<face_key_template value="NPCCharacter.villager_vlandia" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="80" />
+			<skill id="Riding" value="130" />
+			<skill id="OneHanded" value="130" />
+			<skill id="TwoHanded" value="60" />
+			<skill id="Polearm" value="80" />
+			<skill id="Bow" value="130" />
+			<skill id="Crossbow" value="80" />
+			<skill id="Throwing" value="80" />
+		</skills>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.steppe_heavy_bow" />
+			<equipment slot="Item1" id="Item.bodkin_arrows_a" />
+			<equipment slot="Item2" id="Item.battania_axe_2_t4" />
+			<equipment slot="Head" id="Item.segmented_cervelliere_over_mail_coif" />
+			<equipment slot="Cape" id="Item.battania_woodland_cloak" />
+			<equipment slot="Body" id="Item.banded_leather_over_mail" />
+			<equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+			<equipment slot="Leg" id="Item.mail_cavalier_boots" />
+		</equipmentSet>
+		<equipmentSet>
+			<equipment slot="Item0" id="Item.steppe_heavy_bow" />
+			<equipment slot="Item1" id="Item.bodkin_arrows_a" />
+			<equipment slot="Item2" id="Item.battania_axe_2_t4" />
+			<equipment slot="Head" id="Item.segmented_cervelliere_over_mail" />
+			<equipment slot="Cape" id="Item.battania_civil_cape" />
+			<equipment slot="Body" id="Item.banded_leather_over_mail" />
+			<equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+			<equipment slot="Leg" id="Item.mail_cavalier_boots" />
+		</equipmentSet>
+		<equipment slot="Horse" id="Item.t2_vlandia_horse" />
+		<equipment slot="HorseHarness" id="Item.light_harness" />
+		<upgrade_targets></upgrade_targets>
+	</NPCCharacter>
+</NPCCharacters>

@@ -1,0 +1,7 @@
+C:\Users\Utilizador 1\source\repos\GeneralLordV0.1\GeneralLordV0.1\obj\Debug\GeneralLord.csprojAssemblyReference.cache
+C:\Users\Utilizador 1\source\repos\GeneralLordV0.1\GeneralLordV0.1\obj\Debug\GeneralLord.csproj.CoreCompileInputs.cache
+C:\Users\Utilizador 1\source\repos\GeneralLordV0.1\GeneralLordV0.1\obj\Debug\GeneralLord.csproj.CopyComplete
+C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\GeneralLord\bin\Win64_Shipping_Client\GeneralLord.dll
+C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\GeneralLord\bin\Win64_Shipping_Client\GeneralLord.pdb
+C:\Users\Utilizador 1\source\repos\GeneralLordV0.1\GeneralLordV0.1\obj\Debug\GeneralLord.dll
+C:\Users\Utilizador 1\source\repos\GeneralLordV0.1\GeneralLordV0.1\obj\Debug\GeneralLord.pdb

@@ -1,0 +1,154 @@
+﻿<Prefab>
+	<Variables>
+	</Variables>
+	<Constants>
+		<Constant Name="Tuple.Height.Additive" Value="0" />
+
+		<Constant Name="Header.Tab.Left.Width" BrushLayer="Default" BrushName="Header.Tab.Left" BrushValueType="Width" />
+		<Constant Name="Header.Tab.Left.Height" BrushLayer="Default" BrushName="Header.Tab.Left" BrushValueType="Height" />
+
+		<Constant Name="Header.Tab.Left.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Left.Width" />
+		<Constant Name="Header.Tab.Left.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Left.Height" />
+
+		<Constant Name="Header.Tab.Center.Width" BrushLayer="Default" BrushName="Header.Tab.Center" BrushValueType="Width" />
+		<Constant Name="Header.Tab.Center.Height" BrushLayer="Default" BrushName="Header.Tab.Center" BrushValueType="Height" />
+
+		<Constant Name="Header.Tab.Center.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Center.Width" />
+		<Constant Name="Header.Tab.Center.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Center.Height" />
+
+		<Constant Name="Header.Tab.Right.Width" BrushLayer="Default" BrushName="Header.Tab.Right" BrushValueType="Width" />
+		<Constant Name="Header.Tab.Right.Height" BrushLayer="Default" BrushName="Header.Tab.Right" BrushValueType="Height" />
+
+		<Constant Name="Header.Tab.Right.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Width" />
+		<Constant Name="Header.Tab.Right.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Height" />
+
+		<Constant Name="Banner.Width" BrushLayer="Default" BrushName="Flat.Tuple.Banner.Small" BrushValueType="Width" />
+		<Constant Name="Banner.Height" BrushLayer="Default" BrushName="Flat.Tuple.Banner.Small" BrushValueType="Height" />
+
+		<Constant Name="Banner.Width.Scaled" MultiplyResult="0.30" Value="!Banner.Width" />
+		<Constant Name="Banner.Height.Scaled" MultiplyResult="0.38" Value="!Banner.Height" />
+
+		<Constant Name="Toggle.Width" BrushLayer="Default" BrushName="Party.TroopTupple.Right" BrushValueType="Width" />
+		<Constant Name="Toggle.Height" Additive="!Tuple.Height.Additive" BrushLayer="Default" BrushName="Party.TroopTupple.Right" BrushValueType="Height" />
+		<Constant Name="Toggle.Pressed.Width" BrushLayer="PressedLayer" BrushName="Party.TroopTupple.Right" BrushValueType="Width" />
+	</Constants>
+	<VisualDefinitions>
+		<VisualDefinition Name="BottomMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
+			<VisualState PositionYOffset="0" State="Default" />
+		</VisualDefinition>
+	</VisualDefinitions>
+
+	<Window>
+		<ClanScreenWidget Id="ClanScreenWidget" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.ResetCharacter="ResetSelectedCharacter">
+			<Children>
+				<Standard.Background />
+
+				<!--Lower Half-->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="188" MarginBottom="75">
+					<Children>
+						<MainOverview DataSource="{MainOverview}" IsVisible="true" />
+						<!--<MainParty DataSource="{ClanParties}" IsVisible="true" />
+						<MainShop DataSource="{ClanFiefs}" IsVisible="true" />-->
+					</Children>
+				</Widget>
+				
+				
+				<!--Top Panel-->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="188" Sprite="StdAssets\top_header">
+					<Children>
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginBottom="35">
+							<Children>
+
+								<!--Banner-->
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="110" SuggestedHeight="180" HorizontalAlignment="Left" VerticalAlignment="Top" PositionXOffset="20" PositionYOffset="-8" Command.Click="ExecuteOpenBannerEditor" IsEnabled="@CanChooseBanner" UpdateChildrenStates="true">
+									<Children>
+										<MaskedTextureWidget DataSource="{ClanBanner}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="105" SuggestedHeight="126" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Clan.TornBanner" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" OverlayTextureScale="1.8" />
+										<HintWidget DataSource="{ClanBannerHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" IsDisabled="true" />
+									</Children>
+								</ButtonWidget>
+
+								<!--Leader-->
+								<ButtonWidget DataSource="{Leader}" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="170" SuggestedHeight="130" HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="140" Sprite="leader_slot_9" Command.Click="ExecuteLink" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint">
+									<Children>
+										<!--Hero Clan Banner-->
+										<!--<MaskedTextureWidget DataSource="{ClanBanner_9}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Banner.Width.Scaled" SuggestedHeight="!Banner.Height.Scaled" HorizontalAlignment="Right" VerticalAlignment="Top" PositionYOffset="15" Brush="Flat.Tuple.Banner.Small.Hero" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsDisabled="true" OverlayTextureScale="2.2" />-->
+
+										<ImageIdentifierWidget DataSource="{ImageIdentifier}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" SuggestedHeight="100" MarginLeft="17" MarginRight="18" MarginTop="17" MarginBottom="18" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" />
+									</Children>
+								</ButtonWidget>
+
+								<!--Leader Text-->
+								<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="170" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginLeft="140" MarginBottom="0" Brush="Clan.Leader.Text" Text="@LeaderText" />
+
+								<!--Clan Name Top Panel-->
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="887" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Top" Sprite="StdAssets\tabbar_long">
+									<Children>
+										<!--Clan Name Container-->
+										<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="10">
+											<Children>
+												<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="440" SuggestedHeight="47" Brush="Kingdom.Name.Edit.Button" Command.Click="ExecuteChangeClanName" IsEnabled="@PlayerCanChangeClanName" UpdateChildrenStates="true">
+													<Children>
+														<!--Clan Name-->
+														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight" HorizontalAlignment="Center" UpdateChildrenStates="true">
+															<Children>
+																<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" Brush="Kingdom.NameTitle.Text" Text="@Name"/>
+																<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="29" SuggestedHeight="37" HorizontalAlignment="Right" VerticalAlignment="Center" MarginLeft="10" IsEnabled="@PlayerCanChangeClanName" Brush="Kingdom.Name.Edit.Icon"  />
+															</Children>
+														</ListPanel>
+													</Children>
+												</ButtonWidget>
+												<HintWidget DataSource="{ChangeClanNameHint}" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+											</Children>
+										</Widget>
+
+									</Children>
+								</Widget>
+
+								<!--Tab Control Container-->
+								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="4">
+									<Children>
+
+										<!--Overview Tab-->
+										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Left.Width.Scaled" SuggestedHeight="!Header.Tab.Left.Height.Scaled" MarginRight="2" Brush="Header.Tab.Left" Command.Click="SetSelectedCategory" CommandParameter.Click="0" UpdateChildrenStates="true">
+											<Children>
+												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="@OverviewText" />
+											</Children>
+										</ButtonWidget>
+
+										<!--Party Tab-->
+										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="SetSelectedCategory" CommandParameter.Click="1" UpdateChildrenStates="true">
+											<Children>
+												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="@PartyText" />
+											</Children>
+										</ButtonWidget>
+
+										<!--Formation Tab-->
+										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="SetSelectedCategory" CommandParameter.Click="2" UpdateChildrenStates="true">
+											<Children>
+												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="@FormationText" />
+											</Children>
+										</ButtonWidget>
+
+										<!--Shop Tab-->
+										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Right.Width.Scaled" SuggestedHeight="!Header.Tab.Right.Height.Scaled" Brush="Header.Tab.Right" Command.Click="SetSelectedCategory" CommandParameter.Click="3"  UpdateChildrenStates="true">
+											<Children>
+												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="@ShopText" />
+											</Children>
+										</ButtonWidget>
+
+									</Children>
+								</ListPanel>
+
+							</Children>
+						</Widget>
+					</Children>
+				</Widget>
+
+
+				<!--Close Screen Button-->
+				<Standard.DialogCloseButtons VisualDefinition="BottomMenu" PositionYOffset="100" Parameter.DoneButtonAction="ExecuteDone" Parameter.DoneButtonText="@DoneLbl" Parameter.DoneInputKeyDataSource="{DoneInputKey}" Parameter.ShowCancel="false"/>
+
+			</Children>
+		</ClanScreenWidget>
+	</Window>
+</Prefab>
