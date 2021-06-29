@@ -11,5 +11,6 @@ namespace GeneralLordWebApiClient.Model
 
         public string stringId;
         public int troopCount;
+        public int troopXP;
     }
 }

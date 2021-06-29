@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace GeneralLordWebApiClient.Model
 {
-    public class ArmyContainerSerializer
+    public class Serializer
     {
         public static ArmyContainer Deserialize()
         {
@@ -55,22 +55,51 @@ namespace GeneralLordWebApiClient.Model
         }
 
 
-        public static ArmyContainer JsonDeserialize()
+        public static void WriteJsonToFile(string jsondata, string endFile = "armyConfig.json")
         {
-            var filePath = Path.Combine(SaveFolderPath(), "armyConfig.json");
+            var filePath = Path.Combine(SaveFolderPath(), endFile);
+            File.WriteAllText(filePath, jsondata);
+
+        }
+
+        public static string ReadStringFromFile(string endFile = "armyConfig.json")
+        {
+            var filePath = Path.Combine(SaveFolderPath(), endFile);
+            return File.ReadAllText(filePath);
+
+        }
+
+        public static Profile JsonDeserializeProfile(string endFile = "armyConfig.json")
+        {
+            var filePath = Path.Combine(SaveFolderPath(), endFile);
 
             string jsonString = File.ReadAllText(filePath);
             using (JsonReader reader = new JsonTextReader(new StringReader(jsonString)))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                return (ArmyContainer)serializer.Deserialize<ArmyContainer>(reader);
+                return serializer.Deserialize<Profile>(reader);
             }
 
                 //JsonSerializer serializer = new JsonSerializer();
                 //serializer.Serialize(writer, armyContainer);
         }
 
-        public static ArmyContainer JsonDeserializeFromString(string jsonString)
+        public static ArmyContainer JsonDeserializeAc(string endFile = "armyConfig.json")
+        {
+            var filePath = Path.Combine(SaveFolderPath(), endFile);
+
+            string jsonString = File.ReadAllText(filePath);
+            using (JsonReader reader = new JsonTextReader(new StringReader(jsonString)))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                return serializer.Deserialize<ArmyContainer>(reader);
+            }
+
+            //JsonSerializer serializer = new JsonSerializer();
+            //serializer.Serialize(writer, armyContainer);
+        }
+
+        public static ArmyContainer JsonDeserializeFromStringAc( string jsonString)
         {
             //var filePath = Path.Combine(SaveFolderPath(), "armyConfig.json");
             //string jsonString = File.ReadAllText(filePath);
@@ -78,7 +107,21 @@ namespace GeneralLordWebApiClient.Model
             using (JsonReader reader = new JsonTextReader(new StringReader(jsonString)))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                return (ArmyContainer)serializer.Deserialize<ArmyContainer>(reader);
+                return serializer.Deserialize<ArmyContainer>(reader);
+            }
+
+            //JsonSerializer serializer = new JsonSerializer();
+            //serializer.Serialize(writer, armyContainer);
+        }
+        public static Profile JsonDeserializeFromStringProfile(string jsonString)
+        {
+            //var filePath = Path.Combine(SaveFolderPath(), "armyConfig.json");
+            //string jsonString = File.ReadAllText(filePath);
+
+            using (JsonReader reader = new JsonTextReader(new StringReader(jsonString)))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                return serializer.Deserialize<Profile>(reader);
             }
 
             //JsonSerializer serializer = new JsonSerializer();
@@ -93,15 +136,39 @@ namespace GeneralLordWebApiClient.Model
 
         }
 
-        public static void JsonSerialize(ArmyContainer armyContainer)
+        public static void JsonSerialize(object objectToSerialize, string endFile = "armyConfig.json")
         {
-            var filePath = Path.Combine(SaveFolderPath(), "armyConfig.json");
+            var filePath = Path.Combine(SaveFolderPath(), endFile);
 
 
             using (TextWriter writer = new StreamWriter(filePath))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(writer, armyContainer);
+                serializer.Serialize(writer, objectToSerialize);
+            }
+        }
+
+        public static void JsonSerializeString(string json, string endFile = "armyConfig.json")
+        {
+            var filePath = Path.Combine(SaveFolderPath(), endFile);
+
+
+            using (TextWriter writer = new StreamWriter(filePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(writer, json);
+            }
+        }
+
+        public static void SaveString(string json, string endFile = "armyConfig.json")
+        {
+            var filePath = Path.Combine(SaveFolderPath(), endFile);
+
+
+            using (TextWriter writer = new StreamWriter(filePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(writer, json);
             }
         }
 

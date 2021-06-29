@@ -15,6 +15,7 @@ using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.Engine.Screens;
 using SandBox.View.Map;
+using SandBox.GauntletUI;
 
 namespace GeneralLord
 {
@@ -75,7 +76,12 @@ namespace GeneralLord
 				ScreenManager.PopScreen();
 				ScreenManager.PushScreen(new PartyManagerScreen(this._partyManagerLogic));
 			}
-			
+			if (value == 3)
+			{
+				//ScreenManager.PopScreen();
+				
+
+			}
 		}
 
 		[DataSourceProperty]

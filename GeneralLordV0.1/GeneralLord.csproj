@@ -81,7 +81,8 @@
   </ItemGroup>
   <!-- Files & Classes -->
   <ItemGroup>
-    <Compile Include="Client\Model\ArmyContainerSerializer.cs" />
+    <Compile Include="Client\Model\ProfileHandler.cs" />
+    <Compile Include="Client\Model\Serializer.cs" />
     <Compile Include="BattleGeneralConfig.cs" />
     <Compile Include="Campaign.cs" />
     <Compile Include="CharacterEntry.cs" />
@@ -95,10 +96,13 @@
     <Compile Include="Client\Web\WebRequestResult.cs" />
     <Compile Include="Client\Web\WebRequests.cs" />
     <Compile Include="CustomTroopRoster.cs" />
+    <Compile Include="GeneralLordCasualtyHandler.cs" />
     <Compile Include="GeneralLordGameManager.cs" />
     <Compile Include="GeneralLordMainGameState.cs" />
+    <Compile Include="GeneralLordMissionManager.cs" />
     <Compile Include="GeneralParty.cs" />
     <Compile Include="GeneralState.cs" />
+    <Compile Include="HarmonyOverrides\RecruitmentOverride.cs" />
     <Compile Include="JsonBattleConfig.cs" />
     <Compile Include="MainManager.cs" />
     <Compile Include="MainManagerScreen.cs" />

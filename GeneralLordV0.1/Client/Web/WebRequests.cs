@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -184,6 +185,29 @@ namespace GeneralLordWebApiClient
             using (HttpClient client = new HttpClient())
             {
                 var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsStringAsync();
+                    //Console.WriteLine(message);
+                }
+                else
+                {
+                    return $"response error code: {response.StatusCode}";
+                }
+            }
+        }
+
+        public static async Task<string> RawMessageWebPostId(string url, int id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("userId", id.ToString()),
+                });
+
+                var response = await client.PostAsync(url, content);
                 response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
                 {

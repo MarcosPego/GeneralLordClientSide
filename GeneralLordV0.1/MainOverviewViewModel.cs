@@ -22,6 +22,8 @@ using TaleWorlds.Engine.Screens;
 using GeneralLordWebApiClient.Model;
 using System.Xml.Linq;
 using GeneralLordWebApiClient;
+using Newtonsoft.Json.Linq;
+using TaleWorlds.Localization;
 
 namespace GeneralLord
 {
@@ -31,8 +33,10 @@ namespace GeneralLord
 		{
 			EnhancedBattleTestPartyController.Initialize();
 
-			
+
 			//this._partyManagerLogic = partyManagerLogic;
+			this._expectedGoldText = new TextObject("{=ATExpectedGoldText}Current Gold", null).ToString();
+			this._expectedGold = PartyBase.MainParty.LeaderHero.Gold.ToString();
 
 			this._faction = Hero.MainHero.Clan;
 
@@ -128,21 +132,28 @@ namespace GeneralLord
 			}));*/
 			/*InformationManager.DisplayMessage(new InformationMessage("pls start dude"));*/
 
-
-			Profile profile = new Profile();
+			JsonBattleConfig.ExecuteSubmitAc();
 			Task.Run(async () =>
 			{
-				var result = await WebRequests.RawMessageWebGet("http://localhost:40519/values/single");
-				InformationManager.DisplayMessage(new InformationMessage(result)); 
+				var result = await WebRequests.RawMessageWebGet("http://localhost:40519/values/singleLast");
+				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
+				Serializer.WriteJsonToFile(result, "enemyProfile.json");
+
+				//InformationManager.DisplayMessage(new InformationMessage(result)); 
 			});
 
+			JObject json = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
+			//InformationManager.DisplayMessage(new InformationMessage(json.ToString()));
+			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["armyContainer"]) as ArmyContainer;
+
+			//Serializer.JsonDeserialize("enemyProfile.json");
 			//string jsonString = profile.ArmyContainer;
-			/*Clan clan = Clan.All.First();
+			Clan clan = Clan.All.First();
 			Hero bestAvailableCommander = clan.Heroes.First();
 			MobileParty mobileParty = MobilePartyHelper.SpawnLordParty(bestAvailableCommander, new Vec2(Hero.MainHero.GetPosition().x, Hero.MainHero.GetPosition().z), 1f);
 			mobileParty.InitializeMobileParty(
-						JsonBattleConfig.EnemyParty(ArmyContainerSerializer.JsonDeserializeFromString(jsonString)),
-						JsonBattleConfig.EnemyParty(ArmyContainerSerializer.JsonDeserializeFromString(jsonString)),
+						JsonBattleConfig.EnemyParty(ac),
+						JsonBattleConfig.EnemyParty(ac),
 						mobileParty.Position2D,
 						0);
 			PlayerEncounter.Start();
@@ -150,7 +161,7 @@ namespace GeneralLord
 			//InformationManager.DisplayMessage(new InformationMessage(PartyBase.MainParty.IsSettlement.ToString()));
 			PlayerEncounter.Current.SetupFields(PartyBase.MainParty, mobileParty.Party);
 			PlayerEncounter.StartBattle();
-			CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));*/
+			CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
 
 		}
 
@@ -158,25 +169,27 @@ namespace GeneralLord
 		{
 
 
-			List<TroopContainer> troopContainers = new List<TroopContainer>();
+			/*List<TroopContainer> troopContainers = new List<TroopContainer>();
 			foreach (TroopRosterElement tre in PartyBase.MainParty.MemberRoster.GetTroopRoster())
 			{
 
-				troopContainers.Add(new TroopContainer { stringId = tre.Character.StringId, troopCount = tre.Number });
+				troopContainers.Add(new TroopContainer { stringId = tre.Character.StringId, troopCount = tre.Number, troopXP = tre.Xp});
 
 			}
 			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers };
 
 			//XDocument xd = ArmyContainerSerializer.LoadArmyContainerXML(ac);
-			ArmyContainerSerializer.JsonSerialize(ac);
-
-			Task.Run(async () =>
+			Serializer.JsonSerialize(ac);
+			*/
+			/*Task.Run(async () =>
 			{
-				Profile profile = new Profile { Name = "GeneralLordTest", Elo = 1000, ArmyContainer = ArmyContainerSerializer.JsonString() };
+				Profile profile = ProfileHandler.GetVerifyProfile();
 				var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/save", profile);
-				var a = result;
-			});
+				Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
+			});*/
 
+			//JsonBattleConfig.ExecuteSubmit();
+			JsonBattleConfig.UpdateArmyAfterBattle();
 		}
 
 		private bool ApplyConfig()
@@ -279,6 +292,39 @@ namespace GeneralLord
             }
         }
 
+		[DataSourceProperty]
+		public string ExpectedGoldText
+		{
+			get
+			{
+				return this._expectedGoldText;
+			}
+			set
+			{
+				if (value != this._expectedGoldText)
+				{
+					this._expectedGoldText = value;
+					base.OnPropertyChangedWithValue(value, "OverviewText");
+				}
+			}
+		}
+		[DataSourceProperty]
+		public string ExpectedGold
+		{
+			get
+			{
+				return this._expectedGold;
+			}
+			set
+			{
+				if (value != this._expectedGold)
+				{
+					this._expectedGold = value;
+					base.OnPropertyChangedWithValue(value, "OverviewText");
+				}
+			}
+		}
+
 		public MapSelectionGroupVM MapSelectionGroup { get; }
 		private readonly EnhancedBattleTestState _state;
 		private BattleGeneralConfig _generalConfig;
@@ -291,6 +337,9 @@ namespace GeneralLord
 		private ClanLordItemVM _currentSelectedMember;
 		private bool _isSelected;
 		private PartyManagerLogic _partyManagerLogic;
+
+		private string _expectedGoldText;
+		private string _expectedGold;
 
 		/*private static class CustomBattleHelper
 		{
