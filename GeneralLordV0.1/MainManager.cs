@@ -135,7 +135,7 @@ namespace GeneralLord
                     InformationManager.DisplayMessage(new InformationMessage(Campaign.Current.CurrentMenuContext.StringId));
                    
 
-                    Campaign.Current.CurrentMenuContext.OpenRecruitVolunteers();
+                    //Campaign.Current.CurrentMenuContext.OpenRecruitVolunteers();
 
 
                     //this.AddMenuView<MenuRecruitVolunteers>(Array.Empty<object>());
@@ -144,7 +144,11 @@ namespace GeneralLord
                     //GauntletMenuRecruitVolunteers gmc = new GauntletMenuRecruitVolunteers();
 
                 }
-
+                if (Input.IsKeyReleased(InputKey.Y))
+                {
+                    PartyScreenState.currentState = PartyScreenStateEnum.RecruitmentScreen;
+                    RecruitmentManager.OpenRecruitmentRoster();
+                }
                 if (Input.IsKeyReleased(InputKey.T))
                 {
                     PlayerEncounter.LeaveSettlement();

@@ -5,7 +5,8 @@ using TaleWorlds.Core;
 using TaleWorlds.Localization;
 using TaleWorlds.CampaignSystem;
 using EnhancedBattleTest.GameMode;
-
+using System;
+using HarmonyLib;
 
 namespace GeneralLord
 {
@@ -18,6 +19,16 @@ namespace GeneralLord
 		protected override void OnSubModuleLoad()
 		{
 			base.OnSubModuleLoad();
+
+			try
+            {
+                new Harmony("mod.generallord").PatchAll();
+            }
+            catch (Exception ex)
+            {
+				InformationManager.DisplayMessage(new InformationMessage(ex.Message));//GenericHelpers.LogException("Patch Failed", ex);
+			}
+
 			//EnhancedBattleTestSubModule.Instance = this;
 
 			/*Module.CurrentModule.AddInitialStateOption(new InitialStateOption("GeneralLordGameMode",

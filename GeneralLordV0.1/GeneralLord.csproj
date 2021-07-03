@@ -102,6 +102,8 @@
     <Compile Include="GeneralLordMissionManager.cs" />
     <Compile Include="GeneralParty.cs" />
     <Compile Include="GeneralState.cs" />
+    <Compile Include="HarmonyOverrides\PartyScreenLeaveOverride.cs" />
+    <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
     <Compile Include="HarmonyOverrides\RecruitmentOverride.cs" />
     <Compile Include="JsonBattleConfig.cs" />
     <Compile Include="MainManager.cs" />
@@ -113,6 +115,8 @@
     <Compile Include="PartyManagerLogic.cs" />
     <Compile Include="PartyManagerScreen.cs" />
     <Compile Include="PartyManagerViewModel.cs" />
+    <Compile Include="PartyScreenState.cs" />
+    <Compile Include="RecruitmentManager.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TroopVM.cs" />
