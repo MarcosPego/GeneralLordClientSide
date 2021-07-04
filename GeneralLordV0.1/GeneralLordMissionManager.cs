@@ -44,7 +44,7 @@ namespace GeneralLord
 				array[7] = new AgentBattleAILogic();
 				array[8] = CreateCampaignMissionAgentSpawnLogic();
 				array[9] = new BaseMissionTroopSpawnHandler();
-				array[10] = new AgentFadeOutLogic();
+				//array[10] = new AgentFadeOutLogic();
 				array[11] = new BattleObserverMissionLogic();
 				array[12] = new BattleAgentLogic();
 				array[13] = new MountAgentLogic();

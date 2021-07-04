@@ -58,18 +58,29 @@ namespace GeneralLord.HarmonyOverrides
                 troopAmount = __instance.Troop.Number;
             }
 
-            if (PartyBase.MainParty.LeaderHero.Gold + (PartyScreenState.goldToChange - GoldValue * troopAmount) < 0)
+            if (PartyBase.MainParty.LeaderHero.Gold + (PartyScreenState.goldToChange - CalculateGoldValue(__instance) * troopAmount) < 0)
             {
-                int possibleValue = (PartyBase.MainParty.LeaderHero.Gold + PartyScreenState.goldToChange) / GoldValue;
+                int possibleValue = (PartyBase.MainParty.LeaderHero.Gold + PartyScreenState.goldToChange) / CalculateGoldValue(__instance);
 
                 InformationManager.DisplayMessage(new InformationMessage("Not Enough Money to Recruit " + troopAmount.ToString() + " Troops; Max Possible: " + possibleValue.ToString()));
                 return false;
             }
 
-            PartyScreenState.goldToChange -= GoldValue * troopAmount;
-            InformationManager.DisplayMessage(new InformationMessage("Current price to pay: " + PartyScreenState.goldToChange.ToString()));
+            PartyScreenState.goldToChange -= CalculateGoldValue(__instance) * troopAmount;
+
+            int absoluteValue = Math.Abs(PartyScreenState.goldToChange);
+            InformationManager.DisplayMessage(new InformationMessage("Current price to pay: " + absoluteValue.ToString()));
             return true;
         }
+
+        public static int CalculateGoldValue(PartyCharacterVM __instance)
+        {
+
+
+
+            return __instance.Character.Tier * GoldValue;
+        }
+
     }
 
 

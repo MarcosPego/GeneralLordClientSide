@@ -9,7 +9,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.ViewModelCollection.ClanManagement;
 //using TaleWorlds.MountAndBlade.CustomBattle.CustomBattle;
-using TaleWorlds.MountAndBlade.CustomBattle;
+//using TaleWorlds.MountAndBlade.CustomBattle;
 using TaleWorlds.MountAndBlade;
 using Helpers;
 using EnhancedBattleTest;
@@ -192,7 +192,7 @@ namespace GeneralLord
 			JsonBattleConfig.UpdateArmyAfterBattle();
 		}
 
-		private bool ApplyConfig()
+		/*private bool ApplyConfig()
 		{
 			this._generalConfig._config.MapConfig.MapNameSearchText = this.MapSelectionGroup.SearchText;
 			if (this.MapSelectionGroup.SceneLevelSelection.SelectedItem != null)
@@ -238,7 +238,7 @@ namespace GeneralLord
 			}
 			return _scenes.First(data => data.Name.ToString() == selectedMap.MapName);
 		}
-
+		*/
 
 		[DataSourceProperty]
 		public bool IsAnyValidMemberSelected
@@ -330,7 +330,7 @@ namespace GeneralLord
 		private BattleGeneralConfig _generalConfig;
 		private readonly List<SceneData> _scenes;
 		//private BattleCreator _battleCreator;
-		private CustomBattleState _customBattleState;
+		//private CustomBattleState _customBattleState;
 		private readonly Clan _faction;
 
 		private bool _isAnyValidMemberSelected;

@@ -59,7 +59,7 @@ namespace GeneralLord
 		}
 
 
-		public void updateArmyRosters(TroopRoster[] PartyArmy, TroopRoster[] EnemyArmy)
+		public void UpdateArmyRosters(TroopRoster[] PartyArmy, TroopRoster[] EnemyArmy)
         {
 
 

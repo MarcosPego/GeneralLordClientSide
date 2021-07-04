@@ -115,33 +115,7 @@ namespace GeneralLord
                 }
                 if (Input.IsKeyReleased(InputKey.E))
                 {
-                    //randomSettlement = SettlementHelper.FindRandomSettlement((Settlement x) => x.IsTown);
-                    randomSettlement = SettlementHelper.FindNearestSettlementToPoint(MobileParty.MainParty.Position2D, (Settlement x) => x.IsTown);
-
-                    InformationManager.DisplayMessage(new InformationMessage(randomSettlement.Name.ToString()));
-                    //MobileParty.MainParty.
-                    //EnterSettlementAction.ApplyForParty(MobileParty.MainParty, randomSettlement);
-                    //GauntletMenuRecruitVolunteers gmr = new GauntletMenuRecruitVolunteers();
-                    //MobileParty.MainParty.Position2D = randomSettlement.GetPosition2D;
-                    //PlayerEncounter.EnterSettlement();
-                    InformationManager.DisplayMessage(new InformationMessage(Campaign.Current.CurrentMenuContext.StringId));
-                    Campaign.Current.HandleSettlementEncounter(MobileParty.MainParty, randomSettlement);
-                    //Campaign.Current.CurrentMenuContext.OpenRecruitVolunteers();
-
-                    //if (this._menuRecruitVolunteers == null)
-                    //{
-                    //    this._menuRecruitVolunteers = this.AddMenuView<MenuRecruitVolunteers>(Array.Empty<object>());
-                    //}
-                    InformationManager.DisplayMessage(new InformationMessage(Campaign.Current.CurrentMenuContext.StringId));
-                   
-
-                    //Campaign.Current.CurrentMenuContext.OpenRecruitVolunteers();
-
-
-                    //this.AddMenuView<MenuRecruitVolunteers>(Array.Empty<object>());
-
-                    //LeaveSettlementAction.ApplyForParty(MobileParty.MainParty);
-                    //GauntletMenuRecruitVolunteers gmc = new GauntletMenuRecruitVolunteers();
+                    CharacterHandler.SaveCharacter();
 
                 }
                 if (Input.IsKeyReleased(InputKey.Y))
@@ -151,8 +125,8 @@ namespace GeneralLord
                 }
                 if (Input.IsKeyReleased(InputKey.T))
                 {
-                    PlayerEncounter.LeaveSettlement();
-                    PlayerEncounter.Finish(true);
+                    InformationManager.DisplayMessage(new InformationMessage(MobileParty.MainParty.Party.TotalStrength.ToString()));
+
                 }
             }
 

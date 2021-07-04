@@ -10,6 +10,9 @@ namespace GeneralLord
     {
         public static PartyScreenStateEnum currentState = PartyScreenStateEnum.NormalScreen;
         public static int goldToChange = 0;
+
+
+
     }
 
     public enum PartyScreenStateEnum

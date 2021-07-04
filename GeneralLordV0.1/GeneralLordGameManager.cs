@@ -17,9 +17,9 @@ using TaleWorlds.CampaignSystem.CharacterCreationContent;
 
 namespace GeneralLord
 {
-    public class GeneralLordGameManager : CampaignGameManager
+    public class GeneralLordGameManager //: CampaignGameManager
     {
-        private bool _loadingSavedGame;
+        /*private bool _loadingSavedGame;
 
         private LoadResult _loadedGameResult;
 
@@ -151,5 +151,6 @@ namespace GeneralLord
             gameTextManager.LoadGameTexts(ModuleHelper.GetXmlPath("EnhancedBattleTest",
                 "module_strings"));
         }
+        */
     }
 }

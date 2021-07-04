@@ -27,7 +27,7 @@ namespace GeneralLord
 
 			PartyScreenManager.OpenScreenAsQuest(recruitmentRoster, new TextObject("{=}Recruit Troops", null),
 				0, new PartyPresentationDoneButtonConditionDelegate(PartyScreenDoneCondition),
-				new PartyPresentationDoneButtonDelegate(SellPrisonersDoneHandler), 
+				new PartyScreenClosedDelegate(SellPrisonersDoneHandler), 
 				new PartyScreenLogic.IsTroopTransferableDelegate(RightTransferableDelegate), null);
 		}
 
@@ -46,12 +46,12 @@ namespace GeneralLord
 			return new Tuple<bool, TextObject>(true, new TextObject("", null));
 		}
 
-		private static bool SellPrisonersDoneHandler(TroopRoster leftMemberRoster, TroopRoster leftPrisonRoster, TroopRoster rightMemberRoster, TroopRoster rightPrisonRoster, FlattenedTroopRoster takenPrisonerRoster, FlattenedTroopRoster releasedPrisonerRoster, bool isForced, List<MobileParty> leftParties = null, List<MobileParty> rightParties = null)
+		private static void SellPrisonersDoneHandler(PartyBase leftOwnerParty, TroopRoster leftMemberRoster, TroopRoster leftPrisonRoster, PartyBase rightOwnerParty, TroopRoster rightMemberRoster, TroopRoster rightPrisonRoster)
 		{
 			//SellPrisonersAction.ApplyForSelectedPrisoners(MobileParty.MainParty, leftPrisonRoster, Hero.MainHero.CurrentSettlement);
 
 			//GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, 100, false);
-			return true;
+			//return true;
 		}
 
 		public static bool RightTransferableDelegate(CharacterObject character, PartyScreenLogic.TroopType type, PartyScreenLogic.PartyRosterSide side, PartyBase LeftOwnerParty)
@@ -64,6 +64,7 @@ namespace GeneralLord
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
 			TroopRoster troopRosterA = new TroopRoster(PartyBase.MainParty);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_recruit", 10);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_archer", 10);
 			//JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 1);
 			//this.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 32);
 			//this.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 18);

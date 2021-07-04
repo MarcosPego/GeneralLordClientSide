@@ -73,7 +73,7 @@ namespace GeneralLord
             }
 
             this._config = new BattleGeneralConfig();
-            this._config.updateArmyRosters(this._partyManagerLogic.LeftSideRoster, this._config.EnemyParty());
+            this._config.UpdateArmyRosters(this._partyManagerLogic.LeftSideRoster, this._config.EnemyParty());
 
             this._formationASize = this._partyManagerLogic.LeftSideRoster[0].TotalManCount.ToString();
             this._formationBSize = this._partyManagerLogic.LeftSideRoster[1].TotalManCount.ToString();
@@ -167,7 +167,7 @@ namespace GeneralLord
 
             this._partyManagerLogic.RightSideRoster[0] = troopRoster;
 
-            this._config.updateArmyRosters(this._partyManagerLogic.LeftSideRoster, this._config.EnemyParty());
+            this._config.UpdateArmyRosters(this._partyManagerLogic.LeftSideRoster, this._config.EnemyParty());
             ScreenManager.PopScreen();
             Game.Current.GameStateManager.PushState(Game.Current.GameStateManager.CreateState<GeneralLordMainGameState>(new object[]
             {
@@ -216,7 +216,7 @@ namespace GeneralLord
             base.OnPropertyChanged("FormationArmyD");
 
 
-            this._config.updateArmyRosters(this._partyManagerLogic.LeftSideRoster, this._config.EnemyParty());
+            this._config.UpdateArmyRosters(this._partyManagerLogic.LeftSideRoster, this._config.EnemyParty());
             this.RefreshValues();
         }
 

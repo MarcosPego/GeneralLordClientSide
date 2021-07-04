@@ -81,6 +81,7 @@
   </ItemGroup>
   <!-- Files & Classes -->
   <ItemGroup>
+    <Compile Include="CharacterHandler.cs" />
     <Compile Include="Client\Model\ProfileHandler.cs" />
     <Compile Include="Client\Model\Serializer.cs" />
     <Compile Include="BattleGeneralConfig.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="Client\Web\WebRequestResult.cs" />
     <Compile Include="Client\Web\WebRequests.cs" />
     <Compile Include="CustomTroopRoster.cs" />
-    <Compile Include="GeneralLordCasualtyHandler.cs" />
     <Compile Include="GeneralLordGameManager.cs" />
     <Compile Include="GeneralLordMainGameState.cs" />
     <Compile Include="GeneralLordMissionManager.cs" />
