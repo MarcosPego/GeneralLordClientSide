@@ -17,6 +17,7 @@ namespace GeneralLordWebApiClient.Model
         {
             try
             {
+                EnsureSaveDirectory();
                 XmlSerializer serializer = new XmlSerializer(typeof(ArmyContainer));
                 var filePath = Path.Combine(SaveFolderPath(), "armyConfig.xml");
                 using (TextReader reader = new StreamReader(filePath))
@@ -128,9 +129,9 @@ namespace GeneralLordWebApiClient.Model
             //serializer.Serialize(writer, armyContainer);
         }
 
-        public static string JsonString()
+        public static string JsonString(string fileName)
         {
-            var filePath = Path.Combine(SaveFolderPath(), "armyConfig.json");
+            var filePath = Path.Combine(SaveFolderPath(), fileName);
 
             return File.ReadAllText(filePath);
 
@@ -178,6 +179,7 @@ namespace GeneralLordWebApiClient.Model
 
             try
             {
+                EnsureSaveDirectory();
                 Serialize(armyContainer);
                 return XDocument.Load(filePath);
 
@@ -191,11 +193,11 @@ namespace GeneralLordWebApiClient.Model
             }
         }
 
-        private static void EnsureSaveDirectory()
+        public static void EnsureSaveDirectory()
         {
             Directory.CreateDirectory(SaveFolderPath());
         }
-        private static string SaveFolderPath()
+        public static string SaveFolderPath()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                 "Mount and Blade II Bannerlord", "Configs", "GeneralLord");

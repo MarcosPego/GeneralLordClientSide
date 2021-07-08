@@ -1,21 +1,48 @@
-﻿using System;
+﻿using GeneralLordWebApiClient.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
+using TaleWorlds.ObjectSystem;
 
 namespace GeneralLord
 {
     public class CharacterHandler
     {
+		public static CharacterObject characterObject;
+		public static string saveLocationFile = "playergeneral.xml";
+		public static SaveLocationEnum saveLocationPath = SaveLocationEnum.Configs;
+		public static bool debugMode = false;
+
+		public enum SaveLocationEnum
+		{
+			ModuleData,
+			Configs
+		}
+
+
+		public static string SaveCharacterAndLoadToString()
+        {
+			SaveCharacter();
+			StreamReader streamReader = new StreamReader(DynamicPath());
+			string xml = streamReader.ReadToEnd();
+
+			return xml;
+        }
+
 		public static void SaveCharacter()
         {
+			TryClearFile("Deleted Original File", "Couldn't delete original file");
+
 			OutputCharacterBaseTraits();
 			OutputCharacterFaceProperties();
+			OutputCharacterSkills();
 			OutputEquipmentSet();
 			OutputHorseEquipments();
 			OutputCharacterEnd();
@@ -23,38 +50,34 @@ namespace GeneralLord
 
 		public static void OutputCharacterBaseTraits()
         {
-			string enemyLordStringId = "enemy_general_lord";
+			string enemyLordStringId = "enemyGeneral";
 
 			TryOutputLines(new List<string>
 			{
+
+				"<?xml version=\"1.0\" encoding=\"utf-8\"?>",
+				"<NPCCharacters>",
 				"\t<NPCCharacter",
 				"\t\tid=\""+ enemyLordStringId+ "\"",
 				"\t\tage=\""+ Math.Round(Hero.MainHero.Age, 0).ToString() + "\"", 
-				//"\t\tdefault_group=\"\"",
 				"\t\tlevel=\""+ Hero.MainHero.Level.ToString() +"\"",
-				"\t\tname=\""+ Hero.MainHero.Name.ToString() +"\"",
-				"\t\tis_hero=\"true\"",
+				"\t\tname=\""+ Hero.MainHero.Name.ToString()+"Test" +"\"",
 				"\t\tis_female=\""+ Hero.MainHero.IsFemale.ToString().ToLower() +"\"",
 				"\t\tculture=\"Culture."+  Hero.MainHero.Culture.ToString().ToLower() +"\"",
-				"\t\toccupation=\"Lord\"",
+				"\t\toccupation=\"Soldier\">",
 
-				//"\t\tbanner_symbol_mesh_name=\""+ Hero.MainHero.ClanBanner.BannerDataList.First().MeshId.ToString()+ "\"",
-				//"\t\t banner_symbol_color=\""+ Hero.MainHero.ClanBanner.BannerDataList.First().ColorId.ToString()+ "\"",
-
-				
-				"\t\tbanner_symbol_mesh_name=\"test_symbol_a\"",
-				"\t\t banner_symbol_color=\"FF000000\"",
 			}, "NPCCharacter base traits added.", "Error occured while trying to output NPCCharacter  base traits.");
 
 		}
 
 		public static void OutputCharacterFaceProperties()
 		{
+			BodyProperties heroBP = Hero.MainHero.BodyProperties;
+
 			TryOutputLines(new List<string>
 			{
-				//"\t\tskill_template=\"SkillSet.\" >",
 				"\t\t<face>",
-				"\t\t\t<face_key_template value=\"BodyProperty.\" />",
+				"\t\t\t<face_key_template value=\"BodyProperty.fighter_vlandia\" />",
 				"\t\t</face>",
 
 			}, "NPCCharacter face properties added.", "Error occured while trying to output NPCCharacter  base traits.");
@@ -64,17 +87,19 @@ namespace GeneralLord
 		public static void OutputCharacterSkills()
 		{
 
+			Hero mainHero = Hero.MainHero;
+
 			TryOutputLines(new List<string>
 			{
 				"\t\t<skills>",
-				"\t\t\t<skill id=\"Athletics\" value=\"\" />",
-				"\t\t\t<skill id=\"Riding\" value=\"\" />",
-				"\t\t\t<skill id=\"OneHanded\" value=\"\" />",
-				"\t\t\t<skill id=\"TwoHanded\" value=\"\" />",
-				"\t\t\t<skill id=\"Polearm\" value=\"\" />",
-				"\t\t\t<skill id=\"Bow\" value=\"\" />",
-				"\t\t\t<skill id=\"Crossbow\" value=\"\" />",
-				"\t\t\t<skill id=\"Throwing\" value=\"\" />",
+				"\t\t\t<skill id=\"Athletics\" value=\""+ mainHero.GetSkillValue(DefaultSkills.Athletics).ToString()+ "\" />",
+				"\t\t\t<skill id=\"Riding\" value=\""+ mainHero.GetSkillValue(DefaultSkills.Riding).ToString()+ "\" />",
+				"\t\t\t<skill id=\"OneHanded\" value=\""+ mainHero.GetSkillValue(DefaultSkills.OneHanded).ToString()+ "\" />",
+				"\t\t\t<skill id=\"TwoHanded\" value=\""+ mainHero.GetSkillValue(DefaultSkills.TwoHanded).ToString()+ "\" />",
+				"\t\t\t<skill id=\"Polearm\" value=\""+ mainHero.GetSkillValue(DefaultSkills.Polearm).ToString()+"\" />",
+				"\t\t\t<skill id=\"Bow\" value=\""+ mainHero.GetSkillValue(DefaultSkills.Bow).ToString()+ "\" />",
+				"\t\t\t<skill id=\"Crossbow\" value=\""+ mainHero.GetSkillValue(DefaultSkills.Crossbow).ToString()+ "\" />",
+				"\t\t\t<skill id=\"Throwing\" value=\""+ mainHero.GetSkillValue(DefaultSkills.Throwing).ToString()+ "\" />",
 				"\t\t</skills>",
 				"\t\t<upgrade_targets>",
 				"\t\t</upgrade_targets>",
@@ -84,52 +109,17 @@ namespace GeneralLord
 
 		}
 
-
-		public static void OutputCharacterStart()
-		{
-			TryOutputLines(new List<string>
-			{
-				"\t<NPCCharacter",
-				"\t\tid=\"\"",
-				"\t\tdefault_group=\"\"",
-				"\t\tlevel=\"\"",
-				"\t\tname=\"\"",
-				"\t\tis_basic_troop=\"\"",
-				"\t\tis_female=\"\"",
-				"\t\tupgrade_requires=\"\"",
-				"\t\toccupation=\"\"",
-				"\t\tculture=\"Culture.\"",
-				"\t\tskill_template=\"SkillSet.\" >",
-				"\t\t<face>",
-				"\t\t\t<face_key_template value=\"BodyProperty.\" />",
-				"\t\t</face>",
-				"\t\t<skills>",
-				"\t\t\t<skill id=\"Athletics\" value=\"\" />",
-				"\t\t\t<skill id=\"Riding\" value=\"\" />",
-				"\t\t\t<skill id=\"OneHanded\" value=\"\" />",
-				"\t\t\t<skill id=\"TwoHanded\" value=\"\" />",
-				"\t\t\t<skill id=\"Polearm\" value=\"\" />",
-				"\t\t\t<skill id=\"Bow\" value=\"\" />",
-				"\t\t\t<skill id=\"Crossbow\" value=\"\" />",
-				"\t\t\t<skill id=\"Throwing\" value=\"\" />",
-				"\t\t</skills>",
-				"\t\t<upgrade_targets>",
-				"\t\t</upgrade_targets>",
-				"\t\t<Equipments>"
-			}, "NPCCharacter first part added.", "Error occured while trying to output NPCCharacter first part.");
-		}
-
-		// Token: 0x0600000A RID: 10 RVA: 0x00002488 File Offset: 0x00000688
 		public static void OutputCharacterEnd()
 		{
 			TryOutputLines(new List<string>
 			{
 				"\t\t</Equipments>",
-				"\t</NPCCharacter>"
+				"\t</NPCCharacter>",
+				"</NPCCharacters>",
 			}, "NPCCharacter end part added.", "Error occured while trying to output NPCCharacter end part.");
 		}
 
-		// Token: 0x0600000B RID: 11 RVA: 0x000024C8 File Offset: 0x000006C8
+
 		public static void OutputEquipmentSet()
 		{
 			List<string> list = new List<string>();
@@ -148,7 +138,7 @@ namespace GeneralLord
 			TryOutputLines(list, "EquipmentRoster added.", "Error occured while trying to output EquipmentRoster.");
 		}
 
-		// Token: 0x0600000C RID: 12 RVA: 0x00002578 File Offset: 0x00000778
+
 		public static void OutputHorseEquipments()
 		{
 			List<string> lines = new List<string>();
@@ -158,7 +148,7 @@ namespace GeneralLord
 			TryOutputLines(lines, "Horse equipments added.", "Error occured while trying to output Horse equipments.");
 		}
 
-		// Token: 0x0600000D RID: 13 RVA: 0x000025C4 File Offset: 0x000007C4
+
 		public static void AddEquipment(List<string> lines, Equipment equipment, EquipmentIndex equipmentIndex, bool isHorse = false)
 		{
 			EquipmentElement equipmentFromSlot = equipment.GetEquipmentFromSlot(equipmentIndex);
@@ -178,37 +168,100 @@ namespace GeneralLord
 			}
 		}
 
-		// Token: 0x0600000E RID: 14 RVA: 0x00002698 File Offset: 0x00000898
+		public static void TryClearFile(string SucceedMessage, string FailedMessage)
+		{
+			try
+			{
+				Serializer.EnsureSaveDirectory();
+				File.Delete(DynamicPath());
+				//File.Delete(GetPath(saveFileLocation));
+				if (debugMode) InformationManager.DisplayMessage(new InformationMessage("GeneralLordCharacterOutput: " + SucceedMessage));
+			}
+			catch (Exception)
+			{
+				if (debugMode) InformationManager.DisplayMessage(new InformationMessage("GeneralLordCharacterOutput: " + FailedMessage));
+			}
+		}
+
 		public static void TryOutputLines(List<string> lines, string SucceedMessage, string FailedMessage)
 		{
 			try
 			{
-				File.AppendAllLines(GetPath("GeneralLordCharacterOutput.xml"), lines);
-				InformationManager.DisplayMessage(new InformationMessage("GeneralLordCharacterOutput: " + SucceedMessage));
+				Serializer.EnsureSaveDirectory();
+				File.AppendAllLines(DynamicPath(), lines);
+				if(debugMode) InformationManager.DisplayMessage(new InformationMessage("GeneralLordCharacterOutput: " + SucceedMessage));
 			}
 			catch (Exception)
 			{
-				InformationManager.DisplayMessage(new InformationMessage("GeneralLordCharacterOutput: " + FailedMessage));
+				if (debugMode) InformationManager.DisplayMessage(new InformationMessage("GeneralLordCharacterOutput: " + FailedMessage));
 			}
+		}
+
+		public static string DynamicPath()
+        {
+			Serializer.EnsureSaveDirectory();
+			switch (saveLocationPath)
+			{
+				case SaveLocationEnum.ModuleData:
+					return GetPath(saveLocationFile);
+					//break;
+				case SaveLocationEnum.Configs:
+					return Path.Combine(Serializer.SaveFolderPath(), saveLocationFile);
+					//break;
+				default:
+					Console.WriteLine("Error");
+					return "";
+					//break;
+			}
+		}
+
+
+		public static void WriteToFile(string data)
+		{
+			TryClearFile("Deleted Original File", "Couldn't delete original file");
+			File.WriteAllText(DynamicPath(), data);
 		}
 
 		public static string GetPath(string fileName)
 		{
-			return Path.Combine(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..")), "ModuleData", fileName);
+			return Path.Combine(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..")), "ModuleData", "EnemyGeneral", fileName);
 		}
 
-		// Token: 0x0600000F RID: 15 RVA: 0x00002700 File Offset: 0x00000900
-		/*public override void RegisterEvents()
-		{
+		public static void LoadXML()
+        {
+			string xmlPath = DynamicPath();
+
+			XmlDocument xmlDocument = new XmlDocument();
+			StreamReader streamReader = new StreamReader(xmlPath);
+			string xml = streamReader.ReadToEnd();
+			xmlDocument.LoadXml(xml);
+
+			foreach (object obj2 in xmlDocument)
+            {
+				XmlNode xmlNode2 = (XmlNode)obj2;
+
+				foreach (object obj3 in xmlNode2)
+				{
+					XmlNode xmlNode3 = (XmlNode)obj3;
+					XmlAttributeCollection attributes2 = xmlNode3.Attributes;
+					if (attributes2 != null)
+					{
+						string innerText2 = attributes2["id"].InnerText;
+						CharacterObject object2 = Game.Current.ObjectManager.GetObject<CharacterObject>(innerText2);
+						MBObjectManager.Instance.UnregisterObject(object2);
+						if (object2 != null)
+						{
+
+							object2.Deserialize(Game.Current.ObjectManager, xmlNode3);
+							characterObject = object2;
+					
+						}
+					}
+				}
+
+				
+			}
 		}
-
-		// Token: 0x06000010 RID: 16 RVA: 0x00002703 File Offset: 0x00000903
-		public override void SyncData(IDataStore dataStore)
-		{
-		}*/
-
-		// Token: 0x04000001 RID: 1
-		public static bool isFirstPart = true;
 
 	}
 }

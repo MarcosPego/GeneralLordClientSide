@@ -1,25 +1,39 @@
 ﻿<Module>
-  <Name value="GeneralLord"/>
-  <Id value="GeneralLord"/>
-  <Version value="v1.0.0"/>
-  <SingleplayerModule value="true"/>
-  <MultiplayerModule value="false"/>
-  <DependedModules>
-    <DependedModule Id="Native"  DependentVersion="e1.6.0"/>
-    <DependedModule Id="SandBoxCore"  DependentVersion="e1.6.0"/>
-    <DependedModule Id="Sandbox"  DependentVersion="e1.6.0"/>
-    <DependedModule Id="StoryMode"  DependentVersion="e1.6.0"/>
-  </DependedModules>
-  <SubModules>
-    <SubModule>
-      <Name value="GeneralLord"/>
-      <DLLName value="GeneralLord.dll"/>
-      <SubModuleClassType value="GeneralLord.SubModule"/>
-      <Tags>
-        <Tag key="DedicatedServerType" value="none" />
-        <Tag key="IsNoRenderModeElement" value="false" />
-      </Tags>
-    </SubModule>
-  </SubModules>
-  <Xmls/>
+	<Name value="GeneralLord"/>
+	<Id value="GeneralLord"/>
+	<Version value="v1.0.0"/>
+	<SingleplayerModule value="true"/>
+	<MultiplayerModule value="false"/>
+	<DependedModules>
+	<DependedModule Id="Native"  DependentVersion="e1.6.0"/>
+	<DependedModule Id="SandBoxCore"  DependentVersion="e1.6.0"/>
+	<DependedModule Id="Sandbox"  DependentVersion="e1.6.0"/>
+	<DependedModule Id="StoryMode"  DependentVersion="e1.6.0"/>
+	</DependedModules>
+	<SubModules>
+	<SubModule>
+		<Name value="GeneralLord"/>
+		<DLLName value="GeneralLord.dll"/>
+		<SubModuleClassType value="GeneralLord.SubModule"/>
+		<Tags>
+		<Tag key="DedicatedServerType" value="none" />
+		<Tag key="IsNoRenderModeElement" value="false" />
+		</Tags>
+	</SubModule>
+	</SubModules>
+	<Xmls>
+		<!--
+			Reference the character xmls in the 'custom_troops' folder
+			Could also reference a specific file
+		-->
+		<XmlNode>
+			<XmlName id="NPCCharacters" path="EnemyGeneral"/>
+			<IncludedGameTypes>
+				<GameType value = "Campaign"/>
+				<GameType value = "CampaignStoryMode"/>
+				<GameType value = "CustomGame"/>
+				<GameType value = "EditorGame"/>
+			</IncludedGameTypes>
+		</XmlNode>
+	</Xmls>
 </Module>

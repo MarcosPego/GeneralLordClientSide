@@ -7,6 +7,7 @@ using TaleWorlds.CampaignSystem;
 using EnhancedBattleTest.GameMode;
 using System;
 using HarmonyLib;
+using TaleWorlds.ObjectSystem;
 
 namespace GeneralLord
 {
@@ -56,11 +57,14 @@ namespace GeneralLord
 
 		public override void OnCampaignStart(Game game, object gameStarterObject)
 		{
+
 			//base.OnGameStart(game, gameStarterObject);
 			base.OnCampaignStart(game, gameStarterObject);
 			CampaignGameStarter campaignGameStarter = gameStarterObject as CampaignGameStarter;
 			if (campaignGameStarter != null)
 			{
+
+				
 				//this._partyManager = new PartyManager();
 				this._mainManager = new MainManager();
 				//campaignGameStarter.AddBehavior(this._partyManager);

@@ -97,10 +97,7 @@
     <Compile Include="Client\Web\WebRequestResult.cs" />
     <Compile Include="Client\Web\WebRequests.cs" />
     <Compile Include="CustomTroopRoster.cs" />
-    <Compile Include="GeneralLordGameManager.cs" />
     <Compile Include="GeneralLordMainGameState.cs" />
-    <Compile Include="GeneralLordMissionManager.cs" />
-    <Compile Include="GeneralParty.cs" />
     <Compile Include="GeneralState.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenLeaveOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />

@@ -26,7 +26,7 @@ namespace GeneralLordWebApiClient.Model
             }
             catch
             {
-                Profile profile = new Profile {Name = "GeneralLordTest2", Elo = 1500, ArmyContainer = Serializer.JsonString() };
+                Profile profile = new Profile {Name = "GeneralLordTest2", Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json") };
                 Serializer.JsonSerialize(profile, filePath);
                 return profile;
             }
@@ -41,7 +41,7 @@ namespace GeneralLordWebApiClient.Model
             {
 
                 Profile profile = (Profile)Serializer.JsonDeserializeProfile(filePath);
-                profile.ArmyContainer = Serializer.JsonString();
+                profile.ArmyContainer = Serializer.JsonString("armyConfig.json");
                 //profile.Elo = 2000;
                 //InformationManager.DisplayMessage(new InformationMessage(profile.Id.ToString()));
                 return profile;
@@ -49,7 +49,7 @@ namespace GeneralLordWebApiClient.Model
             }
             catch
             {
-                Profile profile = new Profile { Name = "GeneralLordTest2", Elo = 1500, ArmyContainer = Serializer.JsonString() };
+                Profile profile = new Profile { Name = "GeneralLordTest2", Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json") };
                 Serializer.JsonSerialize(profile, filePath);
                 return profile;
             }

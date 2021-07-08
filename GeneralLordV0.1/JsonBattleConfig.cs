@@ -25,7 +25,10 @@ namespace GeneralLord
 				troopContainers.Add(new TroopContainer { stringId = tre.Character.StringId, troopCount = tre.Number, troopXP = tre.Xp });
 
 			}
-			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers };
+
+			CharacterHandler.saveLocationFile = "playerprofile.xml";
+			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.Configs;
+			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = CharacterHandler.SaveCharacterAndLoadToString()};
 
 			//XDocument xd = ArmyContainerSerializer.LoadArmyContainerXML(ac);
 			Serializer.JsonSerialize(ac);
@@ -50,7 +53,11 @@ namespace GeneralLord
 				troopContainers.Add(new TroopContainer { stringId = tre.Character.StringId, troopCount = tre.Number, troopXP = tre.Xp });
 
 			}
-			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers };
+
+			CharacterHandler.saveLocationFile = "playerprofile.xml";
+			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.Configs;
+			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = CharacterHandler.SaveCharacterAndLoadToString() };
+			//ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers };
 
 			//XDocument xd = ArmyContainerSerializer.LoadArmyContainerXML(ac);
 			Serializer.JsonSerialize(ac);
@@ -122,15 +129,37 @@ namespace GeneralLord
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
 			TroopRoster troopRoster = new TroopRoster(PartyBase.MainParty);
 
-            foreach (TroopContainer tc in armyContainer.TroopContainers)
+
+			CharacterHandler.saveLocationFile = "enemygeneral.xml";
+			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
+			CharacterHandler.LoadXML();
+
+			TryAddCharacterObjectToRoster(troopRoster, CharacterHandler.characterObject, 1);
+			foreach (TroopContainer tc in armyContainer.TroopContainers)
             {
 				if(tc.stringId != "main_hero")
                 {
-					TryAddCharacterToRoster(troopRoster, tc.stringId,1);
+					TryAddCharacterToRoster(troopRoster, tc.stringId, tc.troopCount);
 				}
-				
+			
 			}
+
+
 			return troopRoster;
+		}
+
+		public static void TryAddCharacterObjectToRoster(TroopRoster troopRoster, CharacterObject characterObject, int count)
+		{
+			if (characterObject != null)
+			{
+				//InformationManager.DisplayMessage(new InformationMessage("Chegou" + characterId));
+				troopRoster.AddToCounts(characterObject, count, false, 0, 0, true, -1);
+
+			}
+			else
+			{
+				InformationManager.DisplayMessage(new InformationMessage("CustomTroopRoster: " + characterObject + " id not found."));
+			}
 		}
 
 
