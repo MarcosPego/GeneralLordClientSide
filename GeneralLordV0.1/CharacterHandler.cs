@@ -61,7 +61,7 @@ namespace GeneralLord
 				"\t\tid=\""+ enemyLordStringId+ "\"",
 				"\t\tage=\""+ Math.Round(Hero.MainHero.Age, 0).ToString() + "\"", 
 				"\t\tlevel=\""+ Hero.MainHero.Level.ToString() +"\"",
-				"\t\tname=\""+ Hero.MainHero.Name.ToString()+"Test" +"\"",
+				"\t\tname=\""+ Hero.MainHero.Name.ToString()+"\"",
 				"\t\tis_female=\""+ Hero.MainHero.IsFemale.ToString().ToLower() +"\"",
 				"\t\tculture=\"Culture."+  Hero.MainHero.Culture.ToString().ToLower() +"\"",
 				"\t\toccupation=\"Soldier\">",

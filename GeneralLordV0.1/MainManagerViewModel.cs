@@ -35,6 +35,7 @@ namespace GeneralLord
 			this._overviewText = new TextObject("{=ATOverviewText}Character", null).ToString();
 			this._partyText = new TextObject("{=ATPartyText}Party", null).ToString();
 			this._formationText = new TextObject("{=ATFormationText}Formation Manager", null).ToString();
+			this._recruitmentText = new TextObject("{=ATFormationText}Recruitment", null).ToString();
 			this._shopText = new TextObject("{=ATShopText}Shop", null).ToString();
 
 			this.MainOverview = new MainOverviewViewModel();
@@ -55,7 +56,7 @@ namespace GeneralLord
 
 		private void ExecuteDone()
 		{
-			ScreenManager.PopScreen();
+			//ScreenManager.PopScreen();
 		}
 
 		private void SetSelectedCategory(int value)
@@ -78,8 +79,16 @@ namespace GeneralLord
 			}
 			if (value == 3)
 			{
+				ScreenManager.PopScreen();
+				PartyScreenState.currentState = PartyScreenStateEnum.RecruitmentScreen;
+				RecruitmentManager.OpenRecruitmentRoster();
+
+			}
+
+			if (value == 4)
+			{
 				//ScreenManager.PopScreen();
-				
+
 
 			}
 		}
@@ -238,6 +247,23 @@ namespace GeneralLord
 		}
 
 		[DataSourceProperty]
+		public string RecruitmentText
+		{
+			get
+			{
+				return this._recruitmentText;
+			}
+			set
+			{
+				if (value != this._recruitmentText)
+				{
+					this._recruitmentText = value;
+					base.OnPropertyChangedWithValue(value, "RecruitmentText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public string ShopText
 		{
 			get
@@ -291,7 +317,8 @@ namespace GeneralLord
 
 		private string _overviewText;
 		private string _formationText;
-		private string _partyText;
+        private string _recruitmentText;
+        private string _partyText;
 		private string _shopText;
 
 		private PartyManagerLogic _partyManagerLogic;

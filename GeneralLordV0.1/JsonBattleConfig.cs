@@ -3,6 +3,7 @@ using GeneralLordWebApiClient.Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,26 @@ namespace GeneralLord
 {
     public class JsonBattleConfig
     {
+		public static int UniqueId = 0;
+
+		public static void VerifyUniqueFile()
+        {
+			var filePath = Path.Combine(Serializer.SaveFolderPath(false), "uniqueid.txt");
+
+			if (!File.Exists(filePath))
+            {
+				ExecuteSubmitAc();
+				JObject json = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
+				string text = json["Id"].ToString();
+				File.WriteAllText(filePath, text);
+			}
+
+			UniqueId = Int32.Parse(File.ReadAllText(filePath));
+			//InformationManager.DisplayMessage(new InformationMessage(UniqueId.ToString()));
+			ExecuteSubmitAc();
+		}
+
+
 		public static void ExecuteSubmitAc()
 		{
 
@@ -28,18 +49,22 @@ namespace GeneralLord
 
 			CharacterHandler.saveLocationFile = "playerprofile.xml";
 			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.Configs;
-			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = CharacterHandler.SaveCharacterAndLoadToString()};
+			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = CharacterHandler.SaveCharacterAndLoadToString(), ArmyStrength = PartyBase.MainParty.TotalStrength};
 
 			//XDocument xd = ArmyContainerSerializer.LoadArmyContainerXML(ac);
 			Serializer.JsonSerialize(ac);
 
-			Task.Run(async () =>
+			var t = Task.Run(async () =>
 			{
 				Profile profile = ProfileHandler.UpdateProfileAc();
-				var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/save", profile);
+				var result = await WebRequests.PostAsync<Profile>(UrlHandler.GetUrlFromString(UrlHandler.SaveProfile), profile);
 				Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
 			});
+			t.Wait();
 
+
+			//SAVE GAME
+			// Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 		}
 
 		public static void ExecuteSubmit()
@@ -56,19 +81,22 @@ namespace GeneralLord
 
 			CharacterHandler.saveLocationFile = "playerprofile.xml";
 			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.Configs;
-			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = CharacterHandler.SaveCharacterAndLoadToString() };
+			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = CharacterHandler.SaveCharacterAndLoadToString(), ArmyStrength = PartyBase.MainParty.TotalStrength };
 			//ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers };
 
 			//XDocument xd = ArmyContainerSerializer.LoadArmyContainerXML(ac);
 			Serializer.JsonSerialize(ac);
 
-			Task.Run(async () =>
+			var t =  Task.Run(async () =>
 			{
 				Profile profile = ProfileHandler.GetVerifyProfile();
-				var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/save", profile);
+				var result = await WebRequests.PostAsync<Profile>(UrlHandler.GetUrlFromString(UrlHandler.SaveProfile), profile);
 				Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
 			});
+			t.Wait();
 
+			//SAVE GAME
+			// Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 		}
 
 
@@ -99,8 +127,8 @@ namespace GeneralLord
 
 					}
 
-					int index = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
-					PartyBase.MainParty.MemberRoster.SetElementXp(index, tc.troopXP + XpToUpdate());
+					//int index = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
+					//PartyBase.MainParty.MemberRoster.SetElementXp(index, tc.troopXP + XpToUpdate());
 
 					//string wtf = "Char:" + characterObject.Name + " IndexFound:" + index.ToString();
 					//InformationManager.DisplayMessage(new InformationMessage(wtf));
@@ -110,8 +138,35 @@ namespace GeneralLord
 			//SAVE
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 			ExecuteSubmitAc();
-			GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, GoldToUpdate(), true);
+			//GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, GoldToUpdate(), true);
 		}
+
+		public static MatchHistory CreateMatchHistory(string battleResult)
+        {
+			MatchHistory matchHistory = new MatchHistory();
+
+			matchHistory.BattleResult = battleResult;
+
+			JObject playerJson = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
+			ArmyContainer playerAC = Serializer.JsonDeserializeFromStringAc((string)playerJson["ArmyContainer"]);
+
+			matchHistory.Id = (int) playerJson["Id"];
+			matchHistory.PlayerElo = (int) playerJson["Elo"];
+			matchHistory.PlayerArmyStrength = playerAC.ArmyStrength;
+			matchHistory.PlayerTroopCount = EnemyParty(playerAC).Count;
+
+			JObject enemyJson = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
+			ArmyContainer enemyAC = Serializer.JsonDeserializeFromStringAc((string)enemyJson["ArmyContainer"]);
+
+
+			matchHistory.EnemyId = (int)enemyJson["Id"];
+			matchHistory.EnemyElo = (int)enemyJson["Elo"];
+			matchHistory.EnemyArmyStrength = enemyAC.ArmyStrength;
+			matchHistory.EnemyTroopCount = EnemyParty(enemyAC).Count;
+
+			return matchHistory;
+		}
+
 
 		public static int XpToUpdate()
         {

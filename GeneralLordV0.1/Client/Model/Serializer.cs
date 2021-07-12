@@ -13,6 +13,8 @@ namespace GeneralLordWebApiClient.Model
 {
     public class Serializer
     {
+        public static string ThisCharacterName = "";
+        
         public static ArmyContainer Deserialize()
         {
             try
@@ -197,12 +199,20 @@ namespace GeneralLordWebApiClient.Model
         {
             Directory.CreateDirectory(SaveFolderPath());
         }
-        public static string SaveFolderPath()
+        public static string SaveFolderPath(bool CharacterFolder = true)
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                "Mount and Blade II Bannerlord", "Configs", "GeneralLord");
-
+            if (CharacterFolder)
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "Mount and Blade II Bannerlord", "Configs", "GeneralLord", ThisCharacterName);
+            }
+            else
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "Mount and Blade II Bannerlord", "Configs", "GeneralLord");
+            }
         }
+
 
     }
 }

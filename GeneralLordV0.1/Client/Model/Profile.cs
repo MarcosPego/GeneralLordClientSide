@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using TaleWorlds.CampaignSystem;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GeneralLordWebApiClient.Model
 {
@@ -17,6 +11,8 @@ namespace GeneralLordWebApiClient.Model
         public string Name { get; set; }
 
         public int Elo { get; set; }
+
+        public int UniqueUser { get; set; }
 
         /*//change
         public TroopRoster TroopRoster { get; set; }

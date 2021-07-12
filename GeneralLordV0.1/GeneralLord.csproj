@@ -82,6 +82,7 @@
   <!-- Files & Classes -->
   <ItemGroup>
     <Compile Include="CharacterHandler.cs" />
+    <Compile Include="Client\Model\MatchHistory.cs" />
     <Compile Include="Client\Model\ProfileHandler.cs" />
     <Compile Include="Client\Model\Serializer.cs" />
     <Compile Include="BattleGeneralConfig.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Client\Web\Constants\KnownContentSerializers.cs" />
     <Compile Include="Client\Web\Constants\KnownContentSerializersExtensions.cs" />
     <Compile Include="Client\Web\HttpWebResponseExtensions.cs" />
+    <Compile Include="Client\Web\UrlHandler.cs" />
     <Compile Include="Client\Web\WebRequestResult.cs" />
     <Compile Include="Client\Web\WebRequests.cs" />
     <Compile Include="CustomTroopRoster.cs" />

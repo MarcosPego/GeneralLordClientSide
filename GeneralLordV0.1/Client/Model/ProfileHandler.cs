@@ -1,9 +1,11 @@
-﻿using System;
+﻿using GeneralLord;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
 namespace GeneralLordWebApiClient.Model
@@ -13,8 +15,8 @@ namespace GeneralLordWebApiClient.Model
 
         public static Profile GetVerifyProfile()
         {
-            EnsureSaveDirectory();
-            var filePath = Path.Combine(SaveFolderPath(), "playerprofile.json");
+            Serializer.EnsureSaveDirectory();
+            var filePath = Path.Combine(Serializer.SaveFolderPath(), "playerprofile.json");
             try
             {
                
@@ -26,7 +28,7 @@ namespace GeneralLordWebApiClient.Model
             }
             catch
             {
-                Profile profile = new Profile {Name = "GeneralLordTest2", Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json") };
+                Profile profile = new Profile { Name = PartyBase.MainParty.LeaderHero.Name.ToString(), Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json") };
                 Serializer.JsonSerialize(profile, filePath);
                 return profile;
             }
@@ -35,13 +37,20 @@ namespace GeneralLordWebApiClient.Model
 
         public static Profile UpdateProfileAc()
         {
-            EnsureSaveDirectory();
-            var filePath = Path.Combine(SaveFolderPath(), "playerprofile.json");
+            Serializer.EnsureSaveDirectory();
+            var filePath = Path.Combine(Serializer.SaveFolderPath(), "playerprofile.json");
             try
             {
 
                 Profile profile = (Profile)Serializer.JsonDeserializeProfile(filePath);
                 profile.ArmyContainer = Serializer.JsonString("armyConfig.json");
+                if(JsonBattleConfig.UniqueId != 0)
+                {
+                    profile.UniqueUser = JsonBattleConfig.UniqueId;
+                    InformationManager.DisplayMessage(new InformationMessage(profile.UniqueUser.ToString()));
+
+                }
+
                 //profile.Elo = 2000;
                 //InformationManager.DisplayMessage(new InformationMessage(profile.Id.ToString()));
                 return profile;
@@ -49,24 +58,21 @@ namespace GeneralLordWebApiClient.Model
             }
             catch
             {
-                Profile profile = new Profile { Name = "GeneralLordTest2", Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json") };
+                Profile profile;
+                if (JsonBattleConfig.UniqueId == 0 )
+                {
+                    profile = new Profile { Name = PartyBase.MainParty.LeaderHero.Name.ToString(), Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json") };
+                } else
+                {
+                    profile = new Profile { Name = PartyBase.MainParty.LeaderHero.Name.ToString(), Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json"), UniqueUser = JsonBattleConfig.UniqueId };
+                }
+
                 Serializer.JsonSerialize(profile, filePath);
                 return profile;
             }
         }
 
 
-        private static void EnsureSaveDirectory()
-        {
-
-            Directory.CreateDirectory(SaveFolderPath());
-        }
-        private static string SaveFolderPath()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                "Mount and Blade II Bannerlord", "Configs", "GeneralLord");
-
-        }
 
     }
 }

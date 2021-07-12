@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using GeneralLordWebApiClient;
 using Newtonsoft.Json.Linq;
 using TaleWorlds.Localization;
+using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
 
 namespace GeneralLord
 {
@@ -87,9 +88,13 @@ namespace GeneralLord
 			JsonBattleConfig.ExecuteSubmitAc();
 			var task =  Task.Run(async () =>
 			{
-				var result = await WebRequests.RawMessageWebGet("http://localhost:40519/values/singleLast");
+				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
+				Profile profile = ProfileHandler.UpdateProfileAc();
+				var result = await WebRequests.PostAsync<IEnumerable<Profile>>(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile), profile);
 				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
-				Serializer.WriteJsonToFile(result, "enemyProfile.json");
+
+				var profiles = result.ServerResponse.FirstOrDefault();
+				Serializer.JsonSerialize(profiles, "enemyProfile.json");
 
 				//InformationManager.DisplayMessage(new InformationMessage(result)); 
 
@@ -99,7 +104,7 @@ namespace GeneralLord
 
 			JObject json = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
 			//InformationManager.DisplayMessage(new InformationMessage(json.ToString()));
-			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["armyContainer"]) as ArmyContainer;
+			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["ArmyContainer"]);
 
 
 
@@ -153,7 +158,24 @@ namespace GeneralLord
 			});*/
 
 			//JsonBattleConfig.ExecuteSubmit();
-			JsonBattleConfig.UpdateArmyAfterBattle();
+			//JsonBattleConfig.UpdateArmyAfterBattle();
+
+			var task = Task.Run(async () =>
+			{
+				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
+				Profile profile = ProfileHandler.UpdateProfileAc();
+
+				MatchHistory mh = JsonBattleConfig.CreateMatchHistory("PlayerVictory");
+				await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.CalculateElo), mh);
+				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
+
+				//var profiles = result.ServerResponse.FirstOrDefault();
+				//Serializer.JsonSerialize(profiles, "enemyProfile.json");
+
+				//InformationManager.DisplayMessage(new InformationMessage(result)); 
+
+			});
+			task.Wait();
 		}
 
 		[DataSourceProperty]

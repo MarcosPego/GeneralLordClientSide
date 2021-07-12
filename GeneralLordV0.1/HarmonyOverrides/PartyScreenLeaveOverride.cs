@@ -22,7 +22,7 @@ namespace GeneralLord.HarmonyOverrides
             static void Postfix(PartyVM __instance)
             {
 
-                InformationManager.DisplayMessage(new InformationMessage("Close"));
+                //sInformationManager.DisplayMessage(new InformationMessage("Close"));
 
                 if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
                 {
@@ -43,13 +43,14 @@ namespace GeneralLord.HarmonyOverrides
                 static void Postfix(PartyVM __instance)
                 {
 
-                    InformationManager.DisplayMessage(new InformationMessage("Done"));
+                    //InformationManager.DisplayMessage(new InformationMessage("Done"));
 
                     if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
                     {
                         JsonBattleConfig.ExecuteSubmitAc();
-                        PartyScreenState.goldToChange = 0;
+
                         GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, PartyScreenState.goldToChange, false);
+                        PartyScreenState.goldToChange = 0;
                         PartyScreenState.currentState = PartyScreenStateEnum.NormalScreen;
                     }
                     else

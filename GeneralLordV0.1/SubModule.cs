@@ -8,6 +8,7 @@ using EnhancedBattleTest.GameMode;
 using System;
 using HarmonyLib;
 using TaleWorlds.ObjectSystem;
+using GeneralLordWebApiClient.Model;
 
 namespace GeneralLord
 {
@@ -63,6 +64,7 @@ namespace GeneralLord
 			CampaignGameStarter campaignGameStarter = gameStarterObject as CampaignGameStarter;
 			if (campaignGameStarter != null)
 			{
+
 
 				
 				//this._partyManager = new PartyManager();

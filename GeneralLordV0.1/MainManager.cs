@@ -22,6 +22,8 @@ using TaleWorlds.CampaignSystem.Actions;
 using SandBox.View.Menu;
 using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors.Towns;
 using TaleWorlds.ObjectSystem;
+using GeneralLordWebApiClient;
+using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
 
 namespace GeneralLord
 {
@@ -30,6 +32,7 @@ namespace GeneralLord
         public MainManager()
         {
             this._initializeState = true;
+
             //JsonBattleConfig.ExecuteSubmitAc();
 
             //this._partyManager = new PartyManager();
@@ -48,17 +51,35 @@ namespace GeneralLord
             {
                 if (ScreenManager.TopScreen is MapScreen && PlayerEncounter.Current.EncounterState == PlayerEncounterState.Begin)
                 {
+                    InformationManager.DisplayMessage(new InformationMessage("aqui"));
                     PlayerEncounter.Finish(false);
                 }
 
                 else if (PlayerEncounter.Current.EncounterState == PlayerEncounterState.Wait)
                 {
 
+                    //InformationManager.DisplayMessage(new InformationMessage(CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState).ToString()));
+
+                    CampaignBattleResult campaignBattleResult = CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState);
+                    MatchHistory matchHistory = new MatchHistory();
+                    if (campaignBattleResult.PlayerVictory)
+                    {
+                        matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerVictory");
+                    }
+                    else
+                    {
+                        matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerDefeat");
+                    }
+                    var t = Task.Run(async () =>
+                    {
+                        await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.PostBattleProcess), matchHistory);
+                        //Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
+                    });
+                    t.Wait();
+
                     JsonBattleConfig.UpdateArmyAfterBattle();
                     PlayerEncounter.Finish(false);
-
                 }
-
             }
 
             if (ScreenManager.TopScreen is MapScreen)
@@ -69,31 +90,9 @@ namespace GeneralLord
 
                 _initializeState = false;
                 ScreenManager.PushScreen(new MainManagerScreen(_partyManagerLogic));
+                Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
+                JsonBattleConfig.VerifyUniqueFile();
             }
-
-
-            /*if (Game.Current.GameManager.Game.GameStateManager.ActiveState != null)
-            {
-
-             
-                if (Game.Current.GameManager.Game.GameStateManager.ActiveState.GetType() == typeof(MapState) && this._initializeState == true)
-                {
-                    this._initializeState = false;
-
-                }
-
-                    //InformationManager.DisplayMessage(new InformationMessage(""));
- 
-            }
-            */
-            /*if (Game.Current.GameManager.Game.GameStateManager.ActiveState != null)
-            {
-                InformationManager.DisplayMessage(new InformationMessage(Game.Current.GameManager.Game.GameStateManager.ActiveState.GetType().ToString()));
-            }*/
-            //if (CampaignEvents.OnCharacterCreationIsOverEvent)
-            //{
-            //    CampaignEvents.OnCharacterCreationIsOverEvent
-            //}
 
             if (Mission.Current == null && Input.IsKeyDown(InputKey.LeftControl))
             {
@@ -157,12 +156,11 @@ namespace GeneralLord
                 }
                 if (Input.IsKeyReleased(InputKey.U))
                 {
-                    
+
                     /*CharacterHandler.saveLocationFile = "enemygeneral.xml";
                     CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
                     CharacterHandler.LoadXML();*/
 
-                    JsonBattleConfig.ExecuteSubmitAc();
                 }
             }
 
