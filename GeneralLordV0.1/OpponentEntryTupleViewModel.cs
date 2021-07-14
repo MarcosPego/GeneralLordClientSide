@@ -1,4 +1,5 @@
 ﻿using GeneralLordWebApiClient.Model;
+using Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace GeneralLord
     {
 		public OpponentEntryTupleViewModel(Profile profile)
 		{
+
+			_profile = profile;
 			this.Name = profile.Name;
 			this.Elo = "Elo: " + profile.Elo.ToString();
 			this.ArmyStrength = GetAverageStrength(profile);
@@ -20,6 +23,36 @@ namespace GeneralLord
 
 			this.RefreshValues();
 		}
+
+		public void ExecuteChallenge()
+		{
+			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
+			CharacterHandler.saveLocationFile = "enemygeneral.xml";
+			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
+			CharacterHandler.WriteToFile(ac.CharacterXML);
+			CharacterHandler.LoadXML();
+
+
+			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
+			Clan clan = Clan.BanditFactions.FirstOrDefault((Clan t) => t.Culture == closestHideout.Culture);
+
+			//MobileParty mobileParty = MobilePartyHelper.SpawnLordParty(bestAvailableCommander, new Vec2(Hero.MainHero.GetPosition().x, Hero.MainHero.GetPosition().z), 1f);
+			MobileParty mobileParty = BanditPartyComponent.CreateBanditParty("EnemyClan", clan, closestHideout.Hideout, false);
+			mobileParty.InitializeMobileParty(
+						JsonBattleConfig.EnemyParty(ac),
+						JsonBattleConfig.EnemyParty(ac),
+						mobileParty.Position2D,
+						0);
+			PlayerEncounter.Start();
+
+			//InformationManager.DisplayMessage(new InformationMessage(PartyBase.MainParty.IsSettlement.ToString()));
+			PlayerEncounter.Current.SetupFields(PartyBase.MainParty, mobileParty.Party);
+			PlayerEncounter.StartBattle();
+			CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
+
+
+		}
+
 
 		public string GetAverageStrength(Profile profile)
         {
@@ -116,6 +149,7 @@ namespace GeneralLord
 			}
 		}
 
+		private Profile _profile;
 		private string _name;
 		private string _elo;
 		private string _armyStrength;

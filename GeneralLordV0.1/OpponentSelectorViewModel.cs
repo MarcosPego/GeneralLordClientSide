@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
+using TaleWorlds.Engine.Screens;
 using TaleWorlds.Library;
 
 namespace GeneralLord
@@ -34,6 +35,12 @@ namespace GeneralLord
 				this.Opponents.Add(new OpponentEntryTupleViewModel(profile));
 			}
 		}
+
+		private void ExecuteLeave()
+		{
+			ScreenManager.PopScreen();
+		}
+
 
 
 		[DataSourceProperty]
