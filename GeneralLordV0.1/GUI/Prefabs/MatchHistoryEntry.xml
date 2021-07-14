@@ -1,0 +1,93 @@
+<Prefab>
+	<Constants>
+		<Constant Name="Clan.Item.Tuple.Width" BrushLayer="Default" BrushName="Clan.Item.Tuple" BrushValueType="Width" />
+		<Constant Name="Clan.Item.Tuple.Height" BrushLayer="Default" BrushName="Clan.Item.Tuple" BrushValueType="Height" />
+
+		<Constant Name="Banner.Width" BrushLayer="Default" BrushName="Flat.Tuple.Banner.Small" BrushValueType="Width" />
+		<Constant Name="Banner.Height" BrushLayer="Default" BrushName="Flat.Tuple.Banner.Small" BrushValueType="Height" />
+
+		<Constant Name="Banner.Width.Scaled" MultiplyResult="0.30" Value="!Banner.Width" />
+		<Constant Name="Banner.Height.Scaled" MultiplyResult="0.38" Value="!Banner.Height"/>
+
+		<Constant Name="Header.Tab.Left.Width" BrushLayer="Default" BrushName="Header.Tab.Left" BrushValueType="Width" />
+		<Constant Name="Header.Tab.Left.Height" BrushLayer="Default" BrushName="Header.Tab.Left" BrushValueType="Height" />
+
+		<Constant Name="Header.Tab.Left.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Left.Width" />
+		<Constant Name="Header.Tab.Left.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Left.Height" />
+
+		<Constant Name="Header.Tab.Center.Width" BrushLayer="Default" BrushName="Header.Tab.Center" BrushValueType="Width" />
+		<Constant Name="Header.Tab.Center.Height" BrushLayer="Default" BrushName="Header.Tab.Center" BrushValueType="Height" />
+
+		<Constant Name="Header.Tab.Center.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Center.Width" />
+		<Constant Name="Header.Tab.Center.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Center.Height" />
+
+		<Constant Name="Header.Tab.Right.Width" BrushLayer="Default" BrushName="Header.Tab.Right" BrushValueType="Width" />
+		<Constant Name="Header.Tab.Right.Height" BrushLayer="Default" BrushName="Header.Tab.Right" BrushValueType="Height" />
+
+		<Constant Name="Header.Tab.Right.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Width" />
+		<Constant Name="Header.Tab.Right.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Height" />
+	</Constants>
+	<Window>
+		<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1350" SuggestedHeight="125" Brush="Clan.Item.Tuple" IsSelected="false">
+			<Children>
+
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DoNotAcceptEvents="true">
+					<Children>
+
+						<!--Portrait and Banner
+						<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginRight="10" IsHidden="@IsChild">
+							<Children>
+								<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="113" SuggestedHeight="84"  Command.Click="ExecuteLink" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotPassEventsToChildren="true" >
+									<Children>
+										<MaskedTextureWidget DataSource="{Banner_9}"  WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Banner.Width.Scaled" SuggestedHeight="!Banner.Height.Scaled" HorizontalAlignment="Right" VerticalAlignment="Top" PositionYOffset="-2" Brush="Flat.Tuple.Banner.Small.Hero" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" OverlayTextureScale="2.2" />
+										<ImageIdentifierWidget DataSource="{Visual}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="5" MarginRight="5" MarginTop="5" MarginBottom="5" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" />
+									</Children>
+								</ButtonWidget>
+							</Children>
+						</Widget>
+						-->
+
+						<!--Player Side-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@PlayerSide" DoNotAcceptEvents="true" />
+
+						<!--BattleResult-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@BattleResult" DoNotAcceptEvents="true" />
+
+						<!--AttakerName-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="20" Brush="Clan.Tuple.Name.Text" Text="@AttackerName" DoNotAcceptEvents="true" />
+
+						<!--AttackerElo-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@AttackerElo" DoNotAcceptEvents="true" />
+
+						<!--AttackerArmyStrength-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@AttackerArmyStrength" DoNotAcceptEvents="true" />
+
+						<!--AttackerTotalArmyCount-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@AttackerTotalArmyCount" DoNotAcceptEvents="true" />
+
+
+						<!--DefenderName-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="20" Brush="Clan.Tuple.Name.Text" Text="@DefenderName" DoNotAcceptEvents="true" />
+
+						<!--DefenderElo-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@DefenderElo" DoNotAcceptEvents="true" />
+
+						<!--DefenderArmyStrength-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@DefenderArmyStrength" DoNotAcceptEvents="true" />
+
+						<!--DefenderTotalArmyCount-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@DefenderTotalArmyCount" DoNotAcceptEvents="true" />
+
+
+						<!--EloChange-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@EloChange" DoNotAcceptEvents="true" />
+
+						<!--Hero Location Label
+						<TextWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginRight="10" Brush="Clan.Tuple.Location.Text" Text="@CurrentActionText" DoNotAcceptEvents="true"/>-->
+					</Children>
+				</ListPanel>
+
+			</Children>
+		</ButtonWidget>
+	</Window>
+</Prefab>

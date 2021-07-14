@@ -83,7 +83,7 @@ namespace GeneralLord
 			}
 		}
 
-		public void ExecuteStart()
+		public void ExecuteQueue()
         {
 			JsonBattleConfig.ExecuteSubmitAc();
 
@@ -99,7 +99,7 @@ namespace GeneralLord
 				//Serializer.JsonSerialize(profiles, "enemyProfile.json");
 
 				//InformationManager.DisplayMessage(new InformationMessage(result)); 
-				ScreenManager.PopScreen();
+				//ScreenManager.PopScreen();
 				ScreenManager.PushScreen(new OpponentSelectorScreen(profiles));
 
 			});
@@ -158,48 +158,28 @@ namespace GeneralLord
 
 		}*/
 
-		public void ExecuteSubmit()
+		public void ExecuteMatchHistory()
 		{
 
 
-			/*List<TroopContainer> troopContainers = new List<TroopContainer>();
-			foreach (TroopRosterElement tre in PartyBase.MainParty.MemberRoster.GetTroopRoster())
-			{
-
-				troopContainers.Add(new TroopContainer { stringId = tre.Character.StringId, troopCount = tre.Number, troopXP = tre.Xp});
-
-			}
-			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers };
-
-			//XDocument xd = ArmyContainerSerializer.LoadArmyContainerXML(ac);
-			Serializer.JsonSerialize(ac);
-			*/
-			/*Task.Run(async () =>
-			{
-				Profile profile = ProfileHandler.GetVerifyProfile();
-				var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/save", profile);
-				Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
-			});*/
-
-			//JsonBattleConfig.ExecuteSubmit();
-			//JsonBattleConfig.UpdateArmyAfterBattle();
-
+			IEnumerable<MatchHistory> matchHistories;
 			var task = Task.Run(async () =>
 			{
 				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
 				Profile profile = ProfileHandler.UpdateProfileAc();
-
-				MatchHistory mh = JsonBattleConfig.CreateMatchHistory("PlayerVictory");
-				await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.CalculateElo), mh);
+				var result = await WebRequests.PostAsync<IEnumerable<MatchHistory>>(UrlHandler.GetUrlFromString(UrlHandler.GetMatchHistory), profile.Id);
 				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
 
-				//var profiles = result.ServerResponse.FirstOrDefault();
+				matchHistories = result.ServerResponse;
 				//Serializer.JsonSerialize(profiles, "enemyProfile.json");
 
 				//InformationManager.DisplayMessage(new InformationMessage(result)); 
+				//ScreenManager.PopScreen();
+				ScreenManager.PushScreen(new MatchHistoryScreen(matchHistories));
 
 			});
 			task.Wait();
+		
 		}
 
 		[DataSourceProperty]

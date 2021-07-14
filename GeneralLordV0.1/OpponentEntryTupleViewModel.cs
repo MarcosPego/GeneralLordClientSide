@@ -26,6 +26,7 @@ namespace GeneralLord
 
 		public void ExecuteChallenge()
 		{
+			Serializer.JsonSerialize(_profile, "enemyProfile.json");
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
 			CharacterHandler.saveLocationFile = "enemygeneral.xml";
 			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;

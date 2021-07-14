@@ -154,6 +154,7 @@ namespace GeneralLord
 			matchHistory.PlayerElo = (int) playerJson["Elo"];
 			matchHistory.PlayerArmyStrength = (float )playerJson["ArmyStrength"];
 			matchHistory.PlayerTroopCount = (int)playerJson["TotalTroopCount"];
+			matchHistory.PlayerName = (string)playerJson["Name"];
 
 			JObject enemyJson = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
 			ArmyContainer enemyAC = Serializer.JsonDeserializeFromStringAc((string)enemyJson["ArmyContainer"]);
@@ -163,6 +164,7 @@ namespace GeneralLord
 			matchHistory.EnemyElo = (int)enemyJson["Elo"];
 			matchHistory.EnemyArmyStrength = (float)enemyJson["ArmyStrength"];
 			matchHistory.EnemyTroopCount = (int)enemyJson["TotalTroopCount"];
+			matchHistory.EnemyName = (string)enemyJson["Name"];
 			return matchHistory;
 		}
 

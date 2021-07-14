@@ -109,6 +109,9 @@
     <Compile Include="MainManagerScreen.cs" />
     <Compile Include="MainManagerViewModel.cs" />
     <Compile Include="MainOverviewViewModel.cs" />
+    <Compile Include="MatchHistoryEntryViewModel.cs" />
+    <Compile Include="MatchHistoryScreen.cs" />
+    <Compile Include="MatchHistoryViewModel.cs" />
     <Compile Include="OpponentEntryTupleViewModel.cs" />
     <Compile Include="OpponentSelectorScreen.cs" />
     <Compile Include="OpponentSelectorViewModel.cs" />

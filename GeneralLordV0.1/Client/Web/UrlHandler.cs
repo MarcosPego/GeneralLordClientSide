@@ -12,6 +12,7 @@ namespace GeneralLordWebApiClient
 
         public static string urlBase = "http://localhost:40519/values/";
 
+        public static string GetMatchHistory = "getMatchHistoryRecord";
         public static string PostBattleProcess = "postBattleProcess";
         public static string MultipleFromProfile = "multipleFromProfile";
         public static string SingleId = "singleId";

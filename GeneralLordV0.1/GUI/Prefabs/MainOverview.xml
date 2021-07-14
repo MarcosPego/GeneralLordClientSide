@@ -46,15 +46,15 @@
 						<ListPanel Id="ListPanel3" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren"  MarginTop="700" LayoutImp.LayoutMethod="HorizontalLeftToRight">
 							<Children>
 								<!--Find Opponents Button-->
-								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteStart" CommandParameter.Click="2" UpdateChildrenStates="true">
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteQueue" CommandParameter.Click="2" UpdateChildrenStates="true">
 									<Children>
 										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Find Opponents" />
 									</Children>
 								</ButtonWidget>
-								<!--Submit Army Button-->
-								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteSubmit" CommandParameter.Click="2" UpdateChildrenStates="true">
+								<!--Match History-->
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteMatchHistory" CommandParameter.Click="2" UpdateChildrenStates="true">
 									<Children>
-										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Submit" />
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="MatchHistory" />
 									</Children>
 								</ButtonWidget>
 								<Widget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginBottom="200" VerticalAlignment="Bottom" >

@@ -12,20 +12,20 @@ using TaleWorlds.TwoDimension;
 
 namespace GeneralLord
 {
-    public class OpponentSelectorScreen : ScreenBase
-	{
+    public class MatchHistoryScreen : ScreenBase
+    {
 
-		public OpponentSelectorScreen(IEnumerable<Profile> opponentProfiles)
-        {
-			_opponentProfiles = opponentProfiles;
+		public MatchHistoryScreen(IEnumerable<MatchHistory> completeMatchHistory)
+		{
+			_completeMatchHistory = completeMatchHistory;
 		}
 
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
-			this._viewModel = new OpponentSelectorViewModel(_opponentProfiles);
+			this._viewModel = new MatchHistoryViewModel(_completeMatchHistory);
 			this._gauntletLayer = new GauntletLayer(1, "GauntletLayer");
-			this._gauntletLayer.LoadMovie("OpponentSelector", this._viewModel);
+			this._gauntletLayer.LoadMovie("MatchHistory", this._viewModel);
 			this._gauntletLayer.InputRestrictions.SetInputRestrictions(true, TaleWorlds.Library.InputUsageMask.All);
 			base.AddLayer(this._gauntletLayer);
 
@@ -63,7 +63,7 @@ namespace GeneralLord
 
 		private SpriteCategory _clanCategory;
 		private GauntletLayer _gauntletLayer;
-		private OpponentSelectorViewModel _viewModel;
-		private IEnumerable<Profile> _opponentProfiles;
+		private MatchHistoryViewModel _viewModel;
+		private IEnumerable<MatchHistory> _completeMatchHistory;
 	}
 }
