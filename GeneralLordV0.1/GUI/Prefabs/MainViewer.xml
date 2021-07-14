@@ -129,8 +129,15 @@
 											</Children>
 										</ButtonWidget>
 
+										<!--Recruitment Tab-->
+										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="SetSelectedCategory" CommandParameter.Click="3" UpdateChildrenStates="true">
+											<Children>
+												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="@RecruitmentText" />
+											</Children>
+										</ButtonWidget>
+
 										<!--Shop Tab-->
-										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Right.Width.Scaled" SuggestedHeight="!Header.Tab.Right.Height.Scaled" Brush="Header.Tab.Right" Command.Click="SetSelectedCategory" CommandParameter.Click="3"  UpdateChildrenStates="true">
+										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Right.Width.Scaled" SuggestedHeight="!Header.Tab.Right.Height.Scaled" Brush="Header.Tab.Right" Command.Click="SetSelectedCategory" CommandParameter.Click="4"  UpdateChildrenStates="true">
 											<Children>
 												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="@ShopText" />
 											</Children>
@@ -145,9 +152,9 @@
 				</Widget>
 
 
-				<!--Close Screen Button-->
+				<!--Close Screen Button
 				<Standard.DialogCloseButtons VisualDefinition="BottomMenu" PositionYOffset="100" Parameter.DoneButtonAction="ExecuteDone" Parameter.DoneButtonText="@DoneLbl" Parameter.DoneInputKeyDataSource="{DoneInputKey}" Parameter.ShowCancel="false"/>
-
+				-->
 			</Children>
 		</ClanScreenWidget>
 	</Window>

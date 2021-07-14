@@ -49,7 +49,7 @@ namespace GeneralLord
 
 			CharacterHandler.saveLocationFile = "playerprofile.xml";
 			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.Configs;
-			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = CharacterHandler.SaveCharacterAndLoadToString(), ArmyStrength = PartyBase.MainParty.TotalStrength};
+			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = CharacterHandler.SaveCharacterAndLoadToString() };
 
 			//XDocument xd = ArmyContainerSerializer.LoadArmyContainerXML(ac);
 			Serializer.JsonSerialize(ac);
@@ -67,7 +67,7 @@ namespace GeneralLord
 			// Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 		}
 
-		public static void ExecuteSubmit()
+		/*public static void ExecuteSubmit()
 		{
 
 
@@ -97,7 +97,7 @@ namespace GeneralLord
 
 			//SAVE GAME
 			// Campaign.Current.SaveHandler.QuickSaveCurrentGame();
-		}
+		}*/
 
 
 
@@ -152,8 +152,8 @@ namespace GeneralLord
 
 			matchHistory.Id = (int) playerJson["Id"];
 			matchHistory.PlayerElo = (int) playerJson["Elo"];
-			matchHistory.PlayerArmyStrength = playerAC.ArmyStrength;
-			matchHistory.PlayerTroopCount = EnemyParty(playerAC).Count;
+			matchHistory.PlayerArmyStrength = (float )playerJson["ArmyStrength"];
+			matchHistory.PlayerTroopCount = (int)playerJson["TotalTroopCount"];
 
 			JObject enemyJson = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
 			ArmyContainer enemyAC = Serializer.JsonDeserializeFromStringAc((string)enemyJson["ArmyContainer"]);
@@ -161,9 +161,8 @@ namespace GeneralLord
 
 			matchHistory.EnemyId = (int)enemyJson["Id"];
 			matchHistory.EnemyElo = (int)enemyJson["Elo"];
-			matchHistory.EnemyArmyStrength = enemyAC.ArmyStrength;
-			matchHistory.EnemyTroopCount = EnemyParty(enemyAC).Count;
-
+			matchHistory.EnemyArmyStrength = (float)enemyJson["ArmyStrength"];
+			matchHistory.EnemyTroopCount = (int)enemyJson["TotalTroopCount"];
 			return matchHistory;
 		}
 

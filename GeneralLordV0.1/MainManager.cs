@@ -51,7 +51,6 @@ namespace GeneralLord
             {
                 if (ScreenManager.TopScreen is MapScreen && PlayerEncounter.Current.EncounterState == PlayerEncounterState.Begin)
                 {
-                    InformationManager.DisplayMessage(new InformationMessage("aqui"));
                     PlayerEncounter.Finish(false);
                 }
 

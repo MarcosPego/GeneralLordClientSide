@@ -44,10 +44,12 @@ namespace GeneralLordWebApiClient.Model
 
                 Profile profile = (Profile)Serializer.JsonDeserializeProfile(filePath);
                 profile.ArmyContainer = Serializer.JsonString("armyConfig.json");
-                if(JsonBattleConfig.UniqueId != 0)
+                profile.ArmyStrength = PartyBase.MainParty.TotalStrength;
+                profile.TotalTroopCount = PartyBase.MainParty.MemberRoster.TotalManCount;
+                if (JsonBattleConfig.UniqueId != 0)
                 {
                     profile.UniqueUser = JsonBattleConfig.UniqueId;
-                    InformationManager.DisplayMessage(new InformationMessage(profile.UniqueUser.ToString()));
+                    //InformationManager.DisplayMessage(new InformationMessage(profile.UniqueUser.ToString()));
 
                 }
 
@@ -66,7 +68,7 @@ namespace GeneralLordWebApiClient.Model
                 {
                     profile = new Profile { Name = PartyBase.MainParty.LeaderHero.Name.ToString(), Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json"), UniqueUser = JsonBattleConfig.UniqueId };
                 }
-
+                profile.ArmyStrength = PartyBase.MainParty.TotalStrength;
                 Serializer.JsonSerialize(profile, filePath);
                 return profile;
             }

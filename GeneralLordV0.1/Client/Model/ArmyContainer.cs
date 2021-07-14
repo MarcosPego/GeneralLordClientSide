@@ -10,7 +10,6 @@ namespace GeneralLordWebApiClient.Model
     [Serializable]
     public class ArmyContainer
     {
-        public float ArmyStrength;
         public List<TroopContainer> TroopContainers { get; set; }
 
         public string CharacterXML { get; set; }

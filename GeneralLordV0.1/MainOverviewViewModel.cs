@@ -84,6 +84,30 @@ namespace GeneralLord
 		}
 
 		public void ExecuteStart()
+        {
+			JsonBattleConfig.ExecuteSubmitAc();
+
+			IEnumerable<Profile> profiles;
+			var task = Task.Run(async () =>
+			{
+				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
+				Profile profile = ProfileHandler.UpdateProfileAc();
+				var result = await WebRequests.PostAsync<IEnumerable<Profile>>(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile), profile);
+				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
+
+				profiles = result.ServerResponse;
+				//Serializer.JsonSerialize(profiles, "enemyProfile.json");
+
+				//InformationManager.DisplayMessage(new InformationMessage(result)); 
+				ScreenManager.PopScreen();
+				ScreenManager.PushScreen(new OpponentSelectorScreen(profiles));
+
+			});
+			task.Wait();
+
+		}
+
+		/*public void ExecuteStart()
 		{
 			JsonBattleConfig.ExecuteSubmitAc();
 			var task =  Task.Run(async () =>
@@ -132,7 +156,7 @@ namespace GeneralLord
 			CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
 
 
-		}
+		}*/
 
 		public void ExecuteSubmit()
 		{

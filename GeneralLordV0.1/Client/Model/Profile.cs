@@ -14,6 +14,9 @@ namespace GeneralLordWebApiClient.Model
 
         public int UniqueUser { get; set; }
 
+        public float ArmyStrength { get; set; }
+        public int TotalTroopCount { get; set; }
+
         /*//change
         public TroopRoster TroopRoster { get; set; }
         public Hero Character { get; set; }*/

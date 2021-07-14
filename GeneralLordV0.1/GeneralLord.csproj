@@ -109,6 +109,9 @@
     <Compile Include="MainManagerScreen.cs" />
     <Compile Include="MainManagerViewModel.cs" />
     <Compile Include="MainOverviewViewModel.cs" />
+    <Compile Include="OpponentEntryTupleViewModel.cs" />
+    <Compile Include="OpponentSelectorScreen.cs" />
+    <Compile Include="OpponentSelectorViewModel.cs" />
     <Compile Include="PartyManager.cs" />
     <Compile Include="PartyManagerData.cs" />
     <Compile Include="PartyManagerLogic.cs" />
