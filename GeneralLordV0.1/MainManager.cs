@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,6 +79,7 @@ namespace GeneralLord
 
                     JsonBattleConfig.UpdateArmyAfterBattle();
                     PlayerEncounter.Finish(false);
+                    ScreenManager.PopScreen();
                 }
             }
 
@@ -155,7 +157,13 @@ namespace GeneralLord
                 }
                 if (Input.IsKeyReleased(InputKey.U))
                 {
+                    DateTime localDateCurrent = DateTime.Now;
+                    //String culture = "en-GB";
+                    InformationManager.DisplayMessage(new InformationMessage(localDateCurrent.ToString("G", CultureInfo.CreateSpecificCulture("en-GB"))));
+                    InformationManager.DisplayMessage(new InformationMessage(localDateCurrent.ToString() + "   " + localDateCurrent.Kind));
 
+
+                    //InformationManager.DisplayMessage(new InformationMessage(DateTime.Parse(localDateCurrent.ToString("G", CultureInfo.CreateSpecificCulture("en-GB")));
                     /*CharacterHandler.saveLocationFile = "enemygeneral.xml";
                     CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
                     CharacterHandler.LoadXML();*/
@@ -187,5 +195,6 @@ namespace GeneralLord
         private bool _initializeState = true;
         private PartyManagerLogic _partyManagerLogic;
         private PartyManager _partyManager = null;
+        private object localDate;
     }
 }

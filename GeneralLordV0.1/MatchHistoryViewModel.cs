@@ -28,7 +28,8 @@ namespace GeneralLord
         public void RefreshMatchHistoryList()
         {
             this.MatchHistory.Clear();
-            foreach (MatchHistory matchHistory in _completeMatchHistory)
+            var reversedMatchHistoryList = _completeMatchHistory.Reverse();
+            foreach (MatchHistory matchHistory in reversedMatchHistoryList)
             {
                 //InformationManager.DisplayMessage(new InformationMessage(profile.Name.ToString()));
                 this.MatchHistory.Add(new MatchHistoryEntryViewModel(matchHistory));

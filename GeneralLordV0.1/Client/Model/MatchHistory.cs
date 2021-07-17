@@ -8,7 +8,7 @@ namespace GeneralLordWebApiClient.Model
 {
     public class MatchHistory
     {
-        public int entryNumber;
+        public int EntryNumber;
 
         public int EnemyId;
         public int Id;
@@ -26,5 +26,7 @@ namespace GeneralLordWebApiClient.Model
         public int EnemyTroopCount;
 
         public int EnemyEloChange;
+
+        public DateTime LocalTimeDatePostMatch;
     }
 }

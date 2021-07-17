@@ -3,6 +3,7 @@ using GeneralLordWebApiClient.Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,9 @@ namespace GeneralLord
     public class JsonBattleConfig
     {
 		public static int UniqueId = 0;
+
+		public static string dateFormat = "G";
+		public static string dateCulture = "en-GB";
 
 		public static void VerifyUniqueFile()
         {
@@ -64,7 +68,7 @@ namespace GeneralLord
 
 
 			//SAVE GAME
-			// Campaign.Current.SaveHandler.QuickSaveCurrentGame();
+			Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 		}
 
 		/*public static void ExecuteSubmit()
@@ -165,6 +169,11 @@ namespace GeneralLord
 			matchHistory.EnemyArmyStrength = (float)enemyJson["ArmyStrength"];
 			matchHistory.EnemyTroopCount = (int)enemyJson["TotalTroopCount"];
 			matchHistory.EnemyName = (string)enemyJson["Name"];
+
+			DateTime localDateCurrent = DateTime.Now;
+			//String culture = "en-GB";
+			//matchHistory.LocalTimeDatePostMatch = localDateCurrent.ToString(dateFormat, CultureInfo.CreateSpecificCulture(dateCulture));
+			matchHistory.LocalTimeDatePostMatch = DateTime.Now;
 			return matchHistory;
 		}
 

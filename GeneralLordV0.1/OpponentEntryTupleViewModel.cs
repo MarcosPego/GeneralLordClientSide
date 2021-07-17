@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.Engine.Screens;
 using TaleWorlds.Library;
 
 namespace GeneralLord
@@ -51,7 +52,7 @@ namespace GeneralLord
 			PlayerEncounter.StartBattle();
 			CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
 
-
+			//ScreenManager.PopScreen();
 		}
 
 
