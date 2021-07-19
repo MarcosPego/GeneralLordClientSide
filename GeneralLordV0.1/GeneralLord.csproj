@@ -101,6 +101,7 @@
     <Compile Include="CustomTroopRoster.cs" />
     <Compile Include="GeneralLordMainGameState.cs" />
     <Compile Include="GeneralState.cs" />
+    <Compile Include="HarmonyOverrides\BattleRewardsOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenLeaveOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
     <Compile Include="HarmonyOverrides\RecruitmentOverride.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="MatchHistoryScreen.cs" />
     <Compile Include="MatchHistoryViewModel.cs" />
     <Compile Include="OpponentEntryTupleViewModel.cs" />
+    <Compile Include="OpponentPartyHandler.cs" />
     <Compile Include="OpponentSelectorScreen.cs" />
     <Compile Include="OpponentSelectorViewModel.cs" />
     <Compile Include="PartyManager.cs" />

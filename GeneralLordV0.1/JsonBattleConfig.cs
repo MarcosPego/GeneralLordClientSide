@@ -141,7 +141,10 @@ namespace GeneralLord
 
 			//SAVE
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
+			OpponentPartyHandler.AddGoldToParty();
 			ExecuteSubmitAc();
+
+
 			//GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, GoldToUpdate(), true);
 		}
 

@@ -44,6 +44,20 @@ namespace GeneralLord.HarmonyOverrides
             }
         }
 
+        [HarmonyPatch(typeof(PartyCharacterVM))]
+        [HarmonyPatch("RefreshValues")]
+        class RefreshValuesOverride
+        {
+            static void Postfix(PartyCharacterVM __instance)
+            {
+                if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
+                {
+                    if(__instance.Side == PartyScreenLogic.PartyRosterSide.Left) __instance.Name = __instance.Name + "   Cost: " + (__instance.Character.Tier* GoldValue).ToString();
+                }
+            }
+        }
+
+
         public static bool ValidateCommand(PartyCharacterVM __instance)
         {
             int troopAmount = 1;

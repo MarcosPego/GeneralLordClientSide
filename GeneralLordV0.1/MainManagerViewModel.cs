@@ -16,6 +16,7 @@ using TaleWorlds.Localization;
 using TaleWorlds.Engine.Screens;
 using SandBox.View.Map;
 using SandBox.GauntletUI;
+using Helpers;
 
 namespace GeneralLord
 {
@@ -74,8 +75,8 @@ namespace GeneralLord
 			}
 			if(value ==2)
             {
-				ScreenManager.PopScreen();
-				ScreenManager.PushScreen(new PartyManagerScreen(this._partyManagerLogic));
+				//ScreenManager.PopScreen();
+				//ScreenManager.PushScreen(new PartyManagerScreen(this._partyManagerLogic));
 			}
 			if (value == 3)
 			{
@@ -87,8 +88,10 @@ namespace GeneralLord
 
 			if (value == 4)
 			{
-				//ScreenManager.PopScreen();
-
+				ScreenManager.PopScreen();
+				Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsActive && x.IsTown);
+				InformationManager.DisplayMessage(new InformationMessage(closestHideout.Name.ToString()));
+				InventoryManager.OpenScreenAsTrade(closestHideout.ItemRoster, closestHideout.GetComponent<SettlementComponent>(), InventoryManager.InventoryCategoryType.None, null);
 
 			}
 		}

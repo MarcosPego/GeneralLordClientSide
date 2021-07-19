@@ -78,7 +78,12 @@ namespace GeneralLord
                     t.Wait();
 
                     JsonBattleConfig.UpdateArmyAfterBattle();
+
                     PlayerEncounter.Finish(false);
+
+                    OpponentPartyHandler.RemoveOpponentParty();
+
+
                     ScreenManager.PopScreen();
                 }
             }
@@ -101,7 +106,7 @@ namespace GeneralLord
                 {
                     JObject json = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
                     //InformationManager.DisplayMessage(new InformationMessage(json.ToString()));
-                    ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["armyContainer"]) as ArmyContainer;
+                    ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["ArmyContainer"]) as ArmyContainer;
 
                     //Serializer.JsonDeserialize("enemyProfile.json");
                     //string jsonString = profile.ArmyContainer;

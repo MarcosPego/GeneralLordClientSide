@@ -39,16 +39,20 @@ namespace GeneralLord
 			Clan clan = Clan.BanditFactions.FirstOrDefault((Clan t) => t.Culture == closestHideout.Culture);
 
 			//MobileParty mobileParty = MobilePartyHelper.SpawnLordParty(bestAvailableCommander, new Vec2(Hero.MainHero.GetPosition().x, Hero.MainHero.GetPosition().z), 1f);
-			MobileParty mobileParty = BanditPartyComponent.CreateBanditParty("EnemyClan", clan, closestHideout.Hideout, false);
-			mobileParty.InitializeMobileParty(
-						JsonBattleConfig.EnemyParty(ac),
-						JsonBattleConfig.EnemyParty(ac),
-						mobileParty.Position2D,
+			OpponentPartyHandler.RemoveOpponentParty();
+
+			OpponentPartyHandler.PreBattleTroopRoster = JsonBattleConfig.EnemyParty(ac);
+			OpponentPartyHandler.CurrentOpponentParty = BanditPartyComponent.CreateBanditParty("EnemyClan", clan, closestHideout.Hideout, false);
+			OpponentPartyHandler.CurrentOpponentParty.InitializeMobileParty(
+						OpponentPartyHandler.PreBattleTroopRoster,
+						OpponentPartyHandler.PreBattleTroopRoster,
+						OpponentPartyHandler.CurrentOpponentParty.Position2D,
 						0);
+
 			PlayerEncounter.Start();
 
 			//InformationManager.DisplayMessage(new InformationMessage(PartyBase.MainParty.IsSettlement.ToString()));
-			PlayerEncounter.Current.SetupFields(PartyBase.MainParty, mobileParty.Party);
+			PlayerEncounter.Current.SetupFields(PartyBase.MainParty, OpponentPartyHandler.CurrentOpponentParty.Party);
 			PlayerEncounter.StartBattle();
 			CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
 

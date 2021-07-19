@@ -74,14 +74,22 @@ namespace GeneralLord
 		{
 			BodyProperties heroBP = Hero.MainHero.BodyProperties;
 
-			TryOutputLines(new List<string>
+			/*TryOutputLines(new List<string>
 			{
 				"\t\t<face>",
-				"\t\t\t<face_key_template value=\"BodyProperty.fighter_vlandia\" />",
+				"\t\t\t<face_key_template value=\"BodyProperty.fighter_" + Hero.MainHero.Culture.ToString().ToLower() + "\" />",
 				"\t\t</face>",
 
 			}, "NPCCharacter face properties added.", "Error occured while trying to output NPCCharacter  base traits.");
+			*/
 
+			TryOutputLines(new List<string>
+			{
+				"\t\t<face>",
+				"\t\t\t<face_key_template value=\"BodyProperty.fighter_" + Hero.MainHero.Culture.ToString().ToLower() + "\" />",
+				"\t\t</face>",
+
+			}, "NPCCharacter face properties added.", "Error occured while trying to output NPCCharacter  base traits.");
 		}
 
 		public static void OutputCharacterSkills()
