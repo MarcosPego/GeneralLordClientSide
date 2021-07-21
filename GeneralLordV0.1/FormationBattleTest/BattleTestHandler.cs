@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Actions;
 
 namespace GeneralLord.FormationBattleTest
 {
@@ -24,6 +25,12 @@ namespace GeneralLord.FormationBattleTest
 			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
 			Clan clan = Clan.BanditFactions.FirstOrDefault((Clan t) => t.Culture == closestHideout.Culture);
 
+			//randomSettlement = SettlementHelper.FindRandomSettlement((Settlement x) => x.IsTown);
+			var randomSettlement = SettlementHelper.FindNearestSettlementToPoint(MobileParty.MainParty.Position2D);
+
+			//InformationManager.DisplayMessage(new InformationMessage(randomSettlement.Name.ToString()));
+			//MobileParty.MainParty.
+			EnterSettlementAction.ApplyForParty(MobileParty.MainParty, randomSettlement);
 			//MobileParty mobileParty = MobilePartyHelper.SpawnLordParty(bestAvailableCommander, new Vec2(Hero.MainHero.GetPosition().x, Hero.MainHero.GetPosition().z), 1f);
 			OpponentPartyHandler.RemoveOpponentParty();
 			OpponentPartyHandler.CurrentOpponentParty = BanditPartyComponent.CreateBanditParty("BattleTest", clan, closestHideout.Hideout, false);
@@ -39,6 +46,7 @@ namespace GeneralLord.FormationBattleTest
 			PlayerEncounter.Current.SetupFields(PartyBase.MainParty, OpponentPartyHandler.CurrentOpponentParty.Party);
 			PlayerEncounter.StartBattle();
 			BattleTestMissionManager.OpenBattleTestMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
+			PlayerEncounter.StartAttackMission();
 
 		}
 

@@ -17,6 +17,7 @@ using TaleWorlds.Engine.Screens;
 using SandBox.View.Map;
 using SandBox.GauntletUI;
 using Helpers;
+using GeneralLord.FormationBattleTest;
 
 namespace GeneralLord
 {
@@ -77,6 +78,7 @@ namespace GeneralLord
             {
 				//ScreenManager.PopScreen();
 				//ScreenManager.PushScreen(new PartyManagerScreen(this._partyManagerLogic));
+				BattleTestHandler.OpenBattleTestMission();
 			}
 			if (value == 3)
 			{

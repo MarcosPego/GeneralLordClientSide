@@ -116,6 +116,7 @@
     <Compile Include="HarmonyOverrides\MissionOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenLeaveOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
+    <Compile Include="HarmonyOverrides\PlayerEncounterOverride.cs" />
     <Compile Include="HarmonyOverrides\RecruitmentOverride.cs" />
     <Compile Include="JsonBattleConfig.cs" />
     <Compile Include="MainManager.cs" />

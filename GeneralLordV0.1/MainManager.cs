@@ -51,16 +51,35 @@ namespace GeneralLord
 
             if (PlayerEncounter.Current != null)
             {
+
+
                 if (ScreenManager.TopScreen is MapScreen && PlayerEncounter.Current.EncounterState == PlayerEncounterState.Begin)
                 {
                     PlayerEncounter.Finish(false);
+                    if(MobileParty.MainParty.CurrentSettlement != null) LeaveSettlementAction.ApplyForParty(MobileParty.MainParty);
+                    JsonBattleConfig.ExecuteSubmitAc();
                 }
 
                 else if (PlayerEncounter.Current.EncounterState == PlayerEncounterState.Wait)
                 {
+                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.BattleTest)
+                    {
+                        JsonBattleConfig.UpdateArmyAfterBattle();
+                        if (MobileParty.MainParty.CurrentSettlement != null) LeaveSettlementAction.ApplyForParty(MobileParty.MainParty);
+                        PlayerEncounter.Finish(false);
+                        OpponentPartyHandler.RemoveOpponentParty();
+                    }
 
-                    //InformationManager.DisplayMessage(new InformationMessage(CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState).ToString()));
+                    //InformationManager.DisplayMessage(new InformationMessage("Wait worked"));
+                    else if (PlayerEncounter.CampaignBattleResult != null) PlayerEncounter.Update();
 
+                }
+
+                else if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None  && (PlayerEncounter.Current.EncounterState == PlayerEncounterState.PlayerVictory || PlayerEncounter.Current.EncounterState == PlayerEncounterState.PlayerTotalDefeat ||
+                    PlayerEncounter.Current.EncounterState == PlayerEncounterState.CaptureHeroes || PlayerEncounter.Current.EncounterState == PlayerEncounterState.FreeHeroes ||
+                    PlayerEncounter.Current.EncounterState == PlayerEncounterState.LootParty || PlayerEncounter.Current.EncounterState == PlayerEncounterState.LootInventory 
+                    ))
+                {
                     if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None)
                     {
                         CampaignBattleResult campaignBattleResult = CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState);
@@ -79,16 +98,9 @@ namespace GeneralLord
                             //Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
                         });
                         t.Wait();
+
+                        JsonBattleConfig.UpdateArmyAfterBattle();
                     }
-
-
-
-                    JsonBattleConfig.UpdateArmyAfterBattle();
-
-
-                    //PlayerEncounter.Battle.AttackerSide.CommitXpGains();
-
-                    //PlayerEncounter.
                     PlayerEncounter.Finish(false);
 
                     OpponentPartyHandler.RemoveOpponentParty();

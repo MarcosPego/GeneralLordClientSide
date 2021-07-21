@@ -189,7 +189,7 @@ namespace GeneralLord
 			//SAVE
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 			OpponentPartyHandler.AddGoldToParty();
-			CommitGeneralLordPartyXP();
+			//CommitGeneralLordPartyXP();
 			ExecuteSubmitAc();
 
 
