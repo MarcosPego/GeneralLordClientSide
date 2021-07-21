@@ -9,7 +9,7 @@ using TaleWorlds.Core;
 
 namespace GeneralLord
 {
-    class OpponentPartyHandler
+    public class OpponentPartyHandler
     {
         public static MobileParty CurrentOpponentParty = null;
         public static TroopRoster PreBattleTroopRoster = null;
@@ -21,6 +21,7 @@ namespace GeneralLord
         {
             if (CurrentOpponentParty != null)
             {
+                if(CurrentOpponentParty.MemberRoster.TotalManCount > 0)
                 CurrentOpponentParty.RemoveParty();
             }
             CurrentOpponentParty = null;
@@ -29,6 +30,7 @@ namespace GeneralLord
 
         public static int VerifyGoldPerKilled()
         {
+
             int sum = 0;
 
             foreach (TroopRosterElement troop in PreBattleTroopRoster.GetTroopRoster())

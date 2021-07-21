@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using GeneralLord.FormationBattleTest;
+using HarmonyLib;
 using SandBox.ViewModelCollection;
 using System;
 using System.Collections.Generic;
@@ -29,10 +30,14 @@ namespace GeneralLord.HarmonyOverrides
 
             static void Postfix(SPScoreboardVM __instance)
             {
-                OpponentPartyHandler.GoldToAdd = OpponentPartyHandler.VerifyGoldPerKilled();
-                ExplainedNumber goldExplained = new ExplainedNumber(0f, true, null);
-                __instance.BattleResults.Add(new BattleResultVM(_goldStr.Format(OpponentPartyHandler.GoldToAdd), 
-                    () => SandBoxUIHelper.GetExplainedNumberTooltip(ref goldExplained), null));
+                if(BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None)
+                {
+                    OpponentPartyHandler.GoldToAdd = OpponentPartyHandler.VerifyGoldPerKilled();
+                    ExplainedNumber goldExplained = new ExplainedNumber(0f, true, null);
+                    __instance.BattleResults.Add(new BattleResultVM(_goldStr.Format(OpponentPartyHandler.GoldToAdd),
+                        () => SandBoxUIHelper.GetExplainedNumberTooltip(ref goldExplained), null));
+                }
+
 
 
             }

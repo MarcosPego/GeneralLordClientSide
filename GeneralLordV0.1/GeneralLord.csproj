@@ -99,9 +99,21 @@
     <Compile Include="Client\Web\WebRequestResult.cs" />
     <Compile Include="Client\Web\WebRequests.cs" />
     <Compile Include="CustomTroopRoster.cs" />
+    <Compile Include="FormationBattleTest\BattleTestCustomView\BattleTestEmptyView.cs" />
+    <Compile Include="FormationBattleTest\BattleTestCustomView\BattleTestView.cs" />
+    <Compile Include="FormationBattleTest\BattleTestCustomView\BattleTestViewModel.cs" />
+    <Compile Include="FormationBattleTest\BattleTestHandler.cs" />
+    <Compile Include="FormationBattleTest\BattleTestMissionManager.cs" />
+    <Compile Include="FormationBattleTest\BattleTestMissionView.cs" />
+    <Compile Include="FormationBattleTest\InputCommands.cs" />
+    <Compile Include="FormationBattleTest\MissionAI.cs" />
+    <Compile Include="FormationBattleTest\PositionData.cs" />
+    <Compile Include="FormationBattleTest\TacticHoldGeneric.cs" />
+    <Compile Include="FormationBattleTest\Utils.cs" />
     <Compile Include="GeneralLordMainGameState.cs" />
     <Compile Include="GeneralState.cs" />
     <Compile Include="HarmonyOverrides\BattleRewardsOverride.cs" />
+    <Compile Include="HarmonyOverrides\MissionOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenLeaveOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
     <Compile Include="HarmonyOverrides\RecruitmentOverride.cs" />
@@ -133,6 +145,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Post-Build -->
   <PropertyGroup>
     <PostBuildEvent>xcopy /d /y "$(MSBuildProjectDirectory)\SubModule.xml" "C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\GeneralLord"</PostBuildEvent>

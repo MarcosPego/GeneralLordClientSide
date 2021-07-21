@@ -25,7 +25,7 @@ namespace GeneralLord
             this._partyManagerLogic = partyManagerLogic;
             this._partyManager = new PartyManager();
 
-            this._target = Formation.FormationA;
+            this._target = GeneralLordFormation.FormationA;
             this._formationASelected = true;
 
 
@@ -224,9 +224,9 @@ namespace GeneralLord
         {
 
             bool updateRightTarget = false;
-            if(value == 0 && this._target != Formation.FormationA)
+            if(value == 0 && this._target != GeneralLordFormation.FormationA)
             {
-                this._target = Formation.FormationA;
+                this._target = GeneralLordFormation.FormationA;
 
                 this._formationASelected = true;
                 this._formationBSelected = false;
@@ -235,9 +235,9 @@ namespace GeneralLord
 
                 updateRightTarget = true;
             }
-            if (value == 1 && this._target != Formation.FormationB)
+            if (value == 1 && this._target != GeneralLordFormation.FormationB)
             {
-                this._target = Formation.FormationB;
+                this._target = GeneralLordFormation.FormationB;
 
                 this._formationASelected = false;
                 this._formationBSelected = true;
@@ -246,9 +246,9 @@ namespace GeneralLord
 
                 updateRightTarget = true;
             }
-            if (value == 2 && this._target != Formation.FormationC)
+            if (value == 2 && this._target != GeneralLordFormation.FormationC)
             {
-                this._target = Formation.FormationC;
+                this._target = GeneralLordFormation.FormationC;
 
                 this._formationASelected = false;
                 this._formationBSelected = false;
@@ -257,9 +257,9 @@ namespace GeneralLord
 
                 updateRightTarget = true;
             }
-            if (value == 3 && this._target != Formation.FormationD)
+            if (value == 3 && this._target != GeneralLordFormation.FormationD)
             {
-                this._target = Formation.FormationD;
+                this._target = GeneralLordFormation.FormationD;
 
                 this._formationASelected = false;
                 this._formationBSelected = false;
@@ -674,7 +674,7 @@ namespace GeneralLord
 
         private BattleGeneralConfig _config;
 
-        public Formation _target;
+        public GeneralLordFormation _target;
 
     }
 }

@@ -63,9 +63,11 @@ namespace GeneralLord
 		{
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
 			TroopRoster troopRosterA = new TroopRoster(PartyBase.MainParty);
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_recruit", 10);
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_archer", 10);
-			//JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 1);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_recruit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_archer", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 999);
 			//this.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 32);
 			//this.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 18);
 			//this.TryAddCharacterToRoster(troopRosterA, "mercenary_1", 10);

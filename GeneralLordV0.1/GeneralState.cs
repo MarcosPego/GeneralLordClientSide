@@ -13,7 +13,7 @@ namespace GeneralLord
         Left = 0
     }
 
-    public enum Formation : byte
+    public enum GeneralLordFormation : byte
     {
         Right = 99,
         FormationA = 0,

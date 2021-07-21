@@ -1,4 +1,5 @@
-﻿using GeneralLordWebApiClient.Model;
+﻿using GeneralLord.FormationBattleTest;
+using GeneralLordWebApiClient.Model;
 using Helpers;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace GeneralLord
 
 		public void ExecuteChallenge()
 		{
+			BattleTestHandler.BattleTestEnabled = BattleTestHandler.BattleTestEnabledState.None;
+
 			Serializer.JsonSerialize(_profile, "enemyProfile.json");
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
 			CharacterHandler.saveLocationFile = "enemygeneral.xml";

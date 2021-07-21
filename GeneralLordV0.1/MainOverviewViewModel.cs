@@ -39,6 +39,9 @@ namespace GeneralLord
 			this._expectedGoldText = new TextObject("{=ATExpectedGoldText}Current Gold", null).ToString();
 			this._expectedGold = PartyBase.MainParty.LeaderHero.Gold.ToString();
 
+			/*GameTexts.SetVariable("DENAR_AMOUNT", content);
+			GameTexts.SetVariable("GOLD_ICON", "{=!}<img src=\"Icons\\Coin@2x\" extend=\"8\">");*/
+
 			this._faction = Hero.MainHero.Clan;
 
 

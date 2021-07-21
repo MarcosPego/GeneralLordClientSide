@@ -1,5 +1,6 @@
 ﻿using GeneralLordWebApiClient;
 using GeneralLordWebApiClient.Model;
+using Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -103,7 +104,53 @@ namespace GeneralLord
 			// Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 		}*/
 
+		public static void CommitGeneralLordPartyXP()
+        {
+			/*int num = 0;
+			foreach (FlattenedTroopRosterElement troopRosterElement in PartyBase.MainParty.MemberRoster.ToFlattenedRoster())
+			{
+				CharacterObject troop = troopRosterElement.Troop;
+				bool flag = Campaign.Current.Models.PartyTroopUpgradeModel.CanTroopGainXp(PartyBase.MainParty, troop);
+				InformationManager.DisplayMessage(new InformationMessage(troopRosterElement.XpGained.ToString()));
+				if (!troopRosterElement.IsKilled && troopRosterElement.XpGained > 0 && flag)
+				{
+					int num2 = Campaign.Current.Models.PartyTrainingModel.CalculateXpGainFromBattles(troopRosterElement, PartyBase.MainParty);
+					InformationManager.DisplayMessage(new InformationMessage(num2.ToString()));
+					int num3 = Campaign.Current.Models.PartyTrainingModel.GenerateSharedXp(troop, num2, MobileParty.MainParty);
+					InformationManager.DisplayMessage(new InformationMessage(num2.ToString()));
+					if (num3 > 0)
+					{
+						num += num3;
+						num2 -= num3;
+					}
+					if (!troop.IsHero)
+					{
+						PartyBase.MainParty.MemberRoster.AddXpToTroop(num2, troop);
+					}
+				}
+			}
+			MobilePartyHelper.PartyAddSharedXp(MobileParty.MainParty, (float)num);*/
 
+
+
+			CampaignEventDispatcher.Instance.OnPlayerBattleEnd(PlayerEncounter.Battle);
+			foreach (MapEventParty mapEventParty in PlayerEncounter.Battle.AttackerSide.Parties)
+			{
+				mapEventParty.CommitXpGain();
+			}
+
+			PlayerEncounter.Battle.AttackerSide.CommitSkillXpGains();
+
+
+
+			foreach (MapEventParty mapEventParty in PlayerEncounter.Battle.DefenderSide.Parties)
+			{
+				mapEventParty.CommitXpGain();
+			}
+
+			PlayerEncounter.Battle.DefenderSide.CommitSkillXpGains();
+
+		}
 
 		public static void UpdateArmyAfterBattle()
         {
@@ -142,6 +189,7 @@ namespace GeneralLord
 			//SAVE
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 			OpponentPartyHandler.AddGoldToParty();
+			CommitGeneralLordPartyXP();
 			ExecuteSubmitAc();
 
 

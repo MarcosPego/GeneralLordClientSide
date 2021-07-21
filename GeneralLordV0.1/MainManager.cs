@@ -25,6 +25,7 @@ using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors.Towns;
 using TaleWorlds.ObjectSystem;
 using GeneralLordWebApiClient;
 using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
+using GeneralLord.FormationBattleTest;
 
 namespace GeneralLord
 {
@@ -60,31 +61,40 @@ namespace GeneralLord
 
                     //InformationManager.DisplayMessage(new InformationMessage(CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState).ToString()));
 
-                    CampaignBattleResult campaignBattleResult = CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState);
-                    MatchHistory matchHistory = new MatchHistory();
-                    if (campaignBattleResult.PlayerVictory)
+                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None)
                     {
-                        matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerVictory");
+                        CampaignBattleResult campaignBattleResult = CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState);
+                        MatchHistory matchHistory = new MatchHistory();
+                        if (campaignBattleResult.PlayerVictory)
+                        {
+                            matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerVictory");
+                        }
+                        else
+                        {
+                            matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerDefeat");
+                        }
+                        var t = Task.Run(async () =>
+                        {
+                            await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.PostBattleProcess), matchHistory);
+                            //Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
+                        });
+                        t.Wait();
                     }
-                    else
-                    {
-                        matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerDefeat");
-                    }
-                    var t = Task.Run(async () =>
-                    {
-                        await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.PostBattleProcess), matchHistory);
-                        //Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
-                    });
-                    t.Wait();
+
+
 
                     JsonBattleConfig.UpdateArmyAfterBattle();
 
+
+                    //PlayerEncounter.Battle.AttackerSide.CommitXpGains();
+
+                    //PlayerEncounter.
                     PlayerEncounter.Finish(false);
 
                     OpponentPartyHandler.RemoveOpponentParty();
 
 
-                    ScreenManager.PopScreen();
+                    if(BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None) ScreenManager.PopScreen();
                 }
             }
 
@@ -140,8 +150,8 @@ namespace GeneralLord
                 }
                 if (Input.IsKeyReleased(InputKey.E))
                 {
-                    CharacterHandler.SaveCharacter();
-
+                    //CharacterHandler.SaveCharacter();
+                    BattleTestHandler.OpenBattleTestMission();
                 }
                 if (Input.IsKeyReleased(InputKey.Y))
                 {
