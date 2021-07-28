@@ -25,6 +25,7 @@ using GeneralLordWebApiClient;
 using Newtonsoft.Json.Linq;
 using TaleWorlds.Localization;
 using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
+using GeneralLord.FormationBattleTest;
 
 namespace GeneralLord
 {
@@ -32,32 +33,39 @@ namespace GeneralLord
 	{
 		public MainOverviewViewModel()
 		{
-			EnhancedBattleTestPartyController.Initialize();
-
-
+			this._exitOnSaveOver = false;
 			//this._partyManagerLogic = partyManagerLogic;
-			this._expectedGoldText = new TextObject("{=ATExpectedGoldText}Current Gold", null).ToString();
-			this._expectedGold = PartyBase.MainParty.LeaderHero.Gold.ToString();
 
 			/*GameTexts.SetVariable("DENAR_AMOUNT", content);
 			GameTexts.SetVariable("GOLD_ICON", "{=!}<img src=\"Icons\\Coin@2x\" extend=\"8\">");*/
 
 			this._faction = Hero.MainHero.Clan;
-
+			//this._expectedGoldText = new TextObject("{=ATExpectedGoldText}Current Gold", null).ToString();
+			//this._expectedGold = PartyBase.MainParty.LeaderHero.Gold.ToString();
 
 			//this._config = BattleConfig.Deserialize(false);
 			//_generalConfig = new BattleGeneralConfig();
 
 			//BattleConfig.Instance = this._generalConfig._config;
+			this.BuyRenown = new TextObject("{=ATBuyRenown} Purchase reputation for your clan: ", null).ToString();
+			this.Train = new TextObject("{=ATTrain} Train your stewardship: ", null).ToString();
 
-
-			this.SelectMainHero();
+			CampaignEvents.OnSaveOverEvent.AddNonSerializedListener(this, new Action<bool>(this.OnSaveOver));
 			this.RefreshValues();
 		}
 
 		public override void RefreshValues()
 		{
 			base.RefreshValues();
+			this.SelectMainHero();
+			this.SkillsText = GameTexts.FindText("str_skills", null).ToString();
+			this.ExpectedGoldText = new TextObject("{=ATExpectedGoldText}Current Gold: ", null).ToString();
+			this.ExpectedGold = PartyBase.MainParty.LeaderHero.Gold.ToString();
+
+			JObject json = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
+			this.EloText = new TextObject("{=ATEloText}Elo: ", null).ToString();
+			this.Elo = json["Elo"].ToString();
+
 		}
 
 		public void SelectMainHero()
@@ -84,6 +92,44 @@ namespace GeneralLord
 			{
 				member.IsSelected = true;
 			}
+		}
+
+
+		public void ExecuteTrain()
+		{
+
+			PartyCapacityLogicHandler.HandleRenownBuy();
+			this.RefreshValues();
+		}
+		public void ExecuteBuyRenown()
+		{
+
+
+			PartyCapacityLogicHandler.HandleTrainSteward();
+			this.RefreshValues();
+		}
+
+		public void ExecuteRanking()
+		{
+
+			this.RefreshValues();
+		}
+
+		public void ExecuteFormation()
+		{
+
+
+			BattleTestHandler.OpenBattleTestMission();
+			//this.RefreshValues();
+		}
+
+		public void ExectuteLeaveGme()
+        {
+			InformationManager.DisplayMessage(new InformationMessage("Exiting to Main Menu"));
+
+			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
+			JsonBattleConfig.ExecuteSubmitAc();
+			this._exitOnSaveOver = true;
 		}
 
 		public void ExecuteQueue()
@@ -185,6 +231,14 @@ namespace GeneralLord
 		
 		}
 
+		private void OnSaveOver(bool isSuccessful)
+		{
+			if (this._exitOnSaveOver)
+			{
+				MBGameManager.EndGame();
+			}
+		}
+
 		[DataSourceProperty]
 		public bool IsAnyValidMemberSelected
 		{
@@ -249,10 +303,45 @@ namespace GeneralLord
 				if (value != this._expectedGoldText)
 				{
 					this._expectedGoldText = value;
-					base.OnPropertyChangedWithValue(value, "OverviewText");
+					base.OnPropertyChangedWithValue(value, "ExpectedGoldText");
 				}
 			}
 		}
+
+		[DataSourceProperty]
+		public string EloText
+		{
+			get
+			{
+				return this._eloText;
+			}
+			set
+			{
+				if (value != this._eloText)
+				{
+					this._eloText = value;
+					base.OnPropertyChangedWithValue(value, "EloText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string Elo
+		{
+			get
+			{
+				return this._elo;
+			}
+			set
+			{
+				if (value != this._elo)
+				{
+					this._elo = value;
+					base.OnPropertyChangedWithValue(value, "Elo");
+				}
+			}
+		}
+
 		[DataSourceProperty]
 		public string ExpectedGold
 		{
@@ -265,10 +354,64 @@ namespace GeneralLord
 				if (value != this._expectedGold)
 				{
 					this._expectedGold = value;
-					base.OnPropertyChangedWithValue(value, "OverviewText");
+					base.OnPropertyChangedWithValue(value, "ExpectedGold");
 				}
 			}
 		}
+
+		[DataSourceProperty]
+		public string SkillsText
+		{
+			get
+			{
+				return this._skillsText;
+			}
+			set
+			{
+				if (value != this._skillsText)
+				{
+					this._skillsText = value;
+					base.OnPropertyChangedWithValue(value, "SkillsText");
+				}
+			}
+		}
+
+
+		[DataSourceProperty]
+		public string BuyRenown
+		{
+			get
+			{
+				return this._buyRenown;
+			}
+			set
+			{
+				if (value != this._buyRenown)
+				{
+					this._buyRenown = value;
+					base.OnPropertyChangedWithValue(value, "BuyRenown");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string Train
+		{
+			get
+			{
+				return this._train;
+			}
+			set
+			{
+				if (value != this._train)
+				{
+					this._train = value;
+					base.OnPropertyChangedWithValue(value, "Train");
+				}
+			}
+		}
+
+
 
 		public MapSelectionGroupVM MapSelectionGroup { get; }
 		//private readonly EnhancedBattleTestState _state;
@@ -280,8 +423,15 @@ namespace GeneralLord
 		private ClanLordItemVM _currentSelectedMember;
 		private bool _isSelected;
 		private PartyManagerLogic _partyManagerLogic;
-
+		private string _skillsText;
 		private string _expectedGoldText;
 		private string _expectedGold;
+
+		private string _buyRenown;
+		private string _train;
+
+		private string _eloText;
+		private string _elo;
+		private bool _exitOnSaveOver;
 	}
 }

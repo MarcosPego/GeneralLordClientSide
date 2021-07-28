@@ -22,6 +22,18 @@ namespace GeneralLordWebApiClient
 
         //public static string PostBattleProcess = "postBattleProcess";
 
+        public static void ReleaseVersion(bool isRelease)
+        {
+            if (isRelease)
+            {
+                urlBase = "http://192.92.147.26/values";
+            }
+            else
+            {
+                urlBase = "http://localhost:40519/values/";
+            }
+        }
+
         public static string GetUrlFromString(string target)
         {
             return Path.Combine(urlBase, target);

@@ -36,59 +36,211 @@
 
 		<Constant Name="Header.Tab.Right.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Width" />
 		<Constant Name="Header.Tab.Right.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Height" />
+		<Constant Name="Finance.GoldIcon.Width" Value="30" />
+		<Constant Name="Finance.GoldIcon.Height" Value="30" />
 	</Constants>
 
 	<Window>
 		<Widget Id="ClanMembersWidget" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="true">
 			<Children>
-				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalRightToLeft">
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight">
 					<Children>
-						<ListPanel Id="ListPanel3" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren"  MarginTop="700" LayoutImp.LayoutMethod="HorizontalLeftToRight">
-							<Children>
-								<!--Find Opponents Button-->
-								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteQueue" CommandParameter.Click="2" UpdateChildrenStates="true">
-									<Children>
-										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Find Opponents" />
-									</Children>
-								</ButtonWidget>
-								<!--Match History-->
-								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteMatchHistory" CommandParameter.Click="2" UpdateChildrenStates="true">
-									<Children>
-										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="MatchHistory" />
-									</Children>
-								</ButtonWidget>
-								<Widget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginBottom="200" VerticalAlignment="Bottom" >
-									<Children>
-										<!--Expected Gold Label-->
-										<TextWidget WidthSizePolicy = "Fixed" SuggestedWidth="350" HeightSizePolicy = "CoverChildren" HorizontalAlignment="Right" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" Text="@ExpectedGoldText"/>
-										<TextWidget WidthSizePolicy = "Fixed" SuggestedWidth="500" HeightSizePolicy = "CoverChildren" HorizontalAlignment="Right" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" Text="@ExpectedGold"/>
-									
-									</Children>
-								</Widget>
-							</Children>
-						</ListPanel>
-						<!--Right Panel-->
-						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="290" MarginRight="10" IsVisible="@IsAnyValidMemberSelected">
+						<!--Left Panel-->
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="0" MarginRight="10" IsVisible="@IsAnyValidMemberSelected">
 							<Children>
 								<Widget DataSource="{CurrentSelectedMember}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
 									<Children>
 
 										<!--Lord Visual Model-->
-										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="465" SuggestedHeight="512">
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="350" SuggestedHeight="400">
 											<Children>
 												<!--Selected Character Tableau-->
-												<CharacterTableauWidget DataSource="{HeroModel}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="600" SuggestedHeight="1000" VerticalAlignment="Bottom" PositionXOffset="-150" PositionYOffset="100" BannerCodeText="@BannerCodeText" BodyProperties="@BodyProperties" CharStringId="@CharStringId" ClipContents="false" EquipmentCode="@EquipmentCode" IsFemale="@IsFemale" MountCreationKey="@MountCreationKey" StanceIndex="@StanceIndex" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" DoNotUseCustomScale="true"/>
+												<CharacterTableauWidget DataSource="{HeroModel}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="600" SuggestedHeight="850" VerticalAlignment="Bottom" PositionXOffset="-150" PositionYOffset="20" BannerCodeText="@BannerCodeText" BodyProperties="@BodyProperties" CharStringId="@CharStringId" ClipContents="false" EquipmentCode="@EquipmentCode" IsFemale="@IsFemale" MountCreationKey="@MountCreationKey" StanceIndex="@StanceIndex" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" DoNotUseCustomScale="true"/>
 												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="123" VerticalAlignment="Bottom" PositionYOffset="20" Sprite="Clan\clan_portrait_shadow" IsEnabled="false" />
 											</Children>
 										</Widget>
 
+										<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="350"  MarginTop="150">
+											<Children>
+												<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="VerticalBottomToTop">
+													<Children>
 
+														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" DoNotPassEventsToChildren="true">
+															<Children>
+																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+																		<!--Elo Label-->
+																		<TextWidget DataSource="{..}" VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@EloText" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																		<TextWidget DataSource="{..}" VerticalAlignment="Center" MarginLeft="20" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@Elo" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+				
+																	</Children>
+																</ListPanel>
+															</Children>
+														</Widget>
+														
+														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" DoNotPassEventsToChildren="true">
+															<Children>
+																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+																		<!--Expected Gold Label-->
+																		<TextWidget DataSource="{..}" VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@ExpectedGoldText" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																		<TextWidget DataSource="{..}" VerticalAlignment="Center" MarginLeft="20" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@ExpectedGold" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+																		<!--Gold Icon-->
+																		<Widget WidthSizePolicy="Fixed"  VerticalAlignment="Center"  HeightSizePolicy="Fixed" SuggestedWidth="!Finance.GoldIcon.Width" SuggestedHeight="!Finance.GoldIcon.Height" HorizontalAlignment="Right" Sprite="Icons\Coin@2x" />
+
+																	</Children>
+																</ListPanel>
+															</Children>
+														</Widget>
+
+
+														<!--Divider Between Traits and Skills-->
+														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="4" PositionXOffset="-3" Sprite="Clan\divider_mid" MarginTop="25"/>
+	
+														<!--Skills Header-->
+														<TextWidget DataSource="{..}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Text="@SkillsText" Brush="Kingdom.TitleSmall.Text" MarginTop="15"/>
+
+														<!--Skills List-->
+														<GridWidget Id="SkillGrid" DataSource="{Skills}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginTop="20" DefaultCellWidth="70" DefaultCellHeight="90" ColumnCount="9">
+															<ItemTemplate>
+																<SkillIconVisualWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="44" SuggestedHeight="44" SkillId="@SkillId" MarginBottom="20" UseSmallVariation="true" MarginLeft="5">
+																	<Children>
+																		<TextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "Fixed" SuggestedHeight="20" IntText="@SkillValue" VerticalAlignment="Bottom" Brush="Encyclopedia.Skill.Text" Brush.FontSize="20" Brush.FontColor="#F4E1C4FF" PositionYOffset="25"/>
+																		<HintWidget DataSource="{Hint}" HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint"/>
+																	</Children>
+																</SkillIconVisualWidget>
+															</ItemTemplate>
+														</GridWidget>
+
+														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="4" PositionXOffset="-3" Sprite="Clan\divider_mid"/>
+
+														<!--Action Buttons Container-->
+														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="200">
+															<Children>
+
+																<Widget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="260" SuggestedHeight="64" VerticalAlignment="Center">
+																	<Children>
+																		<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Cancel.Button" Command.Click="ExectuteLeaveGme" IsEnabled="true" UpdateChildrenStates="true">
+																			<Children>
+																				<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Popup.Button.Text" Text="Save and Exit Game" />
+																			</Children>
+																		</ButtonWidget>
+																	</Children>
+																</Widget>
+
+															</Children>
+														</ListPanel>
+
+													</Children>
+												</ListPanel>
+											</Children>
+										</Widget>
+
+
+
+										
 									</Children>
 								</Widget>
+
+								
 						  </Children>
 						</Widget>
-						
-						
+						<!--Right Panel-->
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"  IsVisible="true">
+							<Children>
+								<ListPanel Id="RightSideList" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="200"  MarginTop="0" LayoutImp.LayoutMethod="VerticalBottomToTop">
+									<Children>
+
+										<ListPanel Id="TrainingButtons" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="200" LayoutImp.LayoutMethod="VerticalBottomToTop">
+											<Children>
+
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
+													<Children>
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+															<Children>
+																<!--Buy Renown Text-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"  SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@BuyRenown" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																
+																<!--Buy Renown Button-->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" Brush="Header.Tab.Center"  HorizontalAlignment="Right" Command.Click="ExecuteTrain" UpdateChildrenStates="true">
+																	<Children>
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Buy Renown" />
+																	</Children>
+																</ButtonWidget>
+
+															</Children>
+														</ListPanel>
+													</Children>
+												</Widget>
+
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="20">
+													<Children>
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+															<Children>
+																<!--Train text-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"   SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@Train" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+																<!--Train-->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" HorizontalAlignment="Right" Brush="Header.Tab.Center" Command.Click="ExecuteBuyRenown" UpdateChildrenStates="true">
+																	<Children>
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Train" />
+																	</Children>
+																</ButtonWidget>
+
+															</Children>
+														</ListPanel>
+													</Children>
+												</Widget>
+
+
+
+											</Children>
+										</ListPanel>
+
+
+
+										<ListPanel Id="MatchButtons" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="300" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+											<Children>
+												<!--Ranking-->
+												<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteRanking" UpdateChildrenStates="true">
+													<Children>
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Ranking" />
+													</Children>
+												</ButtonWidget>
+												<!--Match History-->
+												<ButtonWidget DoNotPassEventsToChildren="true" MarginLeft="10" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteMatchHistory"  UpdateChildrenStates="true">
+													<Children>
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="MatchHistory" />
+													</Children>
+												</ButtonWidget>
+
+											</Children>
+										</ListPanel>
+
+
+										<ListPanel Id="MatchButtons" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="20" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+											<Children>
+												<!--Find Opponents Button-->
+												<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteQueue" UpdateChildrenStates="true">
+													<Children>
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Find Opponents" />
+													</Children>
+												</ButtonWidget>
+												<!--Formation Manager-->
+												<ButtonWidget DoNotPassEventsToChildren="true" MarginLeft="10" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteFormation"  UpdateChildrenStates="true">
+													<Children>
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Formation Manager" />
+													</Children>
+												</ButtonWidget>
+
+											</Children>
+										</ListPanel>
+									</Children>
+								</ListPanel>
+							</Children>
+						</Widget>
 					</Children>
 				</ListPanel>
 			</Children>

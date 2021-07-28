@@ -131,11 +131,23 @@ namespace GeneralLord
 			}
 			MobilePartyHelper.PartyAddSharedXp(MobileParty.MainParty, (float)num);*/
 
+			if (PlayerEncounter.Battle.BattleState == BattleState.AttackerVictory || PlayerEncounter.Battle.BattleState == BattleState.DefenderVictory)
+			{
+				((PlayerEncounter.Battle.BattleState == BattleState.AttackerVictory) ? PlayerEncounter.Battle.AttackerSide : PlayerEncounter.Battle.DefenderSide).DistributeRenown(null, false);
+			}
 
-
-			CampaignEventDispatcher.Instance.OnPlayerBattleEnd(PlayerEncounter.Battle);
+			//CampaignEventDispatcher.Instance.OnPlayerBattleEnd(PlayerEncounter.Battle);
 			foreach (MapEventParty mapEventParty in PlayerEncounter.Battle.AttackerSide.Parties)
 			{
+				PartyBase party = mapEventParty.Party;
+				Hero hero = (party == PartyBase.MainParty) ? Hero.MainHero : party.LeaderHero;
+				if (hero != null)
+				{
+					if (mapEventParty.GainedRenown > 0.001f)
+					{
+						GainRenownAction.Apply(hero, mapEventParty.GainedRenown, true);
+					}
+				}
 				mapEventParty.CommitXpGain();
 			}
 
@@ -189,7 +201,7 @@ namespace GeneralLord
 			//SAVE
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 			OpponentPartyHandler.AddGoldToParty();
-			//CommitGeneralLordPartyXP();
+			CommitGeneralLordPartyXP();
 			ExecuteSubmitAc();
 
 
@@ -240,7 +252,7 @@ namespace GeneralLord
 		}
 
 
-		public static TroopRoster EnemyParty(ArmyContainer armyContainer)
+		public static TroopRoster EnemyParty(ArmyContainer armyContainer, int IsRaiderNPCArmy = 0)
 		{
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
 			TroopRoster troopRoster = new TroopRoster(PartyBase.MainParty);
@@ -250,11 +262,12 @@ namespace GeneralLord
 			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
 			CharacterHandler.LoadXML();
 
-			TryAddCharacterObjectToRoster(troopRoster, CharacterHandler.characterObject, 1);
+			if(IsRaiderNPCArmy != 2) TryAddCharacterObjectToRoster(troopRoster, CharacterHandler.characterObject, 1);
 			foreach (TroopContainer tc in armyContainer.TroopContainers)
             {
-				if(tc.stringId != "main_hero")
-                {
+				if(tc.stringId != "main_hero" && tc.stringId != "tutorial_npc_brother")
+
+				{
 					TryAddCharacterToRoster(troopRoster, tc.stringId, tc.troopCount);
 				}
 			

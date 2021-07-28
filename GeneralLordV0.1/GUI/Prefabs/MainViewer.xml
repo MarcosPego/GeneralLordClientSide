@@ -31,6 +31,8 @@
 		<Constant Name="Toggle.Width" BrushLayer="Default" BrushName="Party.TroopTupple.Right" BrushValueType="Width" />
 		<Constant Name="Toggle.Height" Additive="!Tuple.Height.Additive" BrushLayer="Default" BrushName="Party.TroopTupple.Right" BrushValueType="Height" />
 		<Constant Name="Toggle.Pressed.Width" BrushLayer="PressedLayer" BrushName="Party.TroopTupple.Right" BrushValueType="Width" />
+
+
 	</Constants>
 	<VisualDefinitions>
 		<VisualDefinition Name="BottomMenu" DelayOnBegin="0.2" TransitionDuration="0.4">
@@ -122,12 +124,12 @@
 											</Children>
 										</ButtonWidget>
 
-										<!--Formation Tab-->
+										<!--Formation Tab
 										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="SetSelectedCategory" CommandParameter.Click="2" UpdateChildrenStates="true">
 											<Children>
 												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="@FormationText" />
 											</Children>
-										</ButtonWidget>
+										</ButtonWidget>-->
 
 										<!--Recruitment Tab-->
 										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="SetSelectedCategory" CommandParameter.Click="3" UpdateChildrenStates="true">

@@ -57,24 +57,57 @@ namespace GeneralLord
                 {
                     PlayerEncounter.Finish(false);
                     if(MobileParty.MainParty.CurrentSettlement != null) LeaveSettlementAction.ApplyForParty(MobileParty.MainParty);
-                    JsonBattleConfig.ExecuteSubmitAc();
                 }
 
                 else if (PlayerEncounter.Current.EncounterState == PlayerEncounterState.Wait)
                 {
-                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.BattleTest)
+                    /*if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.BattleTest)
                     {
                         JsonBattleConfig.UpdateArmyAfterBattle();
                         if (MobileParty.MainParty.CurrentSettlement != null) LeaveSettlementAction.ApplyForParty(MobileParty.MainParty);
                         PlayerEncounter.Finish(false);
                         OpponentPartyHandler.RemoveOpponentParty();
+                    }*/
+
+                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None)
+                    {
+                        CampaignBattleResult campaignBattleResult = CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState);
+                        MatchHistory matchHistory = new MatchHistory();
+                        if (campaignBattleResult.PlayerVictory)
+                        {
+                            matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerVictory");
+                        }
+                        else
+                        {
+                            matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerDefeat");
+                        }
+                        var t = Task.Run(async () =>
+                        {
+                            await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.PostBattleProcess), matchHistory);
+                            //Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
+                        });
+                        t.Wait();
+
+                        //JsonBattleConfig.UpdateArmyAfterBattle();
                     }
+                    JsonBattleConfig.UpdateArmyAfterBattle();
+                    if (MobileParty.MainParty.CurrentSettlement != null) LeaveSettlementAction.ApplyForParty(MobileParty.MainParty);
+
+                    PlayerEncounter.Finish(false);
+
+                    OpponentPartyHandler.RemoveOpponentParty();
+
+
+                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None) ScreenManager.PopScreen();
+
+
+
 
                     //InformationManager.DisplayMessage(new InformationMessage("Wait worked"));
-                    else if (PlayerEncounter.CampaignBattleResult != null) PlayerEncounter.Update();
+                    //else if (PlayerEncounter.CampaignBattleResult != null) PlayerEncounter.Update();
 
                 }
-
+                /*
                 else if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None  && (PlayerEncounter.Current.EncounterState == PlayerEncounterState.PlayerVictory || PlayerEncounter.Current.EncounterState == PlayerEncounterState.PlayerTotalDefeat ||
                     PlayerEncounter.Current.EncounterState == PlayerEncounterState.CaptureHeroes || PlayerEncounter.Current.EncounterState == PlayerEncounterState.FreeHeroes ||
                     PlayerEncounter.Current.EncounterState == PlayerEncounterState.LootParty || PlayerEncounter.Current.EncounterState == PlayerEncounterState.LootInventory 
@@ -107,24 +140,26 @@ namespace GeneralLord
 
 
                     if(BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None) ScreenManager.PopScreen();
-                }
+                }*/
             }
 
             if (ScreenManager.TopScreen is MapScreen)
             {
+                Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
+                JsonBattleConfig.VerifyUniqueFile();
+
                 this._partyManager = new PartyManager();
                 this._partyManagerLogic = new PartyManagerLogic();
                 this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());
 
                 _initializeState = false;
                 ScreenManager.PushScreen(new MainManagerScreen(_partyManagerLogic));
-                Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
-                JsonBattleConfig.VerifyUniqueFile();
+
             }
 
             if (Mission.Current == null && Input.IsKeyDown(InputKey.LeftControl))
             {
-                if (Input.IsKeyReleased(InputKey.R))
+                if (false && Input.IsKeyReleased(InputKey.R))
                 {
                     JObject json = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
                     //InformationManager.DisplayMessage(new InformationMessage(json.ToString()));
@@ -162,14 +197,20 @@ namespace GeneralLord
                 }
                 if (Input.IsKeyReleased(InputKey.E))
                 {
-                    //CharacterHandler.SaveCharacter();
-                    BattleTestHandler.OpenBattleTestMission();
+                    RecruitmentManager.OpenNPCRecruitmentRoster();
                 }
-                if (Input.IsKeyReleased(InputKey.Y))
+                if (Input.IsKeyReleased(InputKey.T))
                 {
-                    PartyScreenState.currentState = PartyScreenStateEnum.RecruitmentScreen;
-                    RecruitmentManager.OpenRecruitmentRoster();
+                    PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
                 }
+                if (Input.IsKeyReleased(InputKey.G))
+                {
+                    for (int i = 0; i < PartyBase.MainParty.MemberRoster.Count; i++)
+                    {
+                        PartyBase.MainParty.MemberRoster.SetElementWoundedNumber(i, 0);
+                    }
+                }
+                /*
                 if (Input.IsKeyReleased(InputKey.T))
                 {
                     if (ScreenManager.TopScreen is MapScreen)
@@ -193,9 +234,9 @@ namespace GeneralLord
                     //InformationManager.DisplayMessage(new InformationMessage(DateTime.Parse(localDateCurrent.ToString("G", CultureInfo.CreateSpecificCulture("en-GB")));
                     /*CharacterHandler.saveLocationFile = "enemygeneral.xml";
                     CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
-                    CharacterHandler.LoadXML();*/
+                    CharacterHandler.LoadXML();
 
-                }
+                }*/
             }
 
 

@@ -15,8 +15,8 @@ namespace GeneralLord
         public static TroopRoster PreBattleTroopRoster = null;
         public static int GoldToAdd = 0;
 
-        public static int minBaseGold = 10;
-        public static int maxBaseGold = 25;
+        public static int minBaseGold = 20;
+        public static int maxBaseGold = 30;
         public static void RemoveOpponentParty()
         {
             if (CurrentOpponentParty != null)

@@ -9,6 +9,7 @@ using System;
 using HarmonyLib;
 using TaleWorlds.ObjectSystem;
 using GeneralLordWebApiClient.Model;
+using GeneralLordWebApiClient;
 
 namespace GeneralLord
 {
@@ -30,6 +31,8 @@ namespace GeneralLord
             {
 				InformationManager.DisplayMessage(new InformationMessage(ex.Message));//GenericHelpers.LogException("Patch Failed", ex);
 			}
+			Serializer.EnsureSaveDirectory();
+			UrlHandler.ReleaseVersion(false);
 
 			//EnhancedBattleTestSubModule.Instance = this;
 

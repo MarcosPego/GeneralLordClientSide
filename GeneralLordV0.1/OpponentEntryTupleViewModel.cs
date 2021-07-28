@@ -44,7 +44,7 @@ namespace GeneralLord
 			//MobileParty mobileParty = MobilePartyHelper.SpawnLordParty(bestAvailableCommander, new Vec2(Hero.MainHero.GetPosition().x, Hero.MainHero.GetPosition().z), 1f);
 			OpponentPartyHandler.RemoveOpponentParty();
 
-			OpponentPartyHandler.PreBattleTroopRoster = JsonBattleConfig.EnemyParty(ac);
+			OpponentPartyHandler.PreBattleTroopRoster = JsonBattleConfig.EnemyParty(ac, _profile.UniqueUser);
 			OpponentPartyHandler.CurrentOpponentParty = BanditPartyComponent.CreateBanditParty("EnemyClan", clan, closestHideout.Hideout, false);
 			OpponentPartyHandler.CurrentOpponentParty.InitializeMobileParty(
 						OpponentPartyHandler.PreBattleTroopRoster,

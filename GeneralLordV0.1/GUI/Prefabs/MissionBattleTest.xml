@@ -1,0 +1,22 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<Widget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "StretchToParent" DoNotAcceptEvents="true">
+			<Children>
+
+				<ListPanel WidthSizePolicy = "Fixed" HeightSizePolicy = "CoverChildren" SuggestedWidth = "600" HorizontalAlignment = "Left" VerticalAlignment="Top" Sprite="conversation_frame_canvas_9" Color="#000000DD" IsVisible="true" StackLayout.LayoutMethod="VerticalBottomToTop">
+					<Children>
+						<TextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="@FirstText" Brush="ArenaPracticeFight.Text"/>
+						<TextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="5" Text="@SecondText" Brush="ArenaPracticeFight.Text" />
+						<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="10" MarginBottom="10" Text="@ThirdText" Brush="ArenaPracticeFight.Text" />
+						<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="5" MarginBottom="10" Text="@FourthText" Brush="ArenaPracticeFight.Text" />
+					</Children>
+				</ListPanel>
+
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

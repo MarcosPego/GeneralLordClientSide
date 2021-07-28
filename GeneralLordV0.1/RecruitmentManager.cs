@@ -19,6 +19,18 @@ namespace GeneralLord
 				PartyScreenLogic.TransferState.TransferableWithTrade, PartyScreenLogic.TransferState.NotTransferable, new TextObject("Test"), 150, false);
 		}
 
+		public static void OpenNPCRecruitmentRoster()
+        {
+
+			TroopRoster recruitmentRoster = NPCRecruitmentTest();
+
+
+			PartyScreenManager.OpenScreenAsQuest(recruitmentRoster, new TextObject("{=}Recruit Troops", null),
+				0, new PartyPresentationDoneButtonConditionDelegate(PartyScreenDoneCondition),
+				new PartyScreenClosedDelegate(SellPrisonersDoneHandler),
+				new PartyScreenLogic.IsTroopTransferableDelegate(RightTransferableDelegate), null);
+		}
+
 		public static void OpenRecruitmentRoster()
 		{
 
@@ -63,6 +75,39 @@ namespace GeneralLord
 		{
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
 			TroopRoster troopRosterA = new TroopRoster(PartyBase.MainParty);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_recruit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_archer", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 999);
+			//this.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 32);
+			//this.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 18);
+			//this.TryAddCharacterToRoster(troopRosterA, "mercenary_1", 10);
+			//this.TryAddCharacterToRoster(troopRosterA, "mercenary_2", 20);
+			//InformationManager.DisplayMessage(new InformationMessage(troopRoster.TotalManCount.ToString()));
+
+			return troopRosterA;
+		}
+
+
+
+		public static TroopRoster NPCRecruitmentTest()
+		{
+			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
+			TroopRoster troopRosterA = new TroopRoster(PartyBase.MainParty);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "looter", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "deserter", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sea_raiders_bandit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sea_raiders_raider", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sea_raiders_chief", 999);
+
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "mountain_bandits_bandit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "mountain_bandits_raider", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "mountain_bandits_chief", 999);
+
+            JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sea_raiders_boss", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "mountain_bandits_boss", 999);
+
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_recruit", 999);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_archer", 999);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 999);
