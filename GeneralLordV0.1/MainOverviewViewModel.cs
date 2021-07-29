@@ -26,13 +26,16 @@ using Newtonsoft.Json.Linq;
 using TaleWorlds.Localization;
 using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
 using GeneralLord.FormationBattleTest;
+using TaleWorlds.Core.ViewModelCollection;
 
 namespace GeneralLord
 {
-	internal class MainOverviewViewModel : ViewModel
+	public class MainOverviewViewModel : ViewModel
 	{
-		public MainOverviewViewModel()
+		public MainOverviewViewModel(MainManagerViewModel mainManagerViewModel)
 		{
+			Party = PartyBase.MainParty;
+			this._mainManagerViewModel = mainManagerViewModel;
 			this._exitOnSaveOver = false;
 			//this._partyManagerLogic = partyManagerLogic;
 
@@ -49,9 +52,15 @@ namespace GeneralLord
 			//BattleConfig.Instance = this._generalConfig._config;
 			this.BuyRenown = new TextObject("{=ATBuyRenown} Purchase reputation for your clan: ", null).ToString();
 			this.Train = new TextObject("{=ATTrain} Train your stewardship: ", null).ToString();
+			this.HealHeroText = new TextObject("{=ATHealHeroText} Pay a visit to the doctor to heal your wounds: ", null).ToString();
 
 			this.RenownCost = PartyCapacityLogicHandler.BuyRenownPrice.ToString();
 			this.TrainCost = PartyCapacityLogicHandler.TrainStewardship.ToString();
+
+
+
+
+			//PartyBase.MainParty.MemberRoster.GetTroopRoster()
 
 			CampaignEvents.OnSaveOverEvent.AddNonSerializedListener(this, new Action<bool>(this.OnSaveOver));
 			this.RefreshValues();
@@ -60,7 +69,9 @@ namespace GeneralLord
 		public override void RefreshValues()
 		{
 			base.RefreshValues();
+			_mainManagerViewModel.RefreshValues();
 			this.SelectMainHero();
+			this.Name = this.Party.Name.ToString();
 			this.SkillsText = GameTexts.FindText("str_skills", null).ToString();
 			this.ExpectedGoldText = new TextObject("{=ATExpectedGoldText}Current Gold: ", null).ToString();
 			this.ExpectedGold = PartyBase.MainParty.LeaderHero.Gold.ToString();
@@ -69,6 +80,103 @@ namespace GeneralLord
 			this.EloText = new TextObject("{=ATEloText}Elo: ", null).ToString();
 			this.Elo = json["Elo"].ToString();
 
+			if (CharacterHandler.PriceToFullHealth() > 0) { this.HealHeroCost = CharacterHandler.PriceToFullHealth().ToString(); }
+			else { this.HealHeroCost = CharacterHandler.PriceToFullHealth().ToString(); }
+
+			UpdateProperties();
+		}
+
+		public void UpdateProperties()
+        {
+			GameTexts.SetVariable("LEFT", this.Party.MobileParty.MemberRoster.TotalManCount);
+			GameTexts.SetVariable("RIGHT", this.Party.MobileParty.Party.PartySizeLimit);
+			string text = GameTexts.FindText("str_LEFT_over_RIGHT", null).ToString();
+			string content = GameTexts.FindText("str_party_morale_party_size", null).ToString();
+			this.PartySizeText = text;
+			GameTexts.SetVariable("LEFT", content);
+			GameTexts.SetVariable("RIGHT", text);
+			this.PartySizeSubTitleText = GameTexts.FindText("str_LEFT_colon_RIGHT", null).ToString();
+
+			this.InfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(Party.MemberRoster, FormationClass.Infantry));
+			this.CavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(Party.MemberRoster, FormationClass.Cavalry));
+			this.RangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(Party.MemberRoster, FormationClass.Ranged));
+			this.HorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(Party.MemberRoster, FormationClass.HorseArcher));
+
+			this.HealthyInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Infantry));
+			this.HealthyCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Cavalry));
+			this.HealthyRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Ranged));
+			this.HealthyHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.HorseArcher));
+			this.HeroHealthHint =new BasicTooltipViewModel(() => CampaignUIHelper.GetHeroHealthTooltip(Party.LeaderHero));
+
+			int num = 0;
+			int num2 = 0;
+			int num3 = 0;
+			int num4 = 0;
+			foreach (TroopRosterElement troopRosterElement in this.Party.MemberRoster.GetTroopRoster())
+			{
+				Hero heroObject = troopRosterElement.Character.HeroObject;
+				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
+				{
+
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Infantry))
+				{
+					num += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Ranged))
+				{
+					num2 += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Cavalry))
+				{
+					num3 += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.HorseArcher))
+				{
+					num4 += troopRosterElement.Number;
+				}
+			}
+
+			this.InfantryCount = num;
+			this.RangedCount = num2;
+			this.CavalryCount = num3;
+			this.HorseArcherCount = num4;
+
+
+			num = 0;
+			num2 = 0;
+			num3 = 0;
+			num4 = 0;
+
+			foreach (TroopRosterElement troopRosterElement in this.Party.MemberRoster.GetTroopRoster())
+			{
+				Hero heroObject = troopRosterElement.Character.HeroObject;
+				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
+				{
+
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Infantry))
+				{
+					num += troopRosterElement.Number - troopRosterElement.WoundedNumber;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Ranged))
+				{
+					num2 += troopRosterElement.Number - troopRosterElement.WoundedNumber;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Cavalry))
+				{
+					num3 += troopRosterElement.Number - troopRosterElement.WoundedNumber;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.HorseArcher))
+				{
+					num4 += troopRosterElement.Number - troopRosterElement.WoundedNumber;
+				}
+			}
+
+			this.HealthyInfantryCount = num;
+			this.HealthyRangedCount = num2;
+			this.HealthyCavalryCount = num3;
+			this.HealthyHorseArcherCount = num4;
 		}
 
 		public void SelectMainHero()
@@ -97,6 +205,12 @@ namespace GeneralLord
 			}
 		}
 
+		public void ExecuteHealHero()
+		{
+
+			CharacterHandler.HandleHealthBuy();
+			this.RefreshValues();
+		}
 
 		public void ExecuteTrain()
 		{
@@ -106,8 +220,6 @@ namespace GeneralLord
 		}
 		public void ExecuteBuyRenown()
 		{
-
-
 			PartyCapacityLogicHandler.HandleTrainSteward();
 			this.RefreshValues();
 		}
@@ -233,6 +345,8 @@ namespace GeneralLord
 			task.Wait();
 		
 		}
+
+		
 
 		private void OnSaveOver(bool isSuccessful)
 		{
@@ -449,6 +563,394 @@ namespace GeneralLord
 		}
 
 
+		[DataSourceProperty]
+		public string HealHeroText
+		{
+			get
+			{
+				return this._healHeroText;
+			}
+			set
+			{
+				if (value != this._healHeroText)
+				{
+					this._healHeroText = value;
+					base.OnPropertyChangedWithValue(value, "HealHeroText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string HealHeroCost
+		{
+			get
+			{
+				return this._healHeroCost;
+			}
+			set
+			{
+				if (value != this._healHeroCost)
+				{
+					this._healHeroCost = value;
+					base.OnPropertyChangedWithValue(value, "HealHeroCost");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel InfantryHint
+		{
+			get
+			{
+				return this._infantryHint;
+			}
+			set
+			{
+				if (value != this._infantryHint)
+				{
+					this._infantryHint = value;
+					base.OnPropertyChangedWithValue(value, "InfantryHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel RangedHint
+		{
+			get
+			{
+				return this._rangedHint;
+			}
+			set
+			{
+				if (value != this._rangedHint)
+				{
+					this._rangedHint = value;
+					base.OnPropertyChangedWithValue(value, "RangedHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel CavalryHint
+		{
+			get
+			{
+				return this._cavalryHint;
+			}
+			set
+			{
+				if (value != this._cavalryHint)
+				{
+					this._cavalryHint = value;
+					base.OnPropertyChangedWithValue(value, "CavalryHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel HorseArcherHint
+		{
+			get
+			{
+				return this._horseArcherHint;
+			}
+			set
+			{
+				if (value != this._horseArcherHint)
+				{
+					this._horseArcherHint = value;
+					base.OnPropertyChangedWithValue(value, "HorseArcherHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel HealthyInfantryHint
+		{
+			get
+			{
+				return this._healthyInfantryHint;
+			}
+			set
+			{
+				if (value != this._healthyInfantryHint)
+				{
+					this._healthyInfantryHint = value;
+					base.OnPropertyChangedWithValue(value, "HealthyInfantryHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel HealthyRangedHint
+		{
+			get
+			{
+				return this._healthyRangedHint;
+			}
+			set
+			{
+				if (value != this._healthyRangedHint)
+				{
+					this._healthyRangedHint = value;
+					base.OnPropertyChangedWithValue(value, "HealthyRangedHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel HealthyCavalryHint
+		{
+			get
+			{
+				return this._healthyCavalryHint;
+			}
+			set
+			{
+				if (value != this._healthyCavalryHint)
+				{
+					this._healthyCavalryHint = value;
+					base.OnPropertyChangedWithValue(value, "HealthyCavalryHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel HealthyHorseArcherHint
+		{
+			get
+			{
+				return this._healthyHorseArcherHint;
+			}
+			set
+			{
+				if (value != this._healthyHorseArcherHint)
+				{
+					this._healthyHorseArcherHint = value;
+					base.OnPropertyChangedWithValue(value, "HealthyHorseArcherHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int InfantryCount
+		{
+			get
+			{
+				return this._infantryCount;
+			}
+			set
+			{
+				if (value != this._infantryCount)
+				{
+					this._infantryCount = value;
+					base.OnPropertyChangedWithValue(value, "InfantryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int RangedCount
+		{
+			get
+			{
+				return this._rangedCount;
+			}
+			set
+			{
+				if (value != this._rangedCount)
+				{
+					this._rangedCount = value;
+					base.OnPropertyChangedWithValue(value, "RangedCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int CavalryCount
+		{
+			get
+			{
+				return this._cavalryCount;
+			}
+			set
+			{
+				if (value != this._cavalryCount)
+				{
+					this._cavalryCount = value;
+					base.OnPropertyChangedWithValue(value, "CavalryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int HorseArcherCount
+		{
+			get
+			{
+				return this._horseArcherCount;
+			}
+			set
+			{
+				if (value != this._horseArcherCount)
+				{
+					this._horseArcherCount = value;
+					base.OnPropertyChangedWithValue(value, "HorseArcherCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int HealthyInfantryCount
+		{
+			get
+			{
+				return this._healthyInfantryCount;
+			}
+			set
+			{
+				if (value != this._healthyInfantryCount)
+				{
+					this._healthyInfantryCount = value;
+					base.OnPropertyChangedWithValue(value, "HealthyInfantryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int HealthyRangedCount
+		{
+			get
+			{
+				return this._healthyRangedCount;
+			}
+			set
+			{
+				if (value != this._healthyRangedCount)
+				{
+					this._healthyRangedCount = value;
+					base.OnPropertyChangedWithValue(value, "HealthyRangedCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int HealthyCavalryCount
+		{
+			get
+			{
+				return this._healthyCavalryCount;
+			}
+			set
+			{
+				if (value != this._healthyCavalryCount)
+				{
+					this._healthyCavalryCount = value;
+					base.OnPropertyChangedWithValue(value, "HealthyCavalryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int HealthyHorseArcherCount
+		{
+			get
+			{
+				return this._healthyHorseArcherCount;
+			}
+			set
+			{
+				if (value != this._healthyHorseArcherCount)
+				{
+					this._healthyHorseArcherCount = value;
+					base.OnPropertyChangedWithValue(value, "HealthyHorseArcherCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string Name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if (value != this._name)
+				{
+					this._name = value;
+					base.OnPropertyChangedWithValue(value, "Name");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string PartySizeText
+		{
+			get
+			{
+				return this._partySizeText;
+			}
+			set
+			{
+				if (value != this._partySizeText)
+				{
+					this._partySizeText = value;
+					base.OnPropertyChanged("PartyStrengthText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string PartySizeSubTitleText
+		{
+			get
+			{
+				return this._partySizeSubTitleText;
+			}
+			set
+			{
+				if (value != this._partySizeSubTitleText)
+				{
+					this._partySizeSubTitleText = value;
+					base.OnPropertyChangedWithValue(value, "PartySizeSubTitleText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel HeroHealthHint
+		{
+			get
+			{
+				return this._heroHealthHint;
+			}
+			set
+			{
+				if (value != this._heroHealthHint)
+				{
+					this._heroHealthHint = value;
+					base.OnPropertyChangedWithValue(value, "HeroHealthHint");
+				}
+
+			}
+		}
+
+		[DataSourceProperty]
+		public int HeroHealth
+		{
+			get
+			{
+				return (int)Math.Ceiling((double)this.Party.LeaderHero.HitPoints * 100.0 / (double)this.Party.LeaderHero.CharacterObject.MaxHitPoints());
+			}
+		}
+
+
+		public PartyBase Party { get; }
+
+
 		public MapSelectionGroupVM MapSelectionGroup { get; }
 		//private readonly EnhancedBattleTestState _state;
 		//private BattleGeneralConfig _generalConfig;
@@ -462,6 +964,7 @@ namespace GeneralLord
 		private string _skillsText;
 		private string _expectedGoldText;
 		private string _expectedGold;
+		private string _name;
 
 		private string _buyRenown;
 		private string _train;
@@ -469,8 +972,37 @@ namespace GeneralLord
 		private string _buyRenownCost;
 		private string _trainCost;
 
+		private string _healHeroText;
+		private string _healHeroCost;
+
 		private string _eloText;
 		private string _elo;
 		private bool _exitOnSaveOver;
+		private MainManagerViewModel _mainManagerViewModel;
+
+		private BasicTooltipViewModel _infantryHint;
+		private BasicTooltipViewModel _rangedHint;
+		private BasicTooltipViewModel _cavalryHint;
+		private BasicTooltipViewModel _horseArcherHint;
+
+		private BasicTooltipViewModel _healthyInfantryHint;
+		private BasicTooltipViewModel _healthyRangedHint;
+		private BasicTooltipViewModel _healthyCavalryHint;
+		private BasicTooltipViewModel _healthyHorseArcherHint;
+
+		private BasicTooltipViewModel _heroHealthHint;
+
+		private int _infantryCount;
+		private int _rangedCount;
+		private int _cavalryCount;
+		private int _horseArcherCount;
+
+		private int _healthyInfantryCount;
+		private int _healthyRangedCount;
+		private int _healthyCavalryCount;
+		private int _healthyHorseArcherCount;
+
+		private string _partySizeText;
+		private string _partySizeSubTitleText;
 	}
 }

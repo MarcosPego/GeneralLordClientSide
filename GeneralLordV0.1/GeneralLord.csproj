@@ -82,6 +82,7 @@
   <!-- Files & Classes -->
   <ItemGroup>
     <Compile Include="CharacterHandler.cs" />
+    <Compile Include="CharacterTierHandler.cs" />
     <Compile Include="Client\Model\MatchHistory.cs" />
     <Compile Include="Client\Model\ProfileHandler.cs" />
     <Compile Include="Client\Model\Serializer.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
     <Compile Include="HarmonyOverrides\PlayerEncounterOverride.cs" />
     <Compile Include="HarmonyOverrides\RecruitmentOverride.cs" />
+    <Compile Include="ItemRosterGeneratorHandler.cs" />
     <Compile Include="JsonBattleConfig.cs" />
     <Compile Include="MainManager.cs" />
     <Compile Include="MainManagerScreen.cs" />

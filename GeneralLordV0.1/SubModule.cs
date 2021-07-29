@@ -32,7 +32,7 @@ namespace GeneralLord
 				InformationManager.DisplayMessage(new InformationMessage(ex.Message));//GenericHelpers.LogException("Patch Failed", ex);
 			}
 			Serializer.EnsureSaveDirectory();
-			UrlHandler.ReleaseVersion(false);
+			UrlHandler.ReleaseVersion(true);
 
 			//EnhancedBattleTestSubModule.Instance = this;
 

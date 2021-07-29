@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.Core;
 using TaleWorlds.Localization;
 
 namespace GeneralLord
@@ -71,21 +72,37 @@ namespace GeneralLord
 			return side == PartyScreenLogic.PartyRosterSide.Left && type == PartyScreenLogic.TroopType.Member;
 		}
 
+		public static bool VerifyIfValidCulture(string stringIdObject)
+		{
+			//InformationManager.DisplayMessage(new InformationMessage(CharacterTierHandler.CharacterMainCulture.StringId));
+
+			if (CharacterTierHandler.CharacterMainCulture.StringId == stringIdObject)
+			{
+				return true;
+			}
+
+			if (CharacterTierHandler.ClanTier >= 1)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
 		public static TroopRoster RecruitmentTest()
 		{
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
 			TroopRoster troopRosterA = new TroopRoster(PartyBase.MainParty);
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_recruit", 999);
 
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 999);
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 999);
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 999);
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_nomad", 999);
+			if (VerifyIfValidCulture("aserai")) JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 999);
+			if (VerifyIfValidCulture("battania")) JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "battanian_volunteer", 999);
+			if (VerifyIfValidCulture("khuzait")) JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_nomad", 999);
+			if (VerifyIfValidCulture("vlandia")) JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 999);
+			if (VerifyIfValidCulture("sturgia")) JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 999);
+			if (VerifyIfValidCulture("empire")) JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_recruit", 999);
 
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "battanian_volunteer", 999);
 
-
-			if(PartyBase.MainParty.LeaderHero.Clan.Tier >= 1)
+			if (PartyBase.MainParty.LeaderHero.Clan.Tier >= 2)
             {
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_vigla_recruit", 999);
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sturgian_warrior_son", 999);
@@ -94,7 +111,7 @@ namespace GeneralLord
 
 			}
 
-			if (PartyBase.MainParty.LeaderHero.Clan.Tier >= 2)
+			if (PartyBase.MainParty.LeaderHero.Clan.Tier >= 3)
 			{
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "karakhuzaits_tier_1", 999);
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "beni_zilal_tier_1", 999);

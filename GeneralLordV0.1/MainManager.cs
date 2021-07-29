@@ -69,6 +69,11 @@ namespace GeneralLord
                         OpponentPartyHandler.RemoveOpponentParty();
                     }*/
 
+                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.BattleTest)
+                    {
+                        CharacterHandler.HandleBattleTestlRestoreHealth();
+                    }
+
                     if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None)
                     {
                         CampaignBattleResult campaignBattleResult = CampaignBattleResult.GetResult(PlayerEncounter.Battle.BattleState);
@@ -100,7 +105,7 @@ namespace GeneralLord
 
                     if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None) ScreenManager.PopScreen();
 
-
+                    _mainManagerScreen._viewModel.MainOverview.RefreshValues();
 
 
                     //InformationManager.DisplayMessage(new InformationMessage("Wait worked"));
@@ -153,9 +158,11 @@ namespace GeneralLord
                 this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());
 
                 _initializeState = false;
-                ScreenManager.PushScreen(new MainManagerScreen(_partyManagerLogic));
+                _mainManagerScreen = new MainManagerScreen(_partyManagerLogic);
+                ScreenManager.PushScreen(_mainManagerScreen);
 
             }
+
 
             if (Mission.Current == null && Input.IsKeyDown(InputKey.LeftControl))
             {
@@ -205,10 +212,21 @@ namespace GeneralLord
                 }
                 if (Input.IsKeyReleased(InputKey.G))
                 {
-                    for (int i = 0; i < PartyBase.MainParty.MemberRoster.Count; i++)
+                    foreach  (TroopRosterElement element in  PartyBase.MainParty.MemberRoster.GetTroopRoster())
                     {
-                        PartyBase.MainParty.MemberRoster.SetElementWoundedNumber(i, 0);
+                        int index = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(element.Character);
+
+                        int wounded = PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index);
+
+
+                        PartyBase.MainParty.MemberRoster.WoundTroop(element.Character, -wounded);
+                      
                     }
+
+                }
+                if (Input.IsKeyReleased(InputKey.K))
+                {
+                    PartyBase.MainParty.MemberRoster.WoundNumberOfTroopsRandomly(3);
                 }
                 /*
                 if (Input.IsKeyReleased(InputKey.T))
@@ -264,5 +282,7 @@ namespace GeneralLord
         private PartyManagerLogic _partyManagerLogic;
         private PartyManager _partyManager = null;
         private object localDate;
+
+        private MainManagerScreen _mainManagerScreen;
     }
 }

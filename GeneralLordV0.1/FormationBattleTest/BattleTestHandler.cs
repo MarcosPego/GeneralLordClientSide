@@ -12,8 +12,9 @@ namespace GeneralLord.FormationBattleTest
     public class BattleTestHandler
     {
         public static BattleTestEnabledState BattleTestEnabled = BattleTestEnabledState.None;
+		public static int CurrentPlayerHealth;
 
-        public enum BattleTestEnabledState
+		public enum BattleTestEnabledState
         {
             None = 99,
             BattleTest
@@ -21,6 +22,7 @@ namespace GeneralLord.FormationBattleTest
 
         public static void OpenBattleTestMission()
         {
+			CurrentPlayerHealth = PartyBase.MainParty.LeaderHero.HitPoints;
 			BattleTestEnabled = BattleTestEnabledState.BattleTest;
 			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
 			Clan clan = Clan.BanditFactions.FirstOrDefault((Clan t) => t.Culture == closestHideout.Culture);

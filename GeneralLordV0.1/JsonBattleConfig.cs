@@ -1,4 +1,5 @@
-﻿using GeneralLordWebApiClient;
+﻿using GeneralLord.FormationBattleTest;
+using GeneralLordWebApiClient;
 using GeneralLordWebApiClient.Model;
 using Helpers;
 using Newtonsoft.Json.Linq;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Core;
+using TaleWorlds.Core.ViewModelCollection;
 
 namespace GeneralLord
 {
@@ -21,6 +23,34 @@ namespace GeneralLord
 
 		public static string dateFormat = "G";
 		public static string dateCulture = "en-GB";
+
+		public static List<TooltipProperty> GetPartyTroopInfo(TroopRoster troopRoster, FormationClass formationClass)
+		{
+			List<TooltipProperty> list = new List<TooltipProperty>();
+			list.Add(new TooltipProperty("", GameTexts.FindText("str_formation_class_string", formationClass.GetName()).ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.Title));
+			foreach (TroopRosterElement troopRosterElement in troopRoster.GetTroopRoster())
+			{
+				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
+				{
+					list.Add(new TooltipProperty(troopRosterElement.Character.Name.ToString(), troopRosterElement.Number.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+				}
+			}
+			return list;
+		}
+
+		public static List<TooltipProperty> GetPartyTroopHealthyInfo(PartyBase party, FormationClass formationClass)
+		{
+			List<TooltipProperty> list = new List<TooltipProperty>();
+			list.Add(new TooltipProperty("", GameTexts.FindText("str_formation_class_string", formationClass.GetName()).ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.Title));
+			foreach (TroopRosterElement troopRosterElement in party.MemberRoster.GetTroopRoster())
+			{
+				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
+				{
+					list.Add(new TooltipProperty(troopRosterElement.Character.Name.ToString(), (troopRosterElement.Number - troopRosterElement.WoundedNumber).ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+				}
+			}
+			return list;
+		}
 
 		public static void VerifyUniqueFile()
         {
@@ -200,12 +230,13 @@ namespace GeneralLord
 
 			//SAVE
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
-			OpponentPartyHandler.AddGoldToParty();
-			CommitGeneralLordPartyXP();
+			if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None)
+			{
+				OpponentPartyHandler.AddGoldToParty();
+				CommitGeneralLordPartyXP();
+				CharacterHandler.HandleAfterBattleHealth();
+			}
 			ExecuteSubmitAc();
-
-
-			//GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, GoldToUpdate(), true);
 		}
 
 		public static MatchHistory CreateMatchHistory(string battleResult)
@@ -251,13 +282,7 @@ namespace GeneralLord
 			return 100;
 		}
 
-		public static ItemRoster ItemRosterForShop()
-        {
-			ItemRoster items = new ItemRoster();
-			TryAddItemToRoster(items, "mule", 999);
-
-			return items;
-        }
+		
 		public static TroopRoster EnemyParty(ArmyContainer armyContainer, int IsRaiderNPCArmy = 0)
 		{
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();

@@ -1,4 +1,5 @@
-﻿using GeneralLordWebApiClient.Model;
+﻿using GeneralLord.FormationBattleTest;
+using GeneralLordWebApiClient.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Core;
 using TaleWorlds.ObjectSystem;
 
@@ -20,10 +22,60 @@ namespace GeneralLord
 		public static SaveLocationEnum saveLocationPath = SaveLocationEnum.Configs;
 		public static bool debugMode = false;
 
+		public static float healthRegainPercentageAfterBattle = 0.3f;
+		public static int pricePerHealthPoint = 2;
+
 		public enum SaveLocationEnum
 		{
 			ModuleData,
 			Configs
+		}
+
+		public static void HandleHealthBuy()
+		{
+			if (PartyBase.MainParty.LeaderHero.Gold - PriceToFullHealth() < 0)
+			{
+				InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Go to the Doctor!"));
+			} else if (PartyBase.MainParty.LeaderHero.HitPoints == PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints())
+            {
+				InformationManager.DisplayMessage(new InformationMessage("WIP! Block this button when full health!"));
+			}
+			else
+			{
+				GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, -PriceToFullHealth(), false);
+				PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
+				InformationManager.DisplayMessage(new InformationMessage("Healed to full health! You feel refreshed!"));
+			}
+		}
+
+
+		public static int PriceToFullHealth()
+        {
+			return (PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints() - PartyBase.MainParty.LeaderHero.HitPoints) * 5;
+		}
+
+		public static void HandleAfterBattleHealth()
+        {
+			int maxPossibleHealthGain = (int) (healthRegainPercentageAfterBattle *  PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints());
+
+
+
+			if(PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints() - PartyBase.MainParty.LeaderHero.HitPoints > maxPossibleHealthGain)
+            {
+				PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.HitPoints + maxPossibleHealthGain;
+
+			}
+			else
+            {
+				PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
+			}
+
+		}
+
+		public static void HandleBattleTestlRestoreHealth()
+		{
+			PartyBase.MainParty.LeaderHero.HitPoints = BattleTestHandler.CurrentPlayerHealth;
+
 		}
 
 

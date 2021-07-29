@@ -21,16 +21,18 @@ using GeneralLord.FormationBattleTest;
 
 namespace GeneralLord
 {
-    class MainManagerViewModel : ViewModel
+    public class MainManagerViewModel : ViewModel
     {
 
         public MainManagerViewModel(PartyManagerLogic partyManagerLogic) {
-			
+
+			ItemRosterGeneratorHandler.InitializeItemRosterForShop();
 
 			this._partyManagerLogic = partyManagerLogic;
 			//this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());
 
 			this._clan = Hero.MainHero.Clan;
+
 
 			this._name = new TextObject("{=ATName}Main Overview", null).ToString();
 
@@ -40,7 +42,7 @@ namespace GeneralLord
 			this._recruitmentText = new TextObject("{=ATFormationText}Recruitment", null).ToString();
 			this._shopText = new TextObject("{=ATShopText}Shop", null).ToString();
 
-			this.MainOverview = new MainOverviewViewModel();
+			this.MainOverview = new MainOverviewViewModel(this);
 			this.Leader = new HeroVM(this._clan.Leader, false);
 			UpdateBannerVisuals();
 
@@ -54,6 +56,24 @@ namespace GeneralLord
 			this.Name = Hero.MainHero.Clan.Name.ToString();
 			this.LeaderText = GameTexts.FindText("str_sort_by_leader_name_label", null).ToString();
 			this.DoneLbl = GameTexts.FindText("str_done", null).ToString();
+			this.CurrentRenownText = GameTexts.FindText("str_clan_tier", null).ToString();
+			this.CurrentRenown = (int)Clan.PlayerClan.Renown;
+			this.CurrentTier = Clan.PlayerClan.Tier;
+			if (Campaign.Current.Models.ClanTierModel.HasUpcomingTier(Clan.PlayerClan, false).Item2)
+			{
+				this.NextTierRenown = Clan.PlayerClan.RenownRequirementForNextTier;
+				this.MinRenownForCurrentTier = Campaign.Current.Models.ClanTierModel.GetRequiredRenownForTier(this.CurrentTier);
+				this.NextTier = Clan.PlayerClan.Tier + 1;
+				this.IsRenownProgressComplete = false;
+			}
+			else
+			{
+				this.NextTierRenown = 1;
+				this.MinRenownForCurrentTier = 1;
+				this.NextTier = 0;
+				this.IsRenownProgressComplete = true;
+			}
+			this.RenownHint = new BasicTooltipViewModel(() => CampaignUIHelper.GetClanRenownTooltip(Clan.PlayerClan));
 		}
 
 		private void ExecuteDone()
@@ -93,7 +113,7 @@ namespace GeneralLord
 				ScreenManager.PopScreen();
 				Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsActive && x.IsTown);
 				InformationManager.DisplayMessage(new InformationMessage(closestHideout.Name.ToString()));
-				InventoryManager.OpenScreenAsTrade(JsonBattleConfig.ItemRosterForShop(), closestHideout.GetComponent<SettlementComponent>(), InventoryManager.InventoryCategoryType.None, null);
+				InventoryManager.OpenScreenAsTrade(ItemRosterGeneratorHandler.itemRosterShop, closestHideout.GetComponent<SettlementComponent>(), InventoryManager.InventoryCategoryType.None, null);
 
 			}
 		}
@@ -302,6 +322,154 @@ namespace GeneralLord
 			}
 		}
 
+		[DataSourceProperty]
+		public int NextTierRenown
+		{
+			get
+			{
+				return this._nextTierRenown;
+			}
+			set
+			{
+				if (value != this._nextTierRenown)
+				{
+					this._nextTierRenown = value;
+					base.OnPropertyChangedWithValue(value, "NextTierRenown");
+				}
+			}
+		}
+
+		// Token: 0x170007FF RID: 2047
+		// (get) Token: 0x06001719 RID: 5913 RVA: 0x00055CD2 File Offset: 0x00053ED2
+		// (set) Token: 0x0600171A RID: 5914 RVA: 0x00055CDA File Offset: 0x00053EDA
+		[DataSourceProperty]
+		public int CurrentTier
+		{
+			get
+			{
+				return this._currentTier;
+			}
+			set
+			{
+				if (value != this._currentTier)
+				{
+					this._currentTier = value;
+					base.OnPropertyChangedWithValue(value, "CurrentTier");
+				}
+			}
+		}
+
+		// Token: 0x17000800 RID: 2048
+		// (get) Token: 0x0600171B RID: 5915 RVA: 0x00055CFD File Offset: 0x00053EFD
+		// (set) Token: 0x0600171C RID: 5916 RVA: 0x00055D05 File Offset: 0x00053F05
+		[DataSourceProperty]
+		public int MinRenownForCurrentTier
+		{
+			get
+			{
+				return this._minRenownForCurrentTier;
+			}
+			set
+			{
+				if (value != this._minRenownForCurrentTier)
+				{
+					this._minRenownForCurrentTier = value;
+					base.OnPropertyChangedWithValue(value, "MinRenownForCurrentTier");
+				}
+			}
+		}
+
+		// Token: 0x17000801 RID: 2049
+		// (get) Token: 0x0600171D RID: 5917 RVA: 0x00055D28 File Offset: 0x00053F28
+		// (set) Token: 0x0600171E RID: 5918 RVA: 0x00055D30 File Offset: 0x00053F30
+		[DataSourceProperty]
+		public int NextTier
+		{
+			get
+			{
+				return this._nextTier;
+			}
+			set
+			{
+				if (value != this._nextTier)
+				{
+					this._nextTier = value;
+					base.OnPropertyChangedWithValue(value, "NextTier");
+				}
+			}
+		}
+
+		// Token: 0x17000802 RID: 2050
+		// (get) Token: 0x0600171F RID: 5919 RVA: 0x00055D53 File Offset: 0x00053F53
+		// (set) Token: 0x06001720 RID: 5920 RVA: 0x00055D5B File Offset: 0x00053F5B
+		[DataSourceProperty]
+		public int CurrentRenown
+		{
+			get
+			{
+				return this._currentRenown;
+			}
+			set
+			{
+				if (value != this._currentRenown)
+				{
+					this._currentRenown = value;
+					base.OnPropertyChangedWithValue(value, "CurrentRenown");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool IsRenownProgressComplete
+		{
+			get
+			{
+				return this._isRenownProgressComplete;
+			}
+			set
+			{
+				if (value != this._isRenownProgressComplete)
+				{
+					this._isRenownProgressComplete = value;
+					base.OnPropertyChangedWithValue(value, "IsRenownProgressComplete");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel RenownHint
+		{
+			get
+			{
+				return this._renownHint;
+			}
+			set
+			{
+				if (value != this._renownHint)
+				{
+					this._renownHint = value;
+					base.OnPropertyChangedWithValue(value, "RenownHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string CurrentRenownText
+		{
+			get
+			{
+				return this._currentRenownText;
+			}
+			set
+			{
+				if (value != this._currentRenownText)
+				{
+					this._currentRenownText = value;
+					base.OnPropertyChangedWithValue(value, "CurrentRenownText");
+				}
+			}
+		}
+
 		public void UpdateBannerVisuals()
 		{
 			this.ClanBanner = new ImageIdentifierVM(BannerCode.CreateFrom(this._clan.Banner), true);
@@ -331,5 +499,14 @@ namespace GeneralLord
 		private MapNavigationHandler _mapNavigationHandler;
 		private INavigationHandler _navigationHandler;
 		private PartyManager _partyManager = null;
+
+		private BasicTooltipViewModel _renownHint;
+		private int _minRenownForCurrentTier;
+		private int _currentRenown;
+		private int _currentTier = -1;
+		private int _nextTierRenown;
+		private int _nextTier;
+		private string _currentRenownText;
+		private bool _isRenownProgressComplete;
 	}
 }

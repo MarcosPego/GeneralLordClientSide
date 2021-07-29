@@ -30,19 +30,22 @@ namespace GeneralLord
 
 		public void InstantiateValues(MatchHistory matchHistory)
         {
-			if (matchHistory.BattleResult == "PlayerVictory")
-			{
-				this.BattleResult = "Victory!";
-				BattleResultBrush = VictoryBrush;
-			}
-			else
-			{
-				this.BattleResult = "Defeat!";
-				BattleResultBrush = DefeatBrush;
-			}
+
 
 			if (matchHistory.PlayerName == PartyBase.MainParty.LeaderHero.Name.ToString())
 			{
+				if (matchHistory.BattleResult == "PlayerVictory")
+				{
+					this.BattleResult = "Victory!";
+					BattleResultBrush = VictoryBrush;
+				}
+				else
+				{
+					this.BattleResult = "Defeat!";
+					BattleResultBrush = DefeatBrush;
+				}
+
+
 				this.PlayerSide = "Attacker";
 
 				this.AttackerName = matchHistory.PlayerName;
@@ -74,17 +77,29 @@ namespace GeneralLord
 			}
 			else
 			{
+				if (matchHistory.BattleResult != "PlayerVictory")
+				{
+					this.BattleResult = "Victory!";
+					BattleResultBrush = VictoryBrush;
+				}
+				else
+				{
+					this.BattleResult = "Defeat!";
+					BattleResultBrush = DefeatBrush;
+				}
+
+
 				this.PlayerSide = "Defender";
 
-				this.AttackerName = matchHistory.EnemyName;
-				this.AttackerElo = "Elo: " + matchHistory.EnemyElo.ToString();
-				this.AttackerTotalArmyCount = "Troops: " + matchHistory.EnemyTroopCount.ToString();
-				this.AttackerArmyStrength = GetAverageStrength(matchHistory.EnemyArmyStrength, matchHistory.PlayerArmyStrength);
+				this.AttackerName = matchHistory.PlayerName;
+				this.AttackerElo = "Elo: " + matchHistory.PlayerElo.ToString();
+				this.AttackerTotalArmyCount = "Troops: " + matchHistory.PlayerTroopCount.ToString();
+				this.AttackerArmyStrength = GetAverageStrength(matchHistory.PlayerArmyStrength, matchHistory.EnemyArmyStrength);
 
-				this.DefenderName = matchHistory.PlayerName;
-				this.DefenderElo = "Elo: " + matchHistory.PlayerElo.ToString();
-				this.DefenderTotalArmyCount = "Troops: " + matchHistory.PlayerTroopCount.ToString();
-				this.DefenderArmyStrength = GetAverageStrength(matchHistory.PlayerArmyStrength, matchHistory.EnemyArmyStrength);
+				this.DefenderName = matchHistory.EnemyName;
+				this.DefenderElo = "Elo: " + matchHistory.EnemyElo.ToString();
+				this.DefenderTotalArmyCount = "Troops: " + matchHistory.EnemyTroopCount.ToString();
+				this.DefenderArmyStrength = GetAverageStrength(matchHistory.EnemyArmyStrength, matchHistory.PlayerArmyStrength);
 
 				this.EloChange = "EloChange: " + matchHistory.EnemyEloChange.ToString();
 

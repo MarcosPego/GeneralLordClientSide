@@ -40,6 +40,8 @@ namespace GeneralLord
 			ResourceDepot uiresourceDepot = UIResourceManager.UIResourceDepot;
 			this._clanCategory = spriteData.SpriteCategories["ui_clan"];
 			this._clanCategory.Load(resourceContext, uiresourceDepot);
+			this._partyscreenCategory = spriteData.SpriteCategories["ui_partyscreen"];
+			this._partyscreenCategory.Load(resourceContext, uiresourceDepot);
 			ScreenManager.TrySetFocus(_gauntletLayer);
 			LoadingWindow.DisableGlobalLoadingWindow();
 		}
@@ -55,6 +57,7 @@ namespace GeneralLord
 		{
 			base.OnFinalize();
 			this._clanCategory.Unload();
+			this._partyscreenCategory.Unload();
 			base.RemoveLayer(this._gauntletLayer);
 			this._gauntletLayer = null;
 			this._viewModel = null;
@@ -62,6 +65,7 @@ namespace GeneralLord
 
 
 		private SpriteCategory _clanCategory;
+		private SpriteCategory _partyscreenCategory;
 		private GauntletLayer _gauntletLayer;
 		private OpponentSelectorViewModel _viewModel;
 		private IEnumerable<Profile> _opponentProfiles;
