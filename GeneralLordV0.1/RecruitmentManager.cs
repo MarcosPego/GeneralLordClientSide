@@ -76,10 +76,33 @@ namespace GeneralLord
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
 			TroopRoster troopRosterA = new TroopRoster(PartyBase.MainParty);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_recruit", 999);
-			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_archer", 999);
+
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 999);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 999);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_nomad", 999);
+
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "battanian_volunteer", 999);
+
+
+			if(PartyBase.MainParty.LeaderHero.Clan.Tier >= 1)
+            {
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_vigla_recruit", 999);
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sturgian_warrior_son", 999);
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "vlandian_squire", 999);
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_youth", 999);
+
+			}
+
+			if (PartyBase.MainParty.LeaderHero.Clan.Tier >= 2)
+			{
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "karakhuzaits_tier_1", 999);
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "beni_zilal_tier_1", 999);
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "ghilman_tier_1", 999);
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "skolderbrotva_tier_1", 999);
+			}
+
+			//JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_archer", 999);
 			//this.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 32);
 			//this.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 18);
 			//this.TryAddCharacterToRoster(troopRosterA, "mercenary_1", 10);

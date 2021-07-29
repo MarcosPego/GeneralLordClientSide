@@ -15,7 +15,7 @@ namespace GeneralLord
         public static int BuyRenownPrice = 250;
         public static int RenownBought = 10;
 
-        public static int TrainStewardship = 25;
+        public static int TrainStewardship = 50;
         public static int StewardXP = 100;
 
         public static void HandleRenownBuy()

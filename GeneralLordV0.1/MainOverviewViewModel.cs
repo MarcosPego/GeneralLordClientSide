@@ -50,6 +50,9 @@ namespace GeneralLord
 			this.BuyRenown = new TextObject("{=ATBuyRenown} Purchase reputation for your clan: ", null).ToString();
 			this.Train = new TextObject("{=ATTrain} Train your stewardship: ", null).ToString();
 
+			this.RenownCost = PartyCapacityLogicHandler.BuyRenownPrice.ToString();
+			this.TrainCost = PartyCapacityLogicHandler.TrainStewardship.ToString();
+
 			CampaignEvents.OnSaveOverEvent.AddNonSerializedListener(this, new Action<bool>(this.OnSaveOver));
 			this.RefreshValues();
 		}
@@ -111,7 +114,7 @@ namespace GeneralLord
 
 		public void ExecuteRanking()
 		{
-
+			InformationManager.DisplayMessage(new InformationMessage("To Be Implemented!"));
 			this.RefreshValues();
 		}
 
@@ -125,7 +128,7 @@ namespace GeneralLord
 
 		public void ExectuteLeaveGme()
         {
-			InformationManager.DisplayMessage(new InformationMessage("Exiting to Main Menu"));
+			InformationManager.DisplayMessage(new InformationMessage("Exiting to Main Menu!"));
 
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 			JsonBattleConfig.ExecuteSubmitAc();
@@ -411,6 +414,39 @@ namespace GeneralLord
 			}
 		}
 
+		[DataSourceProperty]
+		public string RenownCost
+		{
+			get
+			{
+				return this._buyRenownCost;
+			}
+			set
+			{
+				if (value != this._buyRenownCost)
+				{
+					this._buyRenownCost = value;
+					base.OnPropertyChangedWithValue(value, "RenownCost");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string TrainCost
+		{
+			get
+			{
+				return this._trainCost;
+			}
+			set
+			{
+				if (value != this._trainCost)
+				{
+					this._trainCost = value;
+					base.OnPropertyChangedWithValue(value, "TrainCost");
+				}
+			}
+		}
 
 
 		public MapSelectionGroupVM MapSelectionGroup { get; }
@@ -429,6 +465,9 @@ namespace GeneralLord
 
 		private string _buyRenown;
 		private string _train;
+
+		private string _buyRenownCost;
+		private string _trainCost;
 
 		private string _eloText;
 		private string _elo;

@@ -251,7 +251,13 @@ namespace GeneralLord
 			return 100;
 		}
 
+		public static ItemRoster ItemRosterForShop()
+        {
+			ItemRoster items = new ItemRoster();
+			TryAddItemToRoster(items, "mule", 999);
 
+			return items;
+        }
 		public static TroopRoster EnemyParty(ArmyContainer armyContainer, int IsRaiderNPCArmy = 0)
 		{
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
@@ -306,6 +312,21 @@ namespace GeneralLord
 			{
 				InformationManager.DisplayMessage(new InformationMessage("CustomTroopRoster: " + characterId + " id not found."));
 			}
+		}
+
+		public static void TryAddItemToRoster(ItemRoster itemRoster, string itemId, int count)
+		{
+			foreach (ItemObject item in Items.All)
+            {
+				if(item.StringId == itemId)
+                {
+					itemRoster.AddToCounts(item, 999);
+					return;
+				}
+
+			}
+
+			InformationManager.DisplayMessage(new InformationMessage("Item Id: " + itemId + " id not found."));
 		}
 	}
 }
