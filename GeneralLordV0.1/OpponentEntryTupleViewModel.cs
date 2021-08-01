@@ -20,16 +20,18 @@ namespace GeneralLord
 		{
 
 			_profile = profile;
+			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
+			_displayArmy = JsonBattleConfig.EnemyParty(ac, 2);
 			this.Name = profile.Name;
 			this.Elo = "Elo: " + profile.Elo.ToString();
 			this.ArmyStrength = GetAverageStrength(profile);
 			this.TotalArmyCount = "Troop Count: " + profile.TotalTroopCount.ToString();
-			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
 
-			this.InfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(JsonBattleConfig.EnemyParty(ac, 2), FormationClass.Infantry));
-			this.CavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(JsonBattleConfig.EnemyParty(ac, 2), FormationClass.Cavalry));
-			this.RangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(JsonBattleConfig.EnemyParty(ac, 2), FormationClass.Ranged));
-			this.HorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(JsonBattleConfig.EnemyParty(ac, 2), FormationClass.HorseArcher));
+
+			this.InfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(_displayArmy, FormationClass.Infantry));
+			this.CavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(_displayArmy, FormationClass.Cavalry));
+			this.RangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(_displayArmy, FormationClass.Ranged));
+			this.HorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(_displayArmy, FormationClass.HorseArcher));
 
 			this.RefreshValues();
 		}
@@ -40,10 +42,7 @@ namespace GeneralLord
 
 			Serializer.JsonSerialize(_profile, "enemyProfile.json");
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
-			CharacterHandler.saveLocationFile = "enemygeneral.xml";
-			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
-			CharacterHandler.WriteToFile(ac.CharacterXML);
-			CharacterHandler.LoadXML();
+
 
 
 			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
@@ -95,9 +94,7 @@ namespace GeneralLord
 			int num2 = 0;
 			int num3 = 0;
 			int num4 = 0;
-			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
-			TroopRoster rooster = JsonBattleConfig.EnemyParty(ac, 2);
-			foreach (TroopRosterElement troopRosterElement in rooster.GetTroopRoster())
+			foreach (TroopRosterElement troopRosterElement in _displayArmy.GetTroopRoster())
 			{
 				Hero heroObject = troopRosterElement.Character.HeroObject;
 				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
@@ -343,6 +340,7 @@ namespace GeneralLord
 		private string _armyStrength;
 		private string _totalArmyCount;
 
+		private TroopRoster _displayArmy;
 
 		private BasicTooltipViewModel _infantryHint;
 		private BasicTooltipViewModel _rangedHint;

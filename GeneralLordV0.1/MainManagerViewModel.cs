@@ -112,7 +112,7 @@ namespace GeneralLord
 			{
 				ScreenManager.PopScreen();
 				Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsActive && x.IsTown);
-				InformationManager.DisplayMessage(new InformationMessage(closestHideout.Name.ToString()));
+				//InformationManager.DisplayMessage(new InformationMessage(closestHideout.Name.ToString()));
 				InventoryManager.OpenScreenAsTrade(ItemRosterGeneratorHandler.itemRosterShop, closestHideout.GetComponent<SettlementComponent>(), InventoryManager.InventoryCategoryType.None, null);
 
 			}

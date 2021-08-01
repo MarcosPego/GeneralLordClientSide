@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaleWorlds.MountAndBlade;
 
 namespace GeneralLord.FormationBattleTest
 {
     class PositionData
     {
-
+        public ArrangementOrder.ArrangementOrderEnum InfantryArrangementOrder = ArrangementOrder.ArrangementOrderEnum.Line;
         public float ArchersXOffset { get; set; } = 0f;
 
         public float ArchersYOffset { get; set; } = -20f;

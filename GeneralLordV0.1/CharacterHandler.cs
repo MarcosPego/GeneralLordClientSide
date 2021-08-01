@@ -278,7 +278,7 @@ namespace GeneralLord
 
 		public static void WriteToFile(string data)
 		{
-			TryClearFile("Deleted Original File", "Couldn't delete original file");
+			//TryClearFile("Deleted Original File", "Couldn't delete original file");
 			File.WriteAllText(DynamicPath(), data);
 		}
 
@@ -308,7 +308,7 @@ namespace GeneralLord
 					{
 						string innerText2 = attributes2["id"].InnerText;
 						CharacterObject object2 = Game.Current.ObjectManager.GetObject<CharacterObject>(innerText2);
-						MBObjectManager.Instance.UnregisterObject(object2);
+						//MBObjectManager.Instance.UnregisterObject(object2);
 						if (object2 != null)
 						{
 

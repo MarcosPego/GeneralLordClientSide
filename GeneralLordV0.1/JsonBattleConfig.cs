@@ -289,11 +289,19 @@ namespace GeneralLord
 			TroopRoster troopRoster = new TroopRoster(PartyBase.MainParty);
 
 
-			CharacterHandler.saveLocationFile = "enemygeneral.xml";
-			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
-			CharacterHandler.LoadXML();
+			//CharacterHandler.saveLocationFile = "enemygeneral.xml";
+			//CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
+			//CharacterHandler.LoadXML();
 
-			if(IsRaiderNPCArmy != 2) TryAddCharacterObjectToRoster(troopRoster, CharacterHandler.characterObject, 1);
+			if (IsRaiderNPCArmy != 2) {
+
+				CharacterHandler.saveLocationFile = "enemygeneral.xml";
+				CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
+				CharacterHandler.WriteToFile(armyContainer.CharacterXML);
+				CharacterHandler.LoadXML();
+				TryAddCharacterObjectToRoster(troopRoster, CharacterHandler.characterObject, 1); 
+			
+			}
 			foreach (TroopContainer tc in armyContainer.TroopContainers)
             {
 				if(tc.stringId != "main_hero" && tc.stringId != "tutorial_npc_brother")

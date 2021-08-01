@@ -21,7 +21,7 @@ namespace GeneralLord
 				return true;
             }
 
-			if (CharacterTierHandler.ClanTier >= 1)
+			if (PartyBase.MainParty.LeaderHero.Clan.Tier >= 1)
             {
 				return true;
 			}
