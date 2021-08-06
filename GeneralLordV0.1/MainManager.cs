@@ -26,6 +26,7 @@ using TaleWorlds.ObjectSystem;
 using GeneralLordWebApiClient;
 using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
 using GeneralLord.FormationBattleTest;
+using CunningLords.Interaction;
 
 namespace GeneralLord
 {
@@ -204,7 +205,13 @@ namespace GeneralLord
                 }
                 if (Input.IsKeyReleased(InputKey.E))
                 {
-                    RecruitmentManager.OpenNPCRecruitmentRoster();
+                    //RecruitmentManager.OpenNPCRecruitmentRoster();
+                    ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen());
+                }
+                if (Input.IsKeyReleased(InputKey.W))
+                {
+                    //RecruitmentManager.OpenNPCRecruitmentRoster();
+                    ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen(false));
                 }
                 if (Input.IsKeyReleased(InputKey.T))
                 {

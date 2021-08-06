@@ -24,6 +24,10 @@ namespace GeneralLord
 		public static string dateFormat = "G";
 		public static string dateCulture = "en-GB";
 
+		public static float healingRatio = 0.5f;
+
+
+
 		public static List<TooltipProperty> GetPartyTroopInfo(TroopRoster troopRoster, FormationClass formationClass)
 		{
 			List<TooltipProperty> list = new List<TooltipProperty>();
@@ -208,15 +212,27 @@ namespace GeneralLord
 					CharacterObject characterObject = CharacterObject.Find(tc.stringId);
 					if(PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject) == -1)
                     {
-						PartyBase.MainParty.AddMember(characterObject, tc.troopCount);
+						int troopsToRecover = (int) healingRatio * tc.troopCount;
+						int downedTroops = tc.troopCount - troopsToRecover;
+
+
+						PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
+						PartyBase.MainParty.AddMember(characterObject, downedTroops, downedTroops);
 
 					}
                     else
                     {
 						int index1 = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
 
-						PartyBase.MainParty.AddMember(characterObject, tc.troopCount - PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject));
-						
+						int dead = tc.troopCount - PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject);
+						int wounded = PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1);
+
+						int troopsToRecover = (int)healingRatio * (dead + wounded);
+						int downedTroops = tc.troopCount - troopsToRecover;
+
+						PartyBase.MainParty.MemberRoster.WoundTroop(characterObject, -wounded);
+						PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
+						PartyBase.MainParty.AddMember(characterObject, downedTroops, downedTroops);
 
 					}
 

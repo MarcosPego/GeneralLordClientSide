@@ -1,8 +1,10 @@
 ﻿using GeneralLord;
+using GeneralLord.FormationPlanHandler;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
@@ -53,6 +55,21 @@ namespace GeneralLordWebApiClient.Model
 
                 }
 
+
+                profile.DefensiveOrders = Serializer.JsonString("DefenseDecisiontree.json");
+                //profile.DefensiveOrders = Serializer.JsonString("data.json");
+                profile.UseDefensiveOrder = 1;
+
+
+                string formation_path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", ".."));
+                string formation_filePath = Path.Combine(formation_path, "ModuleData", "DefenderSelectedFormation.json");
+
+
+
+                profile.SelectedFormation = EnemyFormationHandler.DefensiveSelectedFormation;
+  
+                formation_filePath = Path.Combine(formation_path, "ModuleData", "data.json");
+                profile.DefensiveFormation = File.ReadAllText(formation_filePath);
                 //profile.Elo = 2000;
                 //InformationManager.DisplayMessage(new InformationMessage(profile.Id.ToString()));
                 return profile;
@@ -69,6 +86,11 @@ namespace GeneralLordWebApiClient.Model
                     profile = new Profile { Name = PartyBase.MainParty.LeaderHero.Name.ToString(), Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json"), UniqueUser = JsonBattleConfig.UniqueId };
                 }
                 profile.ArmyStrength = PartyBase.MainParty.TotalStrength;
+
+                profile.DefensiveFormation = "";
+                profile.DefensiveOrders = "";
+                profile.UseDefensiveOrder = 0;
+                profile.SelectedFormation = -1;
                 Serializer.JsonSerialize(profile, filePath);
                 return profile;
             }

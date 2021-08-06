@@ -22,5 +22,14 @@ namespace GeneralLordWebApiClient.Model
         public Hero Character { get; set; }*/
 
         public string ArmyContainer { get; set; }
+
+
+        public int UseDefensiveOrder { get; set; }
+
+        public int SelectedFormation { get; set; }
+
+        public string DefensiveFormation { get; set; }
+        public string DefensiveOrders { get; set; }
+
     }
 }

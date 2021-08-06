@@ -111,6 +111,16 @@
     <Compile Include="FormationBattleTest\PositionData.cs" />
     <Compile Include="FormationBattleTest\TacticHoldGeneric.cs" />
     <Compile Include="FormationBattleTest\Utils.cs" />
+    <Compile Include="FormationPlanHandler\BehaviorHideBehind.cs" />
+    <Compile Include="FormationPlanHandler\BehaviorSkirmishMode.cs" />
+    <Compile Include="FormationPlanHandler\CunningLordsPlanDefinitionScreen.cs" />
+    <Compile Include="FormationPlanHandler\CunningLordsPlanViewModel.cs" />
+    <Compile Include="FormationPlanHandler\EnemyFormationHandler.cs" />
+    <Compile Include="FormationPlanHandler\PlanDefinition\Plan.cs" />
+    <Compile Include="FormationPlanHandler\PlanDefinition\PlanGenerator.cs" />
+    <Compile Include="FormationPlanHandler\PlanDefinition\PlanOrderEnum.cs" />
+    <Compile Include="FormationPlanHandler\PlanDefinition\PlanStateEnum.cs" />
+    <Compile Include="FormationPlanHandler\TextViewModel.cs" />
     <Compile Include="GeneralLordMainGameState.cs" />
     <Compile Include="GeneralState.cs" />
     <Compile Include="HarmonyOverrides\BattleRewardsOverride.cs" />

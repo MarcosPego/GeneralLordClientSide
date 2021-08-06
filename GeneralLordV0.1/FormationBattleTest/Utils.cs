@@ -8,6 +8,7 @@ using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using GeneralLord.HarmonyOverrides;
+using CunningLords.Patches;
 
 namespace GeneralLord.FormationBattleTest
 {
@@ -167,7 +168,8 @@ namespace GeneralLord.FormationBattleTest
         public static void OnStartOrders(Mission mission)
         {
             InputCommands IC = new InputCommands();
-            IC.SetInitialFormationOrders(mission);
+            
+            //IC.SetInitialFormationOrders(mission);
         }
 
         public static void PrintRelevantData(Mission mission)

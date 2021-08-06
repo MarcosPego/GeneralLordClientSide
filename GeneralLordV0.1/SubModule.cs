@@ -10,6 +10,9 @@ using HarmonyLib;
 using TaleWorlds.ObjectSystem;
 using GeneralLordWebApiClient.Model;
 using GeneralLordWebApiClient;
+using System.IO;
+using System.Reflection;
+using GeneralLord.FormationPlanHandler;
 
 namespace GeneralLord
 {
@@ -32,7 +35,26 @@ namespace GeneralLord
 				InformationManager.DisplayMessage(new InformationMessage(ex.Message));//GenericHelpers.LogException("Patch Failed", ex);
 			}
 			Serializer.EnsureSaveDirectory();
-			UrlHandler.ReleaseVersion(true);
+
+			string formation_path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", ".."));
+			string formation_filePath;
+
+
+			EnemyFormationHandler.AttackSelectedFormation = -1;
+			EnemyFormationHandler.DefensiveSelectedFormation = -1;
+			formation_filePath = Path.Combine(formation_path, "ModuleData", "AttackerSelectedFormation.txt");
+			if (File.Exists(formation_filePath))
+			{
+				EnemyFormationHandler.AttackSelectedFormation = Int32.Parse(File.ReadAllText(formation_filePath));
+			}
+			formation_filePath = Path.Combine(formation_path, "ModuleData", "DefenderSelectedFormation.txt");
+			if (File.Exists(formation_filePath))
+			{
+				EnemyFormationHandler.DefensiveSelectedFormation = Int32.Parse(File.ReadAllText(formation_filePath));
+			}
+
+
+			UrlHandler.ReleaseVersion(false);
 
 			//EnhancedBattleTestSubModule.Instance = this;
 
