@@ -153,17 +153,19 @@ namespace GeneralLord
             {
                 Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
                 JsonBattleConfig.VerifyUniqueFile();
-
+                JsonBattleConfig.ReceivePartyUtils();
                 this._partyManager = new PartyManager();
                 this._partyManagerLogic = new PartyManagerLogic();
                 this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());
 
                 _initializeState = false;
                 _mainManagerScreen = new MainManagerScreen(_partyManagerLogic);
+
+
                 ScreenManager.PushScreen(_mainManagerScreen);
 
             }
-
+            if(ScreenManager.TopScreen is MainManagerScreen)  { PartyUtilsHandler.TickForRecovery(_mainManagerScreen); }
 
             if (Mission.Current == null && Input.IsKeyDown(InputKey.LeftControl))
             {

@@ -59,7 +59,7 @@ namespace CunningLords.Patches
                         //InformationManager.DisplayMessage(new InformationMessage("Moving into selected starting formation index: " + EnemyFormationHandler.AttackSelectedFormation.ToString()));
                     }
 
-                    if (EnemyFormationHandler.EnemySelectedFormation != -1)
+                    if (false && EnemyFormationHandler.EnemySelectedFormation != -1)
                     {
                         InputCommands IC = new InputCommands();
                         IC.ApplyPosition(__instance, EnemyFormationHandler.EnemySelectedFormation, false, "enemydata.json");
@@ -83,6 +83,7 @@ namespace CunningLords.Patches
                             f.FiringOrder = FiringOrder.FiringOrderHoldYourFire;
                         }
                     }
+                    MissionOverride.FrameCounter++;
                 }
 
                 Utils.ManageInputKeys(__instance);
@@ -115,10 +116,7 @@ namespace CunningLords.Patches
                     MissionOverride.PlanCounter = 0;
                 }
 
-                if(MissionOverride.FrameCounter < 60)
-                {
-                    MissionOverride.FrameCounter++;
-                } else if (EnemyFormationHandler.EnemyUseDefensiveSettings == 1)
+                if (EnemyFormationHandler.EnemyUseDefensiveSettings == 1)
                 {
                     //InformationManager.DisplayMessage(new InformationMessage("Formation Orders IS RUNNING!"));
                     MissionOverride.DefenderGenerator.Run(__instance.PlayerEnemyTeam, true);

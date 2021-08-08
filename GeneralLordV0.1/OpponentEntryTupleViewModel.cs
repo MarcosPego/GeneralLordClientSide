@@ -48,7 +48,7 @@ namespace GeneralLord
 			Serializer.JsonSerialize(_profile, "enemyProfile.json");
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
 
-			if(_profile.SelectedFormation != -1)
+			if(false && _profile.SelectedFormation != -1)
             {
 				EnemyFormationHandler.EnemySelectedFormation = _profile.SelectedFormation;
 
@@ -99,6 +99,8 @@ namespace GeneralLord
 						OpponentPartyHandler.PreBattleTroopRoster,
 						OpponentPartyHandler.CurrentOpponentParty.Position2D,
 						0);
+
+			JsonBattleConfig.copyOfTroopRosterPreviousToBattle = PartyBase.MainParty.MemberRoster.GetTroopRoster();
 
 			PlayerEncounter.Start();
 

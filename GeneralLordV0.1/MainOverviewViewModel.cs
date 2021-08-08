@@ -57,7 +57,7 @@ namespace GeneralLord
 			this.RenownCost = PartyCapacityLogicHandler.BuyRenownPrice.ToString();
 			this.TrainCost = PartyCapacityLogicHandler.TrainStewardship.ToString();
 
-
+			this.TimeUntilRecovery = new TextObject("{=ATTimeUntilRecovery} Time until next group recovery: ", null).ToString();
 
 
 			//PartyBase.MainParty.MemberRoster.GetTroopRoster()
@@ -70,6 +70,21 @@ namespace GeneralLord
 		{
 			base.RefreshValues();
 			_mainManagerViewModel.RefreshValues();
+
+
+            if (PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.Any())
+            {
+				WoundedTroopGroup woundedTroopGroup = PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.First();
+				this.RecoveryCount = woundedTroopGroup.totalWoundedTroops.ToString();
+				this.Timer = (woundedTroopGroup.timeUntilRecovery - DateTime.Now).ToString();
+            }
+            else
+            {
+				this.RecoveryCount = new TextObject("{=ATRecoveryCount} All Troops are fully healed! ", null).ToString();
+				this.Timer = "";
+			}
+
+
 			this.SelectMainHero();
 			this.Name = this.Party.Name.ToString();
 			this.SkillsText = GameTexts.FindText("str_skills", null).ToString();
@@ -948,7 +963,63 @@ namespace GeneralLord
 		}
 
 
+
+		[DataSourceProperty]
+		public string TimeUntilRecovery
+		{
+			get
+			{
+				return this._timeUntilRecovery;
+			}
+			set
+			{
+				if (value != this._timeUntilRecovery)
+				{
+					this._timeUntilRecovery = value;
+					base.OnPropertyChangedWithValue(value, "TimeUntilRecovery");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string RecoveryCount
+		{
+			get
+			{
+				return this._recoveryCount;
+			}
+			set
+			{
+				if (value != this._recoveryCount)
+				{
+					this._recoveryCount = value;
+					base.OnPropertyChangedWithValue(value, "RecoveryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string Timer
+		{
+			get
+			{
+				return this._timer;
+			}
+			set
+			{
+				if (value != this._timer)
+				{
+					this._timer = value;
+					base.OnPropertyChangedWithValue(value, "Timer");
+				}
+			}
+		}
 		public PartyBase Party { get; }
+
+
+		private string _timeUntilRecovery;
+		private string _recoveryCount;
+		private string _timer;
 
 
 		public MapSelectionGroupVM MapSelectionGroup { get; }

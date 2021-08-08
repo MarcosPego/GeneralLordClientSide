@@ -84,6 +84,7 @@
     <Compile Include="CharacterHandler.cs" />
     <Compile Include="CharacterTierHandler.cs" />
     <Compile Include="Client\Model\MatchHistory.cs" />
+    <Compile Include="Client\Model\PartyUtils.cs" />
     <Compile Include="Client\Model\ProfileHandler.cs" />
     <Compile Include="Client\Model\Serializer.cs" />
     <Compile Include="BattleGeneralConfig.cs" />
@@ -92,6 +93,9 @@
     <Compile Include="Client\Model\ArmyContainer.cs" />
     <Compile Include="Client\Model\Profile.cs" />
     <Compile Include="Client\Model\TroopContainer.cs" />
+    <Compile Include="Client\Model\WoundedTroop.cs" />
+    <Compile Include="Client\Model\WoundedTroopArmy.cs" />
+    <Compile Include="Client\Model\WoundedTroopGroup.cs" />
     <Compile Include="Client\Strings\StringExtensions.cs" />
     <Compile Include="Client\Web\Constants\KnownContentSerializers.cs" />
     <Compile Include="Client\Web\Constants\KnownContentSerializersExtensions.cs" />
@@ -149,6 +153,7 @@
     <Compile Include="PartyManagerScreen.cs" />
     <Compile Include="PartyManagerViewModel.cs" />
     <Compile Include="PartyScreenState.cs" />
+    <Compile Include="PartyUtilsHandler.cs" />
     <Compile Include="RecruitmentManager.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

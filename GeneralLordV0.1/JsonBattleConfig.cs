@@ -1,7 +1,9 @@
-﻿using GeneralLord.FormationBattleTest;
+﻿
+using GeneralLord.FormationBattleTest;
 using GeneralLordWebApiClient;
 using GeneralLordWebApiClient.Model;
 using Helpers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -26,7 +28,9 @@ namespace GeneralLord
 
 		public static float healingRatio = 0.5f;
 
+		public static List<TroopRosterElement> copyOfTroopRosterPreviousToBattle = new List<TroopRosterElement>();
 
+		public static int recoveryCooldown = 3;
 
 		public static List<TooltipProperty> GetPartyTroopInfo(TroopRoster troopRoster, FormationClass formationClass)
 		{
@@ -73,6 +77,22 @@ namespace GeneralLord
 			ExecuteSubmitAc();
 		}
 
+		public static void ExecuteSubmitPartyUtils()
+		{
+			JObject json = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
+
+			string woundedTroopGroupString = JsonConvert.SerializeObject(PartyUtilsHandler.WoundedTroopArmy);
+			string garrisonedTroopsString = JsonConvert.SerializeObject(PartyUtilsHandler.GarrisonedTroops);
+
+			PartyUtils partyUtils = new PartyUtils { WoundedTroopsGroup = woundedTroopGroupString, GarrisonedTroops = "", Id = (int)json["Id"] };
+
+
+			var t = Task.Run(async () =>
+			{	
+				var result = await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.SubmitPartyUtils), partyUtils);
+			});
+			t.Wait();
+		}
 
 		public static void ExecuteSubmitAc()
 		{
@@ -104,6 +124,27 @@ namespace GeneralLord
 
 			//SAVE GAME
 			Campaign.Current.SaveHandler.QuickSaveCurrentGame();
+		}
+
+		public static void ReceivePartyUtils()
+        {
+			IEnumerable<PartyUtils> partyUtilsList;
+			var task = Task.Run(async () =>
+			{
+
+				Profile profile = ProfileHandler.UpdateProfileAc();
+				var result = await WebRequests.PostAsync<IEnumerable<PartyUtils>>(UrlHandler.GetUrlFromString(UrlHandler.GetPartyUtils), profile.Id);
+				partyUtilsList = result.ServerResponse;
+
+                if (partyUtilsList.Any())
+                {
+					PartyUtils partyUtils = partyUtilsList.First();
+					PartyUtilsHandler.GarrisonedTroops = JsonConvert.DeserializeObject<TroopRoster>(partyUtils.GarrisonedTroops);
+					PartyUtilsHandler.WoundedTroopArmy = JsonConvert.DeserializeObject<WoundedTroopArmy>(partyUtils.WoundedTroopsGroup);
+
+				}
+			});
+			task.Wait();
 		}
 
 		/*public static void ExecuteSubmit()
@@ -205,44 +246,80 @@ namespace GeneralLord
 			JObject json = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["ArmyContainer"]);
 
-			foreach (TroopContainer tc in ac.TroopContainers)
+			WoundedTroopGroup woundedTroopGroup = new WoundedTroopGroup();
+			woundedTroopGroup.timeUntilRecovery = DateTime.Now.AddHours(recoveryCooldown);
+			foreach (TroopRosterElement tc in copyOfTroopRosterPreviousToBattle)
 			{
-				if (tc.stringId != "main_hero")
+				if (tc.Character.StringId != "main_hero")
 				{
-					CharacterObject characterObject = CharacterObject.Find(tc.stringId);
-					if(PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject) == -1)
-                    {
-						int troopsToRecover = (int) healingRatio * tc.troopCount;
-						int downedTroops = tc.troopCount - troopsToRecover;
+					CharacterObject characterObject = CharacterObject.Find(tc.Character.StringId);
+
+					int healthyNumber = tc.Number - tc.WoundedNumber;
+
+					//InformationManager.DisplayMessage(new InformationMessage("Total Previous : " + tc.Number +" Healthy Previous : "+ healthyNumber + " Wounded Previous: " + tc.WoundedNumber));
+
+					if (PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject) == -1)
+					{
+						int troopsToRecover = (int)(healingRatio * healthyNumber);
+						int downedTroops = healthyNumber - troopsToRecover;
 
 
 						PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
 						PartyBase.MainParty.AddMember(characterObject, downedTroops, downedTroops);
 
+						if (downedTroops > 0)
+						{
+							WoundedTroop woundedTroop = new WoundedTroop { stringId = tc.Character.StringId, troopCount = downedTroops };
+							woundedTroopGroup.woundedTroops.Add(woundedTroop);
+							woundedTroopGroup.totalWoundedTroops += downedTroops;
+						}
+						
+						//InformationManager.DisplayMessage(new InformationMessage("Character" + characterObject.Name + " recovered and lost:" + troopsToRecover + "; " + downedTroops));
 					}
                     else
                     {
 						int index1 = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
 
-						int dead = tc.troopCount - PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject);
-						int wounded = PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1);
+						int numberThatWentToBattle = tc.Number - tc.WoundedNumber;
+						int woundedInBattle = PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1) - tc.WoundedNumber;
 
-						int troopsToRecover = (int)healingRatio * (dead + wounded);
-						int downedTroops = tc.troopCount - troopsToRecover;
+						//int survingHealthySoldiers = PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject) - PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1);
+						int deadSoldiers = numberThatWentToBattle - PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject);
+						int woundedSoldiers = PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1) - tc.WoundedNumber;
 
-						PartyBase.MainParty.MemberRoster.WoundTroop(characterObject, -wounded);
+						//int dead = healthyNumber - (PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject) - PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1));
+
+						//InformationManager.DisplayMessage(new InformationMessage("Previous Wounded :" +  tc.WoundedNumber + " Wounded :" + woundedSoldiers + " Dead :" + deadSoldiers));
+
+						//InformationManager.DisplayMessage(new InformationMessage("Current Wounded :" + PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1) + " Current Alive :" + PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject)));
+
+						int troopsToRecover = (int) (healingRatio * (deadSoldiers + woundedSoldiers));
+						int downedTroops = (deadSoldiers + woundedSoldiers) - troopsToRecover;
+
+						//PartyBase.MainParty.MemberRoster.WoundTroop(characterObject, -woundedSoldiers);
+						PartyBase.MainParty.MemberRoster.AddToCounts(characterObject, -woundedSoldiers, false, -woundedSoldiers, 0, true, -1);
+
+						//InformationManager.DisplayMessage(new InformationMessage("Post change --- Current Wounded :" + PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1) + " Current Alive :" + PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject)));
+
 						PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
 						PartyBase.MainParty.AddMember(characterObject, downedTroops, downedTroops);
 
+						if (downedTroops > 0)
+						{
+							WoundedTroop woundedTroop = new WoundedTroop { stringId = tc.Character.StringId, troopCount = downedTroops};
+							woundedTroopGroup.woundedTroops.Add(woundedTroop);
+							woundedTroopGroup.totalWoundedTroops += downedTroops;
+						}
+
+						//InformationManager.DisplayMessage(new InformationMessage("Character" + characterObject.Name + " recovered and lost:" + troopsToRecover+ "; " + downedTroops));
+
 					}
-
-					//int index = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
-					//PartyBase.MainParty.MemberRoster.SetElementXp(index, tc.troopXP + XpToUpdate());
-
-					//string wtf = "Char:" + characterObject.Name + " IndexFound:" + index.ToString();
-					//InformationManager.DisplayMessage(new InformationMessage(wtf));
 				}
 			}
+
+			PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.Add( woundedTroopGroup);
+
+			ExecuteSubmitPartyUtils();
 
 			//SAVE
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
