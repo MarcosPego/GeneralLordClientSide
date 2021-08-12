@@ -153,7 +153,7 @@ namespace GeneralLord
             {
                 Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
                 JsonBattleConfig.VerifyUniqueFile();
-                JsonBattleConfig.ReceivePartyUtils();
+                if(this._initializeState) JsonBattleConfig.ReceivePartyUtils();
                 this._partyManager = new PartyManager();
                 this._partyManagerLogic = new PartyManagerLogic();
                 this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());

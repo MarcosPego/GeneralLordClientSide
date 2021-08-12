@@ -27,6 +27,7 @@ using TaleWorlds.Localization;
 using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
 using GeneralLord.FormationBattleTest;
 using TaleWorlds.Core.ViewModelCollection;
+using System.Globalization;
 
 namespace GeneralLord
 {
@@ -75,13 +76,21 @@ namespace GeneralLord
             if (PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.Any())
             {
 				WoundedTroopGroup woundedTroopGroup = PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.First();
-				this.RecoveryCount = woundedTroopGroup.totalWoundedTroops.ToString();
-				this.Timer = (woundedTroopGroup.timeUntilRecovery - DateTime.Now).ToString();
-            }
+				RecoveryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetTroopsToRecoverInfo(woundedTroopGroup));
+				if (woundedTroopGroup.timeUntilRecovery <= DateTime.Now)
+                {
+					this.RecoveryCount = new TextObject("{=ATRecoveryCount}"+ woundedTroopGroup.totalWoundedTroops.ToString() + " will recover shortly!", null).ToString();
+					this.Timer = "";
+				} else
+                {
+					this.RecoveryCount = woundedTroopGroup.totalWoundedTroops.ToString();
+					this.Timer = (woundedTroopGroup.timeUntilRecovery - DateTime.Now).ToString(@"hh\:mm");
+				}
+            } 
             else
             {
-				this.RecoveryCount = new TextObject("{=ATRecoveryCount} All Troops are fully healed! ", null).ToString();
-				this.Timer = "";
+				this.RecoveryCount = "";
+				this.Timer = new TextObject("{=ATRecoveryCount} All Troops are fully healed! ", null).ToString();
 			}
 
 
@@ -613,6 +622,24 @@ namespace GeneralLord
 		}
 
 		[DataSourceProperty]
+		public BasicTooltipViewModel RecoveryHint
+		{
+			get
+			{
+				return this._recoveryHint;
+			}
+			set
+			{
+				if (value != this._recoveryHint)
+				{
+					this._recoveryHint = value;
+					base.OnPropertyChangedWithValue(value, "RecoveryHint");
+				}
+			}
+		}
+
+
+		[DataSourceProperty]
 		public BasicTooltipViewModel InfantryHint
 		{
 			get
@@ -1051,6 +1078,7 @@ namespace GeneralLord
 		private bool _exitOnSaveOver;
 		private MainManagerViewModel _mainManagerViewModel;
 
+		private BasicTooltipViewModel _recoveryHint;
 		private BasicTooltipViewModel _infantryHint;
 		private BasicTooltipViewModel _rangedHint;
 		private BasicTooltipViewModel _cavalryHint;

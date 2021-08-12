@@ -30,7 +30,7 @@ namespace GeneralLord
 
 		public static List<TroopRosterElement> copyOfTroopRosterPreviousToBattle = new List<TroopRosterElement>();
 
-		public static int recoveryCooldown = 3;
+		public static int recoveryCooldown = 30;
 
 		public static List<TooltipProperty> GetPartyTroopInfo(TroopRoster troopRoster, FormationClass formationClass)
 		{
@@ -60,6 +60,18 @@ namespace GeneralLord
 			return list;
 		}
 
+		public static List<TooltipProperty> GetTroopsToRecoverInfo(WoundedTroopGroup woundedTroopGroup)
+		{
+			List<TooltipProperty> list = new List<TooltipProperty>();
+			list.Add(new TooltipProperty("", "Troops To Recover", 0, false, TooltipProperty.TooltipPropertyFlags.Title));
+
+			foreach(WoundedTroop woundedTroop in woundedTroopGroup.woundedTroops)
+            {
+				list.Add(new TooltipProperty(CharacterObject.Find(woundedTroop.stringId).Name.ToString(), woundedTroop.troopCount.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			}
+			return list;
+		}
+
 		public static void VerifyUniqueFile()
         {
 			var filePath = Path.Combine(Serializer.SaveFolderPath(false), "uniqueid.txt");
@@ -81,10 +93,19 @@ namespace GeneralLord
 		{
 			JObject json = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
 
-			string woundedTroopGroupString = JsonConvert.SerializeObject(PartyUtilsHandler.WoundedTroopArmy);
-			string garrisonedTroopsString = JsonConvert.SerializeObject(PartyUtilsHandler.GarrisonedTroops);
+			List<TroopContainer> troopContainers = new List<TroopContainer>();
+			foreach (TroopRosterElement tre in PartyUtilsHandler.GarrisonedTroops.GetTroopRoster())
+			{
 
-			PartyUtils partyUtils = new PartyUtils { WoundedTroopsGroup = woundedTroopGroupString, GarrisonedTroops = "", Id = (int)json["Id"] };
+				troopContainers.Add(new TroopContainer { stringId = tre.Character.StringId, troopCount = tre.Number, troopXP = tre.Xp });
+
+			}
+			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = ""};
+
+			string woundedTroopGroupString = JsonConvert.SerializeObject(PartyUtilsHandler.WoundedTroopArmy);
+			string garrisonedTroopsString = JsonConvert.SerializeObject(ac);
+
+			PartyUtils partyUtils = new PartyUtils { WoundedTroopsGroup = woundedTroopGroupString, GarrisonedTroops = garrisonedTroopsString, Id = (int)json["Id"] };
 
 
 			var t = Task.Run(async () =>
@@ -139,7 +160,20 @@ namespace GeneralLord
                 if (partyUtilsList.Any())
                 {
 					PartyUtils partyUtils = partyUtilsList.First();
-					PartyUtilsHandler.GarrisonedTroops = JsonConvert.DeserializeObject<TroopRoster>(partyUtils.GarrisonedTroops);
+					ArmyContainer ac = JsonConvert.DeserializeObject<ArmyContainer>(partyUtils.GarrisonedTroops);
+
+
+					TroopRoster troopRoster = new TroopRoster(PartyBase.MainParty);
+					foreach (TroopContainer tc in ac.TroopContainers)
+					{
+						if (tc.stringId != "main_hero" && tc.stringId != "tutorial_npc_brother")
+						{
+							TryAddCharacterToRoster(troopRoster, tc.stringId, tc.troopCount);
+						}
+
+					}
+
+					PartyUtilsHandler.GarrisonedTroops = troopRoster;
 					PartyUtilsHandler.WoundedTroopArmy = JsonConvert.DeserializeObject<WoundedTroopArmy>(partyUtils.WoundedTroopsGroup);
 
 				}
@@ -181,32 +215,7 @@ namespace GeneralLord
 
 		public static void CommitGeneralLordPartyXP()
         {
-			/*int num = 0;
-			foreach (FlattenedTroopRosterElement troopRosterElement in PartyBase.MainParty.MemberRoster.ToFlattenedRoster())
-			{
-				CharacterObject troop = troopRosterElement.Troop;
-				bool flag = Campaign.Current.Models.PartyTroopUpgradeModel.CanTroopGainXp(PartyBase.MainParty, troop);
-				InformationManager.DisplayMessage(new InformationMessage(troopRosterElement.XpGained.ToString()));
-				if (!troopRosterElement.IsKilled && troopRosterElement.XpGained > 0 && flag)
-				{
-					int num2 = Campaign.Current.Models.PartyTrainingModel.CalculateXpGainFromBattles(troopRosterElement, PartyBase.MainParty);
-					InformationManager.DisplayMessage(new InformationMessage(num2.ToString()));
-					int num3 = Campaign.Current.Models.PartyTrainingModel.GenerateSharedXp(troop, num2, MobileParty.MainParty);
-					InformationManager.DisplayMessage(new InformationMessage(num2.ToString()));
-					if (num3 > 0)
-					{
-						num += num3;
-						num2 -= num3;
-					}
-					if (!troop.IsHero)
-					{
-						PartyBase.MainParty.MemberRoster.AddXpToTroop(num2, troop);
-					}
-				}
-			}
-			MobilePartyHelper.PartyAddSharedXp(MobileParty.MainParty, (float)num);*/
-
-			if (PlayerEncounter.Battle.BattleState == BattleState.AttackerVictory || PlayerEncounter.Battle.BattleState == BattleState.DefenderVictory)
+					if (PlayerEncounter.Battle.BattleState == BattleState.AttackerVictory || PlayerEncounter.Battle.BattleState == BattleState.DefenderVictory)
 			{
 				((PlayerEncounter.Battle.BattleState == BattleState.AttackerVictory) ? PlayerEncounter.Battle.AttackerSide : PlayerEncounter.Battle.DefenderSide).DistributeRenown(null, false);
 			}
@@ -247,7 +256,10 @@ namespace GeneralLord
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["ArmyContainer"]);
 
 			WoundedTroopGroup woundedTroopGroup = new WoundedTroopGroup();
-			woundedTroopGroup.timeUntilRecovery = DateTime.Now.AddHours(recoveryCooldown);
+
+			///woundedTroopGroup.timeUntilRecovery = DateTime.Now.AddHours(recoveryCooldown);
+			woundedTroopGroup.timeUntilRecovery = DateTime.Now.AddMinutes(recoveryCooldown);
+
 			foreach (TroopRosterElement tc in copyOfTroopRosterPreviousToBattle)
 			{
 				if (tc.Character.StringId != "main_hero")
@@ -303,6 +315,11 @@ namespace GeneralLord
 
 						PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
 						PartyBase.MainParty.AddMember(characterObject, downedTroops, downedTroops);
+
+						if(tc.Number != PartyBase.MainParty.MemberRoster.GetElementNumber(index1))
+                        {
+							PartyBase.MainParty.AddMember(characterObject, tc.Number - PartyBase.MainParty.MemberRoster.GetElementNumber(index1));
+						}
 
 						if (downedTroops > 0)
 						{

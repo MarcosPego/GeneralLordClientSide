@@ -23,7 +23,7 @@ namespace GeneralLord.HarmonyOverrides
         [HarmonyPatch("ExecuteTransferSingle")]
         class TransferSingleOverride
         {
-            static bool Prefix(PartyCharacterVM __instance)
+            static bool Prefix(PartyCharacterVM __instance, ref PartyVM ____partyVm)
             {
                 if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
                 {
@@ -33,12 +33,54 @@ namespace GeneralLord.HarmonyOverrides
                         InformationManager.DisplayMessage(new InformationMessage("Not Enough Money to recruit more"));
                         return false;
                     }*/
-
+                    //InformationManager.DisplayMessage(new InformationMessage("Wrong"));
                     return ValidateCommand(__instance);
 
                 }
+                else if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.GarrisonScreen)
+                {
+                    //InformationManager.DisplayMessage(new InformationMessage("Right Side"));
+
+
+                    int availableToTransfer = __instance.Troop.Number - __instance.Troop.WoundedNumber;
+
+                    int troopAmount = 1;
+
+                    if (availableToTransfer == 0)
+                    {
+                        troopAmount = 0;
+
+                    }
+
+                    if (Input.IsKeyDown(InputKey.LeftShift))
+                    {
+                        troopAmount = Math.Min(5, availableToTransfer);
+                    }
+
+                    if (Input.IsKeyDown(InputKey.LeftControl))
+                    {
+                        troopAmount = availableToTransfer;
+                    }
+
+                    __instance.OnTransfer(__instance, -1, troopAmount, __instance.Side);
+                    __instance.ThrowOnPropertyChanged();
+                    //__instance.ApplyTransfer(transferAmount, __instance.Side);
+                    if (__instance.Side == PartyScreenLogic.PartyRosterSide.Left && !__instance.IsPrisoner)
+                    {
+                        PartyCharacterVM partyCharacterVM = ____partyVm.MainPartyTroops.FirstOrDefault((PartyCharacterVM x) => x.Character == __instance.Character);
+                        if (partyCharacterVM != null)
+                        {
+                            partyCharacterVM.InitializeUpgrades();
+                        }
+                    }
+                    __instance.InitializeUpgrades();
+                    ____partyVm.ExecuteRemoveZeroCounts();
+
+                    return false;
+                }
                 else
                 {
+                    //InformationManager.DisplayMessage(new InformationMessage("Also Wrong"));
                     return true;
                 }
             }
@@ -56,7 +98,6 @@ namespace GeneralLord.HarmonyOverrides
                 }
             }
         }
-
 
         public static bool ValidateCommand(PartyCharacterVM __instance)
         {

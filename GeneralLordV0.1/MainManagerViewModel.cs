@@ -38,7 +38,7 @@ namespace GeneralLord
 
 			this._overviewText = new TextObject("{=ATOverviewText}Character", null).ToString();
 			this._partyText = new TextObject("{=ATPartyText}Party", null).ToString();
-			this._formationText = new TextObject("{=ATFormationText}Formation Manager", null).ToString();
+			this._formationText = new TextObject("{=ATFormationText}Garrison Manager", null).ToString();
 			this._recruitmentText = new TextObject("{=ATFormationText}Recruitment", null).ToString();
 			this._shopText = new TextObject("{=ATShopText}Shop", null).ToString();
 
@@ -96,9 +96,10 @@ namespace GeneralLord
 			}
 			if(value ==2)
             {
-				//ScreenManager.PopScreen();
+				ScreenManager.PopScreen();
 				//ScreenManager.PushScreen(new PartyManagerScreen(this._partyManagerLogic));
-				BattleTestHandler.OpenBattleTestMission();
+				PartyScreenState.currentState = PartyScreenStateEnum.GarrisonScreen;
+				PartyUtilsHandler.OpenGarrisonRoster();
 			}
 			if (value == 3)
 			{

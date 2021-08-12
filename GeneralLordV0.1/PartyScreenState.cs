@@ -18,6 +18,7 @@ namespace GeneralLord
     public enum PartyScreenStateEnum
     {
         RecruitmentScreen,
+        GarrisonScreen,
         NormalScreen
     }
 }

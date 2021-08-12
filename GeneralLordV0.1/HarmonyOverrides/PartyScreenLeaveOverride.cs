@@ -29,6 +29,10 @@ namespace GeneralLord.HarmonyOverrides
 
                     PartyScreenState.goldToChange = 0;
                     PartyScreenState.currentState = PartyScreenStateEnum.NormalScreen;
+                } else if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.GarrisonScreen)
+                {
+                    PartyScreenState.currentState = PartyScreenStateEnum.NormalScreen;
+
                 }
                 else
                 {
@@ -52,6 +56,13 @@ namespace GeneralLord.HarmonyOverrides
                         GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, PartyScreenState.goldToChange, false);
                         PartyScreenState.goldToChange = 0;
                         PartyScreenState.currentState = PartyScreenStateEnum.NormalScreen;
+                    }
+                    else if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.GarrisonScreen)
+                    {
+                        PartyScreenState.currentState = PartyScreenStateEnum.NormalScreen;
+
+                        JsonBattleConfig.ExecuteSubmitPartyUtils();
+                        JsonBattleConfig.ExecuteSubmitAc();
                     }
                     else
                     {

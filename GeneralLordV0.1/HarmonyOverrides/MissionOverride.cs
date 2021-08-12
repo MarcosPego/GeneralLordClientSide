@@ -52,7 +52,7 @@ namespace CunningLords.Patches
                     MissionOverride.IsPlanActive = false;
                     MissionOverride.AttackerGenerator = new PlanGenerator();
 
-                    if (EnemyFormationHandler.AttackSelectedFormation != -1)
+                    if (false && EnemyFormationHandler.AttackSelectedFormation != -1)
                     {
                         InputCommands IC = new InputCommands();
                         IC.ApplyPosition(__instance, EnemyFormationHandler.AttackSelectedFormation);
