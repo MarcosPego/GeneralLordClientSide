@@ -28,7 +28,7 @@
 		<Constant Name="Header.Tab.Right.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Height" />
 	</Constants>
 	<Window>
-		<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1000" SuggestedHeight="125" Brush="Clan.Item.Tuple" IsSelected="false">
+		<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1300" SuggestedHeight="130" Brush="Clan.Item.Tuple" IsSelected="false">
 			<Children>
 
 				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DoNotAcceptEvents="true">
@@ -48,24 +48,61 @@
 						-->
 
 						<!--Name-->
-						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="20" Brush="Clan.Tuple.Name.Text" Text="@Name" DoNotAcceptEvents="true" />
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="10" Brush="@OpponentNameBrush" Text="@Name" DoNotAcceptEvents="true" />
 
 						<!--Elo-->
 						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@Elo" DoNotAcceptEvents="true" />
 
 						<!--ArmyStrength-->
-						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@ArmyStrength" DoNotAcceptEvents="true" />
-
-						<!--TotalArmyCount-->
-						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="2" Brush="Clan.Tuple.Name.Text" Text="@TotalArmyCount" DoNotAcceptEvents="true" />
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Clan.Tuple.Name.Text" Text="@ArmyStrength" DoNotAcceptEvents="true" />
 
 
-						<!--Challenge Button-->
-						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginTop="32" MarginRight="30" Brush="Header.Tab.Center" Command.Click="ExecuteChallenge" UpdateChildrenStates="true">
+						<!--Troop Counts-->
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent"  MarginTop="50" StackLayout.LayoutMethod="HorizontalCentered">
 							<Children>
-								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Challenge" />
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="28" SuggestedWidth="80" DoNotPassEventsToChildren="true">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_infantry" />
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@InfantryCount" />
+										<HintWidget DataSource="{InfantryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+									</Children>
+								</Widget>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="28" SuggestedWidth="80" DoNotPassEventsToChildren="true">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_bow" />
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@RangedCount" />
+										<HintWidget DataSource="{RangedHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+									</Children>
+								</Widget>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="28" SuggestedWidth="80" DoNotPassEventsToChildren="true">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_cavalry" />
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@CavalryCount" />
+										<HintWidget DataSource="{CavalryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+									</Children>
+								</Widget>
+								<Widget WidthSitWidgzePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="28" SuggestedWidth="80" DoNotPassEventsToChildren="true">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="28" SuggestedHeight="28" Sprite="TroopTypeIcons\icon_troop_type_horse_archer" />
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HorseArcherCount" />
+										<HintWidget DataSource="{HorseArcherHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+									</Children>
+								</Widget>
 							</Children>
-						</ButtonWidget>
+						</ListPanel>
+						<!--TotalArmyCount-->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="10" Brush="Clan.Tuple.Name.Text" Text="@TotalArmyCount" DoNotAcceptEvents="true" />
+
+						<ListPanel WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" DoNotAcceptEvents="true"   StackLayout.LayoutMethod="HorizontalLeftToRight" PositionYOffset="6" MarginTop="32" MarginRight="30">
+							<Children>
+								<!--Challenge Button-->
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled"  Brush="Header.Tab.Center" Command.Click="ExecuteChallenge" UpdateChildrenStates="true" IsHidden="@IsChalleangeble" >
+									<Children>
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Challenge" />
+									</Children>
+								</ButtonWidget>
+							</Children>
+						</ListPanel>
 						<!--Hero Location Label
 						<TextWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginRight="10" Brush="Clan.Tuple.Location.Text" Text="@CurrentActionText" DoNotAcceptEvents="true"/>-->
 					</Children>

@@ -1,0 +1,996 @@
+﻿<Prefab>
+	<Constants>
+		<Constant Name="AT.MainWindow.MarginTop" Value="200" />
+		<Constant Name="AT.MainWindow.MarginLeft" Value="50" />
+		<Constant Name="AT.MainWindow.MarginBottom" Value="60" />
+		<Constant Name="AT.MainWindow.MarginRight" Value="150" />
+
+		<Constant Name="AT.Slider.Desc.Width" Value="450" />
+		<Constant Name="AT.Slider.Slider.Width" Value="400" />
+		<Constant Name="AT.Slider.Slider.Height" Value="55" />
+		<Constant Name="AT.Slider.Slider.MarginLeft" Value="20" />
+		<Constant Name="AT.Slider.Value.MarginLeft" Value="80" />
+		<Constant Name="AT.Slider.Default.MarginLeft" Value="20" />
+		<Constant Name="AT.Slider.DefaultValue.MarginLeft" Value="10" />
+
+		<Constant Name="AT.Check.Desc.Width" Value="250" />
+		<Constant Name="AT.Check.Height" Value="47" />
+		<Constant Name="AT.Check.Box.Width" Value="100" />
+		<Constant Name="AT.Check.Box.Width.Single" Value="200" />
+		<Constant Name="AT.Check.Box.MarginLeft" Value="40" />
+		<Constant Name="AT.Check.Box.MarginLeft.Header" Value="6" />
+
+
+		<Constant Name="AT.Heading.MarginTop" Value="20" />
+		<Constant Name="AT.Heading.MarginBottom" Value="12" />
+		<Constant Name="AT.Heading.Divider.Width" Value="500" />
+	</Constants>
+	<Window>
+		<Widget Id="Iterface Screen" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+			<Children>
+
+				<Standard.Background />
+
+				<!-- Left and Right container -->
+				<ListPanel Id="MainSectionListPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+					   HorizontalAlignment="Center" MarginTop="!AT.MainWindow.MarginTop" MarginBottom="!AT.MainWindow.MarginBottom"
+					   MarginLeft="!AT.MainWindow.MarginLeft" MarginRight="!AT.MainWindow.MarginRight" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+
+					<Children>
+						<Widget Id="CenterPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+							<Children>
+								<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" AutoHideScrollBarHandle="true" AutoHideScrollBars="false" ClipRect="MyClipRect" InnerPanel="MyClipRect\MainSectionListPanel" VerticalScrollbar="..\..\VerticalScrollbar">
+									<Children>
+										<Widget Id="MyClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true">
+											<Children>
+
+
+
+												<!-- Left -->
+												<ListPanel Id="MainSectionListPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Top">
+													<Children>
+														<!-- List top to down -->
+														<ListPanel Id="OuterList" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Top" LayoutImp.LayoutMethod="VerticalBottomToTop">
+															<Children>
+
+																<!--
+																<ListPanel Id="OuterList" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Top" LayoutImp.LayoutMethod="VerticalBottomToTop">
+																	<Children>
+
+
+																		<ListPanel LayoutImp.LayoutMethod="HorizontalLeftToRight" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" >
+																			<Children>
+																				<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" Text="Use Formation in F10" Brush="SPOptions.OptionName.Text"/>
+																				<ButtonWidget Command.Click="IsBoolF10Pressed" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40"
+																								HorizontalAlignment="Center" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@IsFormationF10Selected"
+																								ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
+																					<Children>
+																						<ImageWidget Id="ToggleIndicator" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPOptions.Checkbox.Full.Button"/>
+																					</Children>
+																				</ButtonWidget>
+																			</Children>
+																		</ListPanel>
+
+																		<ListPanel LayoutImp.LayoutMethod="HorizontalLeftToRight" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="15">
+																			<Children>
+																				<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren"  Text="Use Formation in F11" Brush="SPOptions.OptionName.Text"/>
+																				<ButtonWidget Command.Click="IsBoolF11Pressed" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40"
+																								HorizontalAlignment="Center" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@IsFormationF11Selected"
+																								ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
+																					<Children>
+																						<ImageWidget Id="ToggleIndicator" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPOptions.Checkbox.Full.Button"/>
+																					</Children>
+																				</ButtonWidget>
+																			</Children>
+																		</ListPanel>
+
+																		<ListPanel LayoutImp.LayoutMethod="HorizontalLeftToRight" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren"  MarginTop="15">
+																			<Children>
+																				<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" Text="Use Formation in F12" Brush="SPOptions.OptionName.Text"/>
+																				<ButtonWidget Command.Click="IsBoolF12Pressed" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40"
+																								HorizontalAlignment="Center" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@IsFormationF12Selected"
+																								ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
+																					<Children>
+																						<ImageWidget Id="ToggleIndicator" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPOptions.Checkbox.Full.Button"/>
+																					</Children>
+																				</ButtonWidget>
+																			</Children>
+																		</ListPanel>
+																	</Children>
+																</ListPanel>-->
+
+																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
+																	<Children>
+
+																		<Widget Id="CollapseParent" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="382" HorizontalAlignment="Right" UpdateChildrenStates="true">
+																			<Children>
+																				<TextWidget Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" Text="Prepare" ClipContents="false">
+																					<Children>
+																						<BrushWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
+																					</Children>
+																				</TextWidget>
+																			</Children>
+																		</Widget>
+
+																		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine"  />
+																	</Children>
+																</ListPanel> 
+
+																<!-- Infantry Prepare -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Infantry (I)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{InfantryPrepareText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{InfantryPrepare}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Archers Prepare -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Archers (II)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{ArchersPrepareText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{ArchersPrepare}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Cavalry Prepare -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Cavalry (III)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{CavalryPrepareText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{CavalryPrepare}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HorseArchers Prepare -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Horse Archers (IV)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HorseArchersPrepareText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HorseArchersPrepare}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Skirmishers Prepare -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Skirmishers (V)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{SkirmishersPrepareText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{SkirmishersPrepare}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyInfantry Prepare -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Infantry (VI)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyInfantryPrepareText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyInfantryPrepare}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- LightCavalry Prepare -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Light Cavalry (VII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{LightCavalryPrepareText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{LightCavalryPrepare}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyCavalry Prepare -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Cavalry (VIII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyCavalryPrepareText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyCavalryPrepare}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Prepare End -->
+
+																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
+																	<Children>
+
+																		<Widget Id="CollapseParent" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="382" HorizontalAlignment="Right" UpdateChildrenStates="true">
+																			<Children>
+																				<TextWidget Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" Text="Ranged" ClipContents="false">
+																					<Children>
+																						<BrushWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
+																					</Children>
+																				</TextWidget>
+																			</Children>
+																		</Widget>
+
+																		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine"  />
+																	</Children>
+																</ListPanel>
+
+																<!-- Infantry Ranged -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Infantry (I)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{InfantryRangedText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{InfantryRanged}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Archers Ranged -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Archers (II)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{ArchersRangedText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{ArchersRanged}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Cavalry Ranged -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Cavalry (III)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{CavalryRangedText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{CavalryRanged}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HorseArchers Ranged -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Horse Archers (VIII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HorseArchersRangedText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HorseArchersRanged}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Skirmishers Ranged -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Skirmishers (V)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{SkirmishersRangedText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{SkirmishersRanged}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyInfantry Ranged -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Infantry (VI)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyInfantryRangedText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyInfantryRanged}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- LightCavalry Ranged -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Light Cavalry (VII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{LightCavalryRangedText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{LightCavalryRanged}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyCavalry Ranged -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Cavalry (VIII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyCavalryRangedText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyCavalryRanged}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Ranged End -->
+
+																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
+																	<Children>
+
+																		<Widget Id="CollapseParent" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="382" HorizontalAlignment="Right" UpdateChildrenStates="true">
+																			<Children>
+																				<TextWidget Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" Text="Engage" ClipContents="false">
+																					<Children>
+																						<BrushWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
+																					</Children>
+																				</TextWidget>
+																			</Children>
+																		</Widget>
+
+																		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine"  />
+																	</Children>
+																</ListPanel>
+
+																<!-- Infantry Engage -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Infantry (I)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{InfantryEngageText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{InfantryEngage}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Archers Engage -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Archers (II)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{ArchersEngageText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{ArchersEngage}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Cavalry Engage -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Cavalry (III)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{CavalryEngageText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{CavalryEngage}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HorseArchers Engage -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Horse Archers (IV)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HorseArchersEngageText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HorseArchersEngage}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Skirmishers Engage -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Skirmishers (V)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{SkirmishersEngageText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{SkirmishersEngage}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyInfantry Engage -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Infantry (VI)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyInfantryEngageText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyInfantryEngage}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- LightCavalry Engage -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Light Cavalry (VII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{LightCavalryEngageText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{LightCavalryEngage}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyCavalry Engage -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Cavalry (VIII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyCavalryEngageText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyCavalryEngage}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Engage End -->
+
+																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
+																	<Children>
+
+																		<Widget Id="CollapseParent" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="382" HorizontalAlignment="Right" UpdateChildrenStates="true">
+																			<Children>
+																				<TextWidget Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" Text="Winning" ClipContents="false">
+																					<Children>
+																						<BrushWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
+																					</Children>
+																				</TextWidget>
+																			</Children>
+																		</Widget>
+
+																		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine"  />
+																	</Children>
+																</ListPanel>
+
+																<!-- Infantry Winning -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Infantry (I)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{InfantryWinningText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{InfantryWinning}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Archers Winning -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Archers (II)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{ArchersWinningText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{ArchersWinning}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Cavalry Winning -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Cavalry (III)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{CavalryWinningText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{CavalryWinning}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HorseArchers Winning -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Horse Archers (IV)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HorseArchersWinningText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HorseArchersWinning}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Skirmishers Winning -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Skirmishers (V)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{SkirmishersWinningText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{SkirmishersWinning}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyInfantry Winning -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Infantry (VI)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyInfantryWinningText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyInfantryWinning}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- LightCavalry Winning -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Light Cavalry (VII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{LightCavalryWinningText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{LightCavalryWinning}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyCavalry Winning -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Cavalry (VIII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyCavalryWinningText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyCavalryWinning}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Winning End -->
+
+																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
+																	<Children>
+
+																		<Widget Id="CollapseParent" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="382" HorizontalAlignment="Right" UpdateChildrenStates="true">
+																			<Children>
+																				<TextWidget Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" Text="Losing" ClipContents="false">
+																					<Children>
+																						<BrushWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
+																					</Children>
+																				</TextWidget>
+																			</Children>
+																		</Widget>
+
+																		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine"  />
+																	</Children>
+																</ListPanel>
+
+																<!-- Infantry Losing -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Infantry (I)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{InfantryLosingText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{InfantryLosing}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Archers Losing -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Archers (II)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{ArchersLosingText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{ArchersLosing}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Cavalry Losing -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Cavalry (III)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{CavalryLosingText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{CavalryLosing}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HorseArchers Losing -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Horse Archers (IV)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HorseArchersLosingText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HorseArchersLosing}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Skirmishers Losing -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Skirmishers (V)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{SkirmishersLosingText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{SkirmishersLosing}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyInfantry Losing -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Infantry (VI)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyInfantryLosingText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyInfantryLosing}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- LightCavalry Losing -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Light Cavalry (VII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{LightCavalryLosingText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{LightCavalryLosing}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- HeavyCavalry Losing -->
+
+																<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																	<Children>
+
+																		<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Heavy Cavalry (VIII)"/>
+
+																		<ListPanel LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginTop="15">
+																			<Children>
+																				<RichTextWidget DataSource="{HeavyCavalryLosingText}" Text="@Text" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Value.Text" />
+																				<Standard.DropdownWithHorizontalControl HorizontalAlignment="Left" Parameter.SelectorDataSource="{HeavyCavalryLosing}" />
+																			</Children>
+																		</ListPanel>
+
+																	</Children>
+																</ListPanel>
+
+																<!-- Losing End -->
+
+															</Children>
+														</ListPanel>
+
+													</Children>
+												</ListPanel>
+
+
+
+
+
+											</Children>
+										</Widget>
+
+										<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="150" VerticalAlignment="Bottom" Sprite="StdAssets\Popup\scrollable_field_gradient" IsEnabled="false" />
+
+									</Children>
+								</ScrollablePanel>
+							</Children>
+						</Widget>
+
+						<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="8" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="26" MarginBottom="85" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+							<Children>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="MPLobby\CustomServer\lobby_slider_bed" AlphaFactor="0.4" />
+								<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+							</Children>
+						</ScrollbarWidget>
+						<!-- Right -->
+
+						<ListPanel Id="MainSectionListPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren"  HorizontalAlignment="Right" VerticalAlignment="Top">
+							<Children>
+
+
+								<Widget Id="CenterPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+									<Children>
+										<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" AutoHideScrollBarHandle="true" AutoHideScrollBars="false" ClipRect="MyClipRect" InnerPanel="MyClipRect\OuterList" VerticalScrollbar="..\..\VerticalScrollbar">
+											<Children>
+												<Widget Id="MyClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true">
+													<Children>
+
+
+
+														<ListPanel Id="OuterList" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Top" LayoutImp.LayoutMethod="VerticalBottomToTop">
+															<Children>
+
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Here you can pre define a battle plan which can then be used by pressing PgUp during a battle. There are five phases to a battle:" Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="You can give new orders during the plan execution and that specific formation will disregard the plan from that point onward to follow your new command." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Prepare - Battle start before any sort of engagement." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Ranged - Marks the start of the engagement between ranged units." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Engage - From the moment troops are at a close distance (20 meters) to a few moments after they engage in melee." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Winning/Losing - At some point in the battle your troops will know whether they're winning or losing and will act accordingly." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Below you can find a list of all possibly orders:" Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Charge - your troops will advance at full speed torwards the enemy." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Hold Position - Your troops will remain in a defensible position close to where they stand." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Flank - your troops will position themselves to the side of the enemy party." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Skirmish - your troops will try to maintain a certain distance from the enemy." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Hide Behind - your troops will hide behind the main formation (Infantry I)." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Protect Flank - your troops will position themselves to the side of your main party." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Advance - your troops will advance torwards the enemy." Brush="SPOptions.OptionName.Text"/>
+																<RichTextWidget WidthSizePolicy = "StretchToParent" HeightSizePolicy = "CoverChildren" MarginLeft="5" MarginRight="5" MarginTop="20" Text="Cautious Advance - your troops will start a slow and careful advance torwards the enemy." Brush="SPOptions.OptionName.Text"/>
+
+															</Children>
+														</ListPanel>
+
+
+													</Children>
+												</Widget>
+
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="150" VerticalAlignment="Bottom" Sprite="StdAssets\Popup\scrollable_field_gradient" IsEnabled="false" />
+
+											</Children>
+										</ScrollablePanel>
+									</Children>
+								</Widget>
+
+								<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="8" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="26" MarginBottom="85" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="MPLobby\CustomServer\lobby_slider_bed" AlphaFactor="0.4" />
+										<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+									</Children>
+								</ScrollbarWidget>
+
+
+							</Children>
+						</ListPanel>
+					</Children>
+				</ListPanel>
+
+				<!-- Header -->
+				<Standard.TopPanel Parameter.Title="@PlanTitle">
+					<Children>
+						<ListPanel DoNotAcceptEvents="false" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginTop="60" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+							<Children>
+								<!--<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="!AT.Check.Height" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+                  <Children>
+
+                    <RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!AT.Slider.Desc.Width" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Text="Cunning Lords AI Active" />
+
+                    <Widget Id="BooleanOption" WidthSizePolicy="Fixed" SuggestedWidth="!AT.Slider.Slider.Width" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" IsVisible="true" UpdateChildrenStates="true">
+                      <Children>
+                        <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@CunningLordsAIActive" ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
+                          <Children>
+                            <ImageWidget Id="ToggleIndicator" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPOptions.Checkbox.Full.Button" />
+                          </Children>
+                        </ButtonWidget>
+                      </Children>
+                    </Widget>
+
+                  </Children>
+                </ListPanel>-->
+							</Children>
+						</ListPanel>
+					</Children>
+				</Standard.TopPanel>
+
+				<!-- Done/ Close Buttons -->
+				<Standard.DialogCloseButtons Parameter.CancelButtonAction="ExecuteCancel" Parameter.CancelButtonText="@CancelText" Parameter.DoneButtonAction="ExecuteDone" Parameter.DoneButtonText="@DoneText" />
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

@@ -1,0 +1,43 @@
+<Brushes>
+	<Brush Name="NameTitle.LargeGreen"  Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#00FF7FFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="30" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="NameTitle.LargeRed"  Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#FE3409FF" TextOutlineAmount="0" TextGlowRadius="0.3" TextBlur="0.1" TextShadowOffset="0" TextShadowAngle="60" TextGlowColor="#00000055" FontSize="30" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="NameTitle.Green"  Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#00FF7FFF" TextOutlineAmount="0" TextGlowRadius="0.3" TextBlur="0.1" TextShadowOffset="0" TextShadowAngle="60" TextGlowColor="#00000055" FontSize="24" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="NameTitle.Red"  Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#FE3409FF" TextOutlineAmount="0" TextGlowRadius="0.3" TextBlur="0.1" TextShadowOffset="0" TextShadowAngle="60" TextGlowColor="#00000055" FontSize="24" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="NameTitle.Highlight"  Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#FCC200FF" TextOutlineAmount="0" TextGlowRadius="0.3" TextBlur="0.1" TextShadowOffset="0" TextShadowAngle="60" TextGlowColor="#00000055" FontSize="24" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="NameTitle.Versus"  Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#A0522DFF" TextOutlineAmount="0.0" TextGlowRadius="0.3" TextBlur="0.1" TextShadowOffset="0" TextShadowAngle="60" TextGlowColor="#00000055" FontSize="48" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="NameTitle.LargerDefault"  Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#C6AC8DFF" TextOutlineAmount="0" TextGlowRadius="0.3" TextBlur="0.1" TextShadowOffset="0" TextShadowAngle="60" TextGlowColor="#00000055" FontSize="30" />
+		</Styles>
+	</Brush>
+</Brushes>

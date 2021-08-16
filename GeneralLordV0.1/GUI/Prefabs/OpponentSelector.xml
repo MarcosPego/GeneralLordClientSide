@@ -35,20 +35,28 @@
 
 		<Constant Name="Header.Tab.Right.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Width" />
 		<Constant Name="Header.Tab.Right.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Height" />
+		<Constant Name="SidePanel.ScrollablePanel.MarginTop" Value="48" />
+		<Constant Name="Inventory.SidePanel.SortTextYOffset" Value="-3" />
 	</Constants>
+
+	<VisualDefinitions>
+		<VisualDefinition Name="ButtonText" TransitionDuration = "0.0">
+			<VisualState State="Default" PositionXOffset="0" PositionYOffset="-2" />
+			<VisualState State="Pressed" PositionXOffset="0" PositionYOffset="-1" />
+		</VisualDefinition>
+	</VisualDefinitions>
 	<Window>
 		<Widget Id="ClanMembersWidget" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="true">
 			<Children>
 				<Standard.Background />
-				
-				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalRightToLeft">
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="120" StackLayout.LayoutMethod="VerticalTopToBottom">
 					<Children>
 						<!--Left Panel-->
-						<BrushListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" VerticalAlignment="Bottom" MarginRight="500" MarginTop="6" MarginBottom="9" Brush="Frame1Brush" StackLayout.LayoutMethod="VerticalBottomToTop">
+						<BrushListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" VerticalAlignment="Bottom"   MarginTop="6" MarginBottom="9" Brush="Frame1Brush" StackLayout.LayoutMethod="VerticalBottomToTop">
 							<Children>
 
 
-							<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent">
+							<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight">
 								<Children>
 
 									<ScrollablePanel Id="ClanElementsScrollablePanel" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="3" MarginBottom="3" AutoHideScrollBars="true" ClipRect="ClanElementsRect" InnerPanel="ClanElementsRect\ClanElementsListPanel" MouseScrollAxis="Vertical" VerticalScrollbar="..\ClanElementsScrollbar\Scrollbar">
@@ -61,7 +69,7 @@
 														<Children>
 
 															<!--Opponent Toggle Button-->
-															<ToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1000" SuggestedHeight="!Clan.Management.Collapser.Height" HorizontalAlignment="Left" VerticalAlignment="Top" Brush="Clan.Management.Collapser" RenderLate="true" WidgetToClose="..\OpponentList">
+															<ToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1300" SuggestedHeight="!Clan.Management.Collapser.Height" HorizontalAlignment="Left" VerticalAlignment="Top" Brush="Clan.Management.Collapser" RenderLate="true" WidgetToClose="..\OpponentList">
 																<Children>
 																	<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Clan.Management.Collapser.Text" Text="Available Opponents" />
 																</Children>
@@ -85,18 +93,148 @@
 									</ScrollablePanel>
 
 									<Standard.VerticalScrollbar Id="ClanElementsScrollbar" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" VerticalAlignment="Bottom" MarginLeft="2" MarginRight="2" MarginBottom="3" />
+
+									
 								</Children>
 							</ListPanel>
 
-				</Children>
-				</BrushListPanel>
+						</Children>
+						</BrushListPanel>
 
+						<!--Headers-->
+						<ListPanel DataSource="{OppenentSortController}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="52" RenderLate="true">
+							<Children>
+
+
+								<SortButtonWidget DoNotPassEventsToChildren="true" SuggestedWidth="200" SuggestedHeight="50" VerticalAlignment="Center" Brush="Inventory.SidePanel.NameSort.Left" Command.Click="ExecuteSortByName" IsSelected="@IsNameSelected" SortState="@NameState" SortVisualWidget="NameSortVisualWidget" UpdateChildrenStates="true">
+									<Children>
+										<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="!Inventory.SidePanel.SortTextYOffset" Brush="InventoryDefaultFontBrush" ClipContents="false" Text="@NameSortText" />
+										<BrushWidget Id="NameSortVisualWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="20" HorizontalAlignment="Right" VerticalAlignment="Center" PositionYOffset="!Inventory.SidePanel.SortTextYOffset" PositionXOffset="!Inventory.SidePanel.SortTextYOffset" Brush="Inventory.SortArrow" />
+									</Children>
+								</SortButtonWidget>
+
+								<SortButtonWidget DoNotPassEventsToChildren="true" SuggestedWidth="200" SuggestedHeight="50" VerticalAlignment="Center" Brush="Inventory.SidePanel.NameSort.Left" Command.Click="ExecuteSortByElo" IsSelected="@IsEloSelected" SortState="@EloState" SortVisualWidget="EloSortVisualWidget" UpdateChildrenStates="true">
+									<Children>
+										<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="!Inventory.SidePanel.SortTextYOffset" Brush="InventoryDefaultFontBrush" ClipContents="false" Text="@EloSortText" />
+										<BrushWidget Id="EloSortVisualWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="20" HorizontalAlignment="Right" VerticalAlignment="Center" PositionYOffset="!Inventory.SidePanel.SortTextYOffset" PositionXOffset="!Inventory.SidePanel.SortTextYOffset" Brush="Inventory.SortArrow" />
+									</Children>
+								</SortButtonWidget>
+
+								<SortButtonWidget DoNotPassEventsToChildren="true" SuggestedWidth="200" SuggestedHeight="50" VerticalAlignment="Center" Brush="Inventory.SidePanel.NameSort.Left" Command.Click="ExecuteSortByTroopStrength" IsSelected="@IsTroopStrengthSelected" SortState="@TroopStrengthState" SortVisualWidget="TroopStrengthSortVisualWidget" UpdateChildrenStates="true">
+									<Children>
+										<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="!Inventory.SidePanel.SortTextYOffset" Brush="InventoryDefaultFontBrush" ClipContents="false" Text="@TroopStrengthSortText" />
+										<BrushWidget Id="TroopStrengthSortVisualWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="20" HorizontalAlignment="Right" VerticalAlignment="Center" PositionYOffset="!Inventory.SidePanel.SortTextYOffset" PositionXOffset="!Inventory.SidePanel.SortTextYOffset" Brush="Inventory.SortArrow" />
+									</Children>
+								</SortButtonWidget>
+
+								<SortButtonWidget DoNotPassEventsToChildren="true" SuggestedWidth="200" SuggestedHeight="50" VerticalAlignment="Center" Brush="Inventory.SidePanel.NameSort.Left" Command.Click="ExecuteSortByTroop" IsSelected="@IsTroopSelected" SortState="@TroopState" SortVisualWidget="TroopSortVisualWidget" UpdateChildrenStates="true">
+									<Children>
+										<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="!Inventory.SidePanel.SortTextYOffset" Brush="InventoryDefaultFontBrush" ClipContents="false" Text="@TroopSortText" />
+										<BrushWidget Id="TroopSortVisualWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="20" HorizontalAlignment="Right" VerticalAlignment="Center" PositionYOffset="!Inventory.SidePanel.SortTextYOffset" PositionXOffset="!Inventory.SidePanel.SortTextYOffset" Brush="Inventory.SortArrow" />
+									</Children>
+								</SortButtonWidget>
+
+							</Children>
+						</ListPanel>
+						<!--
+						<Widget WidthSizePolicy = "StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" VerticalAlignment="Bottom" Sprite="Inventory\dropshadow_for_header" VerticalFlip="true" IsDisabled="true"/>
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" VerticalAlignment="Top" MarginTop="!SidePanel.ScrollablePanel.MarginTop" Sprite="Inventory\dropshadow_for_header" IsDisabled="true"/>-->
 					</Children>
 				</ListPanel>
 
 
-				<!--Close Screen Button				-->
+				<!--Player Profile Information-->
+				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalRightToLeft" PositionXOffset="1500" MarginTop="150" MarginRight="25">
+					<Children>
+						<ListPanel SuggestedWidth="300" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" MarginRight="20" StackLayout.LayoutMethod="VerticalBottomToTop">
+							<Children>
 
+								<!--Name-->
+								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" Brush="Clan.RightPanel.Name.Text" Brush.TextHorizontalAlignment="Center" Text="@Name" />
+
+
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" DoNotPassEventsToChildren="true" MarginTop="10">
+									<Children>
+										<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+											<Children>
+												<!--Elo Label-->
+												<TextWidget VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Text="@EloText" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+												<TextWidget VerticalAlignment="Center" MarginLeft="20" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Text="@Elo" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+
+											</Children>
+										</ListPanel>
+									</Children>
+								</Widget>			
+								
+								<!--Party Size-->
+								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" Text="@PartySizeSubTitleText"/>
+
+
+								
+								<!--Battle Ready Troops-->
+								<TextWidget  WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" Text="Battle Ready Troops: "/>
+
+								<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="true">
+									<Children>
+										<!--Troop Counts-->
+										<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="5" MarginTop="10" MarginBottom="0" StackLayout.LayoutMethod="HorizontalCentered">
+											<Children>
+												<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="28" SuggestedWidth="80" DoNotPassEventsToChildren="true">
+													<Children>
+														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_infantry" />
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HealthyInfantryCount" />
+														<HintWidget DataSource="{HealthyInfantryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+													</Children>
+												</Widget>
+												<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="28" SuggestedWidth="80" DoNotPassEventsToChildren="true">
+													<Children>
+														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_bow" />
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HealthyRangedCount" />
+														<HintWidget DataSource="{HealthyRangedHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+													</Children>
+												</Widget>
+												<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="28" SuggestedWidth="80" DoNotPassEventsToChildren="true">
+													<Children>
+														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_cavalry" />
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HealthyCavalryCount" />
+														<HintWidget DataSource="{HealthyCavalryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+													</Children>
+												</Widget>
+												<Widget WidthSitWidgzePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="28" SuggestedWidth="80" DoNotPassEventsToChildren="true">
+													<Children>
+														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_horse_archer" />
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HealthyHorseArcherCount" />
+														<HintWidget DataSource="{HealthyHorseArcherHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+													</Children>
+												</Widget>
+											</Children>
+										</ListPanel>
+
+									</Children>
+								</ListPanel>
+
+								<!--Player Health-->
+								<TextWidget  WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" Text="Player Health: "/>
+
+								<Widget  MarginTop="2" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="160" SuggestedHeight="45" HorizontalAlignment="Left" VerticalAlignment="Center" MarginRight="150" Sprite="PartyScreen\health_bar" IsVisible="true">
+									<Children>
+										<HintWidget DataSource="{..\HeroHealthHint}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint"/>
+										<PartyHealthFillBarWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="11" MarginRight="11" MarginTop="11" MarginBottom="11" Brush="Party.TroopTupple.HealthBarFill" DoNotUseCustomScale="true" Health="@HeroHealth" HealthText="HealthText" IsWounded="false" MaxAmount="100">
+											<Children>
+												<TextWidget DataSource="{..}" Id="HealthText" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="Party.TroopTupple.HealthBarText" Brush.FontSize="16" />
+											</Children>
+										</PartyHealthFillBarWidget>
+									</Children>
+								</Widget>
+
+							</Children>
+						</ListPanel>
+					</Children>
+				</ListPanel>
+
+
+				
 
 				<!--Challenge Button-->
 				<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled"  PositionYOffset="980" PositionXOffset="1500" MarginBottom="50" MarginRight="50" Brush="Header.Tab.Center" Command.Click="ExecuteLeave" UpdateChildrenStates="true">

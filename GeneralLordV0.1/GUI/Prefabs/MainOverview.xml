@@ -36,8 +36,8 @@
 
 		<Constant Name="Header.Tab.Right.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Width" />
 		<Constant Name="Header.Tab.Right.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Height" />
-		<Constant Name="Finance.GoldIcon.Width" Value="30" />
-		<Constant Name="Finance.GoldIcon.Height" Value="30" />
+		<Constant Name="Finance.GoldIcon.Width" Value="32" />
+		<Constant Name="Finance.GoldIcon.Height" Value="32" />
 	</Constants>
 
 	<Window>
@@ -60,18 +60,64 @@
 											</Children>
 										</Widget>
 
-										<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="350"  MarginTop="150">
+										<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="350"  MarginTop="50">
 											<Children>
 												<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="VerticalBottomToTop">
 													<Children>
 
-														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" DoNotPassEventsToChildren="true">
+														<!--Name-->
+														<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" Brush="Clan.RightPanel.Name.Text" Brush.TextHorizontalAlignment="Center" Text="@Name" />
+
+														<!--Party Size-->
+														<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Center" Text="@PartySizeSubTitleText"/>
+
+														<!--Show Troop Details-->
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" StackLayout.LayoutMethod="VerticalBottomToTop" IsVisible="true">
 															<Children>
-																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+																<!--Troop Counts-->
+																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginBottom="0" StackLayout.LayoutMethod="HorizontalCentered">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																			<Children>
+																				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_infantry" />
+																				<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@InfantryCount" />
+																				<HintWidget DataSource="{..\InfantryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																			</Children>
+																		</Widget>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																			<Children>
+																				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_bow" />
+																				<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@RangedCount" />
+																				<HintWidget DataSource="{..\RangedHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																			</Children>
+																		</Widget>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																			<Children>
+																				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_cavalry" />
+																				<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@CavalryCount" />
+																				<HintWidget DataSource="{..\CavalryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																			</Children>
+																		</Widget>
+																		<Widget WidthSitWidgzePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																			<Children>
+																				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_horse_archer" />
+																				<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HorseArcherCount" />
+																				<HintWidget DataSource="{..\HorseArcherHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																			</Children>
+																		</Widget>
+																	</Children>
+																</ListPanel>
+
+															</Children>
+														</ListPanel>
+														
+														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" DoNotPassEventsToChildren="true" MarginTop="50">
+															<Children>
+																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
 																	<Children>
 																		<!--Elo Label-->
-																		<TextWidget DataSource="{..}" VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@EloText" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
-																		<TextWidget DataSource="{..}" VerticalAlignment="Center" MarginLeft="20" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@Elo" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																		<TextWidget DataSource="{..}" VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Text="@EloText" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																		<TextWidget DataSource="{..}" VerticalAlignment="Center" MarginLeft="20" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Text="@Elo" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
 
 				
 																	</Children>
@@ -79,16 +125,16 @@
 															</Children>
 														</Widget>
 														
-														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" DoNotPassEventsToChildren="true">
+														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" DoNotPassEventsToChildren="true" MarginTop="10">
 															<Children>
-																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
 																	<Children>
 																		<!--Expected Gold Label-->
-																		<TextWidget DataSource="{..}" VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@ExpectedGoldText" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
-																		<TextWidget DataSource="{..}" VerticalAlignment="Center" MarginLeft="20" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@ExpectedGold" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																		<TextWidget DataSource="{..}" VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Text="@ExpectedGoldText" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																		<TextWidget DataSource="{..}" VerticalAlignment="Center" MarginLeft="20" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Text="@ExpectedGold" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
 
 																		<!--Gold Icon-->
-																		<Widget WidthSizePolicy="Fixed"  VerticalAlignment="Center"  HeightSizePolicy="Fixed" SuggestedWidth="!Finance.GoldIcon.Width" SuggestedHeight="!Finance.GoldIcon.Height" HorizontalAlignment="Right" Sprite="Icons\Coin@2x" />
+																		<Widget WidthSizePolicy="Fixed"  VerticalAlignment="Center" MarginBottom="2"  HeightSizePolicy="Fixed" SuggestedWidth="!Finance.GoldIcon.Width" SuggestedHeight="!Finance.GoldIcon.Height" HorizontalAlignment="Right" Sprite="Icons\Coin@2x" />
 
 																	</Children>
 																</ListPanel>
@@ -116,8 +162,72 @@
 
 														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="4" PositionXOffset="-3" Sprite="Clan\divider_mid"/>
 
+														<!--Show Troop Details-->
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="true">
+															<Children>
+
+
+																<!--Battle Ready Troops-->
+																<TextWidget  WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" Text="Battle Ready Troops: "/>
+																
+																<!--Troop Counts-->
+																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="5" MarginTop="10" MarginBottom="0" StackLayout.LayoutMethod="HorizontalCentered">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																			<Children>
+																				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_infantry" />
+																				<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HealthyInfantryCount" />
+																				<HintWidget DataSource="{..\HealthyInfantryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																			</Children>
+																		</Widget>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																			<Children>
+																				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_bow" />
+																				<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HealthyRangedCount" />
+																				<HintWidget DataSource="{..\HealthyRangedHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																			</Children>
+																		</Widget>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																			<Children>
+																				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_cavalry" />
+																				<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HealthyCavalryCount" />
+																				<HintWidget DataSource="{..\HealthyCavalryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																			</Children>
+																		</Widget>
+																		<Widget WidthSitWidgzePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																			<Children>
+																				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_horse_archer" />
+																				<TextWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@HealthyHorseArcherCount" />
+																				<HintWidget DataSource="{..\HealthyHorseArcherHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																			</Children>
+																		</Widget>
+																	</Children>
+																</ListPanel>
+
+															</Children>
+														</ListPanel>
+														
+														<!--Show Troop Details-->
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="true">
+															<Children>
+																<!--Player Health-->
+																<TextWidget  WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" Text="Player Health: "/>
+
+																<Widget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="160" SuggestedHeight="45" HorizontalAlignment="Left" VerticalAlignment="Center" MarginRight="150" Sprite="PartyScreen\health_bar" IsVisible="true">
+																	<Children>
+																		<HintWidget DataSource="{..\HeroHealthHint}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint"/>
+																		<PartyHealthFillBarWidget DataSource="{..}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="11" MarginRight="11" MarginTop="11" MarginBottom="11" Brush="Party.TroopTupple.HealthBarFill" DoNotUseCustomScale="true" Health="@HeroHealth" HealthText="HealthText" IsWounded="false" MaxAmount="100">
+																			<Children>
+																				<TextWidget DataSource="{..}" Id="HealthText" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="Party.TroopTupple.HealthBarText" Brush.FontSize="16" />
+																			</Children>
+																		</PartyHealthFillBarWidget>
+																	</Children>
+																</Widget>
+															</Children>
+														</ListPanel>
+														
 														<!--Action Buttons Container-->
-														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="200">
+														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="20">
 															<Children>
 
 																<Widget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="260" SuggestedHeight="64" VerticalAlignment="Center">
@@ -153,22 +263,124 @@
 								<ListPanel Id="RightSideList" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="200"  MarginTop="0" LayoutImp.LayoutMethod="VerticalBottomToTop">
 									<Children>
 
-										<ListPanel Id="TrainingButtons" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="200" LayoutImp.LayoutMethod="VerticalBottomToTop">
+										<ListPanel Id="TrainingButtons" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="50" LayoutImp.LayoutMethod="VerticalBottomToTop">
 											<Children>
 
-												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
+												<!--Show Garrisoned Troop Details-->
+												<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="true">
 													<Children>
-														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+
+
+														<!--Garrisoned Troops
+														<TextWidget  VerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginTop="10" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" Text=""/>
+															-->
+														<!--Garrisoned Troops-->
+														<TextWidget VerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="Garrisoned Troops: " Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+														
+														<!--Troop Counts-->
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" MarginBottom="0" StackLayout.LayoutMethod="HorizontalCentered">
 															<Children>
-																<!--Buy Renown Text-->
-																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"  SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@BuyRenown" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
-																
-																<!--Buy Renown Button-->
-																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" Brush="Header.Tab.Center"  HorizontalAlignment="Right" Command.Click="ExecuteTrain" UpdateChildrenStates="true">
+																<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
 																	<Children>
-																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Buy Renown" />
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_infantry" />
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@GarrisonedInfantryCount" />
+																		<HintWidget DataSource="{GarrisonedInfantryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
 																	</Children>
-																</ButtonWidget>
+																</Widget>
+																<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_bow" />
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@GarrisonedRangedCount" />
+																		<HintWidget DataSource="{GarrisonedRangedHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																	</Children>
+																</Widget>
+																<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_cavalry" />
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@GarrisonedCavalryCount" />
+																		<HintWidget DataSource="{GarrisonedCavalryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																	</Children>
+																</Widget>
+																<Widget WidthSitWidgzePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_horse_archer" />
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@GarrisonedHorseArcherCount" />
+																		<HintWidget DataSource="{GarrisonedHorseArcherHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																	</Children>
+																</Widget>
+															</Children>
+														</ListPanel>
+
+													</Children>
+												</ListPanel>
+
+												<!--Show Wounded Troop Details-->
+												<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="true">
+													<Children>
+
+
+														<!--Wounded Troops-->
+														<TextWidget VerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="Wounded Troops:  " Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+														<!--Troop Counts-->
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10" MarginBottom="0" StackLayout.LayoutMethod="HorizontalCentered">
+															<Children>
+																<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_infantry" />
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@WoundedInfantryCount" />
+																		<HintWidget DataSource="{WoundedInfantryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																	</Children>
+																</Widget>
+																<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_bow" />
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@WoundedRangedCount" />
+																		<HintWidget DataSource="{WoundedRangedHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																	</Children>
+																</Widget>
+																<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_cavalry" />
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@WoundedCavalryCount" />
+																		<HintWidget DataSource="{WoundedCavalryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																	</Children>
+																</Widget>
+																<Widget WidthSitWidgzePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_horse_archer" />
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" IntText="@WoundedHorseArcherCount" />
+																		<HintWidget DataSource="{WoundedHorseArcherHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																	</Children>
+																</Widget>
+															</Children>
+														</ListPanel>
+
+													</Children>
+												</ListPanel>
+
+
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="20">
+													<Children>
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+															<Children>
+																<!--Recovery Text-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@TimeUntilRecovery" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+																<!--Troop Count-->
+																<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="32" SuggestedWidth="96" DoNotPassEventsToChildren="true">
+																	<Children>
+																		<!--<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" Sprite="TroopTypeIcons\icon_troop_type_infantry" />-->
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" Text="@RecoveryCount" />
+																		<HintWidget DataSource="{RecoveryHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" DoNotAcceptEvents="true"/>
+																	</Children>
+																</Widget>
+																<!--Troop Count
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@RecoveryCount" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																-->
+																<!--Timer-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="CoverChildren"  HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@Timer" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+															
 
 															</Children>
 														</ListPanel>
@@ -177,15 +389,49 @@
 
 												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="20">
 													<Children>
-														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="20" MarginRight="20" StackLayout.LayoutMethod="HorizontalLeftToRight">
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
 															<Children>
-																<!--Train text-->
-																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"   SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@Train" Brush="Clan.Finance.CurrentGold.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																<!--Heal hero Text-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"  SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@HealHeroText" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
 
-																<!--Train-->
-																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" HorizontalAlignment="Right" Brush="Header.Tab.Center" Command.Click="ExecuteBuyRenown" UpdateChildrenStates="true">
+																<!--Heal hero  Button-->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" Brush="Header.Tab.Center"  HorizontalAlignment="Right" Command.Click="ExecuteHealHero" UpdateChildrenStates="true">
 																	<Children>
-																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Train" />
+																		<ListPanel Id="ButtonList" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																			<Children>
+																				<TextWidget SuggesteWidth="100" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="15" MarginTop="3" Brush="Clan.TabControl.Text" Text="Heal Cost: " />
+																				<TextWidget SuggesteWidth="50" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="3" MarginTop="3" Brush="Clan.TabControl.Text" Text="@HealHeroCost" />
+																				<!--Gold Icon-->
+																				<Widget WidthSizePolicy="Fixed"  VerticalAlignment="Center"  HeightSizePolicy="Fixed" SuggestedWidth="!Finance.GoldIcon.Width" SuggestedHeight="!Finance.GoldIcon.Height" HorizontalAlignment="Right" Sprite="Icons\Coin@2x" />
+																			</Children>
+																		</ListPanel>
+																	</Children>
+																</ButtonWidget>
+
+															</Children>
+														</ListPanel>
+													</Children>
+												</Widget>
+												
+
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="20">
+													<Children>
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+															<Children>
+																<!--Buy Renown Text-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"  SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@BuyRenown" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+																
+																<!--Buy Renown Button-->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" Brush="Header.Tab.Center"  HorizontalAlignment="Right" Command.Click="ExecuteTrain" UpdateChildrenStates="true">
+																	<Children>
+																		<ListPanel Id="ButtonList" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																			<Children>
+																				<TextWidget SuggesteWidth="100" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="15" MarginTop="3" Brush="Clan.TabControl.Text" Text="Buy Renown: " />
+																				<TextWidget SuggesteWidth="50" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="3" MarginTop="3" Brush="Clan.TabControl.Text" Text="@RenownCost" />
+																				<!--Gold Icon-->
+																				<Widget WidthSizePolicy="Fixed"  VerticalAlignment="Center"  HeightSizePolicy="Fixed" SuggestedWidth="!Finance.GoldIcon.Width" SuggestedHeight="!Finance.GoldIcon.Height" HorizontalAlignment="Right" Sprite="Icons\Coin@2x" />
+																			</Children>
+																		</ListPanel>
 																	</Children>
 																</ButtonWidget>
 
@@ -194,14 +440,100 @@
 													</Children>
 												</Widget>
 
+												
 
 
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="20">
+													<Children>
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+															<Children>
+																<!--Train text-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"   SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@Train" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+																<!--Train-->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" HorizontalAlignment="Right" Brush="Header.Tab.Center" Command.Click="ExecuteBuyRenown" UpdateChildrenStates="true">
+																	<Children>
+																		<ListPanel Id="ButtonList" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																			<Children>
+																				<TextWidget SuggesteWidth="100" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="15" MarginTop="3" Brush="Clan.TabControl.Text" Text="Train: " />
+																				<TextWidget SuggesteWidth="50"  WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="3"  MarginTop="3" Brush="Clan.TabControl.Text" Text="@TrainCost" />
+																				<!--Gold Icon-->
+																				<Widget WidthSizePolicy="Fixed"  VerticalAlignment="Center"  HeightSizePolicy="Fixed" SuggestedWidth="!Finance.GoldIcon.Width" SuggestedHeight="!Finance.GoldIcon.Height" HorizontalAlignment="Right" Sprite="Icons\Coin@2x" />
+																			</Children>
+																		</ListPanel>
+																	</Children>		
+																</ButtonWidget>
+
+															</Children>
+														</ListPanel>
+													</Children>
+												</Widget>
+
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren"  MarginTop="20">
+													<Children>
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+															<Children>
+																<!--Attack Plan Text-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"  SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@AttackPlanText" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+																<!--Attack Plan  Button-->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" Brush="Header.Tab.Center"  HorizontalAlignment="Right" Command.Click="ExecuteAttackPlanSetup" UpdateChildrenStates="true">
+																	<Children>
+																		<ListPanel Id="ButtonList" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																			<Children>
+																				<TextWidget SuggesteWidth="50" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="3" MarginTop="3" Brush="Clan.TabControl.Text" Text="@AttackPlanButtonText" />
+																			</Children>
+																		</ListPanel>
+																	</Children>
+																</ButtonWidget>
+
+															</Children>
+														</ListPanel>
+													</Children>
+												</Widget>
+
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren"  MarginTop="20">
+													<Children>
+														<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+															<Children>
+																<!--Defense Plan Text-->
+																<TextWidget VerticalAlignment="Center" WidthSizePolicy="Fixed"  SuggestedWidth="380" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="@DefensePlanText" Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+
+																<!--Defense Plan  Button-->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" Brush="Header.Tab.Center"  HorizontalAlignment="Right" Command.Click="ExecuteDefensePlanSetup" UpdateChildrenStates="true">
+																	<Children>
+																		<ListPanel Id="ButtonList" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+																			<Children>
+																				<TextWidget SuggesteWidth="50" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="3" MarginTop="3" Brush="Clan.TabControl.Text" Text="@DefensePlanButtonText" />
+																			</Children>
+																		</ListPanel>
+																	</Children>
+																</ButtonWidget>
+
+															</Children>
+														</ListPanel>
+													</Children>
+												</Widget>
+
+												<ListPanel LayoutImp.LayoutMethod="HorizontalLeftToRight" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren"  MarginTop="20">
+													<Children>
+														<TextWidget VerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Text="Should the defensive plan be used if attacked: " Brush="Clan.PartySize.Text" Brush.TextHorizontalAlignment="Left" DoNotAcceptEvents="true"/>
+														<ButtonWidget Command.Click="IsDefensiveActivePressed" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40"
+																		HorizontalAlignment="Center" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@IsDefensiveActiveSelected"
+																		ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
+															<Children>
+																<ImageWidget Id="ToggleIndicator" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPOptions.Checkbox.Full.Button"/>
+															</Children>
+														</ButtonWidget>
+													</Children>
+												</ListPanel>
 											</Children>
 										</ListPanel>
 
 
 
-										<ListPanel Id="MatchButtons" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="300" LayoutImp.LayoutMethod="HorizontalLeftToRight">
+
+										<ListPanel Id="MatchButtons" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="50" LayoutImp.LayoutMethod="HorizontalLeftToRight">
 											<Children>
 												<!--Ranking-->
 												<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteRanking" UpdateChildrenStates="true">
@@ -212,7 +544,7 @@
 												<!--Match History-->
 												<ButtonWidget DoNotPassEventsToChildren="true" MarginLeft="10" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="ExecuteMatchHistory"  UpdateChildrenStates="true">
 													<Children>
-														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="MatchHistory" />
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Match History" />
 													</Children>
 												</ButtonWidget>
 

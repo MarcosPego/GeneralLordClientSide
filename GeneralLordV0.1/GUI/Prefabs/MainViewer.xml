@@ -7,20 +7,20 @@
 		<Constant Name="Header.Tab.Left.Width" BrushLayer="Default" BrushName="Header.Tab.Left" BrushValueType="Width" />
 		<Constant Name="Header.Tab.Left.Height" BrushLayer="Default" BrushName="Header.Tab.Left" BrushValueType="Height" />
 
-		<Constant Name="Header.Tab.Left.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Left.Width" />
-		<Constant Name="Header.Tab.Left.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Left.Height" />
+		<Constant Name="Header.Tab.Left.Width.Scaled" MultiplyResult="0.85" Value="!Header.Tab.Left.Width" />
+		<Constant Name="Header.Tab.Left.Height.Scaled" MultiplyResult="0.85" Value="!Header.Tab.Left.Height" />
 
 		<Constant Name="Header.Tab.Center.Width" BrushLayer="Default" BrushName="Header.Tab.Center" BrushValueType="Width" />
 		<Constant Name="Header.Tab.Center.Height" BrushLayer="Default" BrushName="Header.Tab.Center" BrushValueType="Height" />
 
-		<Constant Name="Header.Tab.Center.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Center.Width" />
-		<Constant Name="Header.Tab.Center.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Center.Height" />
+		<Constant Name="Header.Tab.Center.Width.Scaled" MultiplyResult="0.85" Value="!Header.Tab.Center.Width" />
+		<Constant Name="Header.Tab.Center.Height.Scaled" MultiplyResult="0.85" Value="!Header.Tab.Center.Height" />
 
 		<Constant Name="Header.Tab.Right.Width" BrushLayer="Default" BrushName="Header.Tab.Right" BrushValueType="Width" />
 		<Constant Name="Header.Tab.Right.Height" BrushLayer="Default" BrushName="Header.Tab.Right" BrushValueType="Height" />
 
-		<Constant Name="Header.Tab.Right.Width.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Width" />
-		<Constant Name="Header.Tab.Right.Height.Scaled" MultiplyResult="0.90" Value="!Header.Tab.Right.Height" />
+		<Constant Name="Header.Tab.Right.Width.Scaled" MultiplyResult="0.85" Value="!Header.Tab.Right.Width" />
+		<Constant Name="Header.Tab.Right.Height.Scaled" MultiplyResult="0.85" Value="!Header.Tab.Right.Height" />
 
 		<Constant Name="Banner.Width" BrushLayer="Default" BrushName="Flat.Tuple.Banner.Small" BrushValueType="Width" />
 		<Constant Name="Banner.Height" BrushLayer="Default" BrushName="Flat.Tuple.Banner.Small" BrushValueType="Height" />
@@ -124,12 +124,12 @@
 											</Children>
 										</ButtonWidget>
 
-										<!--Formation Tab
+										<!--Garrison Tab-->
 										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="SetSelectedCategory" CommandParameter.Click="2" UpdateChildrenStates="true">
 											<Children>
 												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="@FormationText" />
 											</Children>
-										</ButtonWidget>-->
+										</ButtonWidget>
 
 										<!--Recruitment Tab-->
 										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled" PositionYOffset="6" MarginRight="2" Brush="Header.Tab.Center" Command.Click="SetSelectedCategory" CommandParameter.Click="3" UpdateChildrenStates="true">
@@ -147,6 +147,48 @@
 
 									</Children>
 								</ListPanel>
+
+								<!--Renown Labels-->
+								<ListPanel DataSource="{RenownHint}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="40" MarginTop="50" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop">
+									<Children>
+
+										<TextWidget DataSource="{..}" DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Brush="Clan.Renown.Text" PositionYOffset="5" Text="@CurrentRenownText" ClipContents="false" />
+
+										<ListPanel DataSource="{..}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsEnabled="false" MarginTop="10" IsHidden="@IsRenownProgressComplete">
+											<Children>
+												<TextWidget  DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" MarginRight="10" MarginTop="5" Brush="Clan.Renown.Text" IntText="@CurrentTier" ClipContents="false" />
+
+												<!--Renown Progress Bar-->
+												<FillBarWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="266" SuggestedHeight="27" HorizontalAlignment="Center" VerticalAlignment="Center" ContainerWidget="ContainerWidget" FillWidget="FillBarParent\FillWidget" InitialAmount="@CurrentRenown" MaxAmount="@NextTierRenown">
+													<Children>
+
+														<Widget Id="FillBarParent" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="250" SuggestedHeight="14" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="13" MarginRight="14">
+															<Children>
+
+																<!--Fill-->
+																<Widget Id="FillWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="250" SuggestedHeight="14" Sprite="Clan\progress_bar">
+																	<Children>
+																		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" Sprite="Clan\progress_bar_glow" />
+																	</Children>
+																</Widget>
+
+															</Children>
+														</Widget>
+
+														<!--Container-->
+														<Widget Id="ContainerWidget" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="Clan\progress_bar_frame" />
+
+													</Children>
+												</FillBarWidget>
+
+												<AutoHideZeroTextWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" MarginLeft="10" MarginTop="5" Brush="Clan.Renown.Text" IntText="@NextTier" ClipContents="false" />
+											</Children>
+										</ListPanel>
+
+
+									</Children>
+								</ListPanel>
+
 
 							</Children>
 						</Widget>

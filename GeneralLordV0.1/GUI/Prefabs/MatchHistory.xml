@@ -44,7 +44,7 @@
 				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalRightToLeft">
 					<Children>
 						<!--Left Panel-->
-						<BrushListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" VerticalAlignment="Bottom" MarginRight="450" MarginTop="6" MarginBottom="9" Brush="Frame1Brush" StackLayout.LayoutMethod="VerticalBottomToTop">
+						<BrushListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" VerticalAlignment="Bottom" MarginRight="480" MarginTop="6" MarginBottom="9" Brush="Frame1Brush" StackLayout.LayoutMethod="VerticalBottomToTop">
 							<Children>
 
 
@@ -61,7 +61,7 @@
 															<Children>
 
 																<!--MatchHistory Toggle Button-->
-																<ToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1380" SuggestedHeight="!Clan.Management.Collapser.Height" HorizontalAlignment="Left" VerticalAlignment="Top" Brush="Clan.Management.Collapser" RenderLate="true" WidgetToClose="..\MatchHistoryList">
+																<ToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1300" SuggestedHeight="!Clan.Management.Collapser.Height" HorizontalAlignment="Left" VerticalAlignment="Top" Brush="Clan.Management.Collapser" RenderLate="true" WidgetToClose="..\MatchHistoryList">
 																	<Children>
 																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Clan.Management.Collapser.Text" Text="Match History" />
 																	</Children>
@@ -99,7 +99,7 @@
 
 
 				<!--Challenge Button-->
-				<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled"  PositionYOffset="980" PositionXOffset="1500" MarginBottom="50" MarginRight="50" Brush="Header.Tab.Center" Command.Click="ExecuteLeave" UpdateChildrenStates="true">
+				<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Header.Tab.Center.Width.Scaled" SuggestedHeight="!Header.Tab.Center.Height.Scaled"  PositionYOffset="980" PositionXOffset="1530" MarginBottom="50" MarginRight="50" Brush="Header.Tab.Center" Command.Click="ExecuteLeave" UpdateChildrenStates="true">
 					<Children>
 						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="3" Brush="Clan.TabControl.Text" Text="Leave Match History" />
 					</Children>
