@@ -4,6 +4,7 @@ using GeneralLord.FormationPlanHandler;
 using GeneralLordWebApiClient.Model;
 using Helpers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,17 +22,47 @@ namespace GeneralLord
 {
     public class OpponentEntryTupleViewModel : ViewModel
     {
-		public OpponentEntryTupleViewModel(Profile profile)
-		{
+		public static string DefaultBrush = "Clan.Tuple.Name.Text";
+		public static string HighlightBrush = "NameTitle.Highlight";
 
+
+		public OpponentEntryTupleViewModel(Profile profile, int addedOrder, bool isRankingScreen = false)
+		{
+			this.IsChalleangeble = false;
 			_profile = profile;
+			_troopCount = profile.TotalTroopCount;
+			if (profile.UniqueUser == 2)
+            {
+				_troopCount = profile.TotalTroopCount - 1;
+			}
+
+
+
+			JObject playerJson = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
+			int uniqueId = (int)playerJson["UniqueUser"];
+			//InformationManager.DisplayMessage(new InformationMessage(uniqueId.ToString()));
+			this.OpponentNameBrush = DefaultBrush;
+			if (isRankingScreen && uniqueId==_profile.UniqueUser)
+            {
+				this.OpponentNameBrush = HighlightBrush;
+				this.IsChalleangeble = true;
+            }
+
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
 			_displayArmy = JsonBattleConfig.EnemyParty(ac, 2);
-			this.Name = profile.Name;
+            if (isRankingScreen)
+            {
+				this.Name = addedOrder.ToString() +":   " +profile.Name;
+            }
+            else
+            {
+				this.Name = profile.Name;
+			}
+	
 			this.Elo = "Elo: " + profile.Elo.ToString();
 			this.ArmyStrength = GetAverageStrength(profile);
-			this.TotalArmyCount = "Troop Count: " + profile.TotalTroopCount.ToString();
-
+			this.TotalArmyCount = "Troop Count: " + _troopCount.ToString();
+			_armyStrengthRatio = profile.ArmyStrength / PartyBase.MainParty.TotalStrength;
 
 			this.InfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(_displayArmy, FormationClass.Infantry));
 			this.CavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(_displayArmy, FormationClass.Cavalry));
@@ -115,13 +146,13 @@ namespace GeneralLord
 
 		public string GetAverageStrength(Profile profile)
         {
-			float ratio = profile.ArmyStrength / PartyBase.MainParty.TotalStrength;
 
-			if(ratio < 0.5f)
+			_armyStrengthRatio = profile.ArmyStrength / PartyBase.MainParty.TotalStrength;
+			if (_armyStrengthRatio < 0.5f)
             {
 				return "Weaker Army";
             }
-			if(ratio > 1.7f)
+			if(_armyStrengthRatio > 1.7f)
             {
 				return "Stronger Army";
 			}
@@ -377,6 +408,40 @@ namespace GeneralLord
 			}
 		}
 
+		[DataSourceProperty]
+		public bool IsChalleangeble
+        {
+			get
+			{
+				return this._isChalleangeble;
+			}
+			set
+			{
+				if (value != this._isChalleangeble)
+				{
+					this._isChalleangeble = value;
+					base.OnPropertyChangedWithValue(value, "IsChalleangeble");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string OpponentNameBrush
+        {
+			get
+			{
+				return this._opponentNameBrush;
+			}
+			set
+			{
+				if (value != this._opponentNameBrush)
+				{
+					this._opponentNameBrush = value;
+					base.OnPropertyChangedWithValue(value, "OpponentNameBrush");
+				}
+			}
+		}
+
 		private Profile _profile;
 		private string _name;
 		private string _elo;
@@ -394,5 +459,10 @@ namespace GeneralLord
 		private int _cavalryCount;
 		private int _horseArcherCount;
 
-	}
+
+		public float _armyStrengthRatio;
+        public int _troopCount;
+		public bool _isChalleangeble;
+        private string _opponentNameBrush;
+    }
 }

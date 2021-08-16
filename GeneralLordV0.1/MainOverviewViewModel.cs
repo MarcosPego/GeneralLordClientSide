@@ -28,6 +28,8 @@ using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
 using GeneralLord.FormationBattleTest;
 using TaleWorlds.Core.ViewModelCollection;
 using System.Globalization;
+using CunningLords.Interaction;
+using GeneralLord.FormationPlanHandler;
 
 namespace GeneralLord
 {
@@ -38,6 +40,20 @@ namespace GeneralLord
 			Party = PartyBase.MainParty;
 			this._mainManagerViewModel = mainManagerViewModel;
 			this._exitOnSaveOver = false;
+
+			this.BuyRenownButtonEnabled = true;
+			this.HealButtonEnabled = true;
+			this.TrainButtonEnabled = true;
+
+            if (EnemyFormationHandler.UseDefensiveSettings == 1)
+            {
+				IsDefensiveActiveSelected = true;
+
+			} else
+            {
+				IsDefensiveActiveSelected = false;
+
+			}
 			//this._partyManagerLogic = partyManagerLogic;
 
 			/*GameTexts.SetVariable("DENAR_AMOUNT", content);
@@ -60,6 +76,12 @@ namespace GeneralLord
 
 			this.TimeUntilRecovery = new TextObject("{=ATTimeUntilRecovery} Time until next group recovery: ", null).ToString();
 
+
+			this.AttackPlanText= new TextObject("{=ATAttackPlanText} Set up your offensive battle plan: ", null).ToString();
+			this.AttackPlanButtonText = new TextObject("{=ATAttackPlanButtonText} Attack Plan ", null).ToString();
+
+			this.DefensePlanText = new TextObject("{=ATDefensePlanText} Set up your defensive battle plan: ", null).ToString();
+			this.DefensePlanButtonText = new TextObject("{=ATDefensePlanButtonText} Defense Plan ", null).ToString();
 
 			//PartyBase.MainParty.MemberRoster.GetTroopRoster()
 
@@ -105,7 +127,16 @@ namespace GeneralLord
 			this.Elo = json["Elo"].ToString();
 
 			if (CharacterHandler.PriceToFullHealth() > 0) { this.HealHeroCost = CharacterHandler.PriceToFullHealth().ToString(); }
-			else { this.HealHeroCost = CharacterHandler.PriceToFullHealth().ToString(); }
+			else { 
+				this.HealHeroCost = CharacterHandler.PriceToFullHealth().ToString();
+				//this.HealButtonEnabled = false;
+			}
+
+			/*if (PartyCapacityLogicHandler.ShouldTrainBeAvailable()) this.TrainButtonEnabled = true;
+			else this.TrainButtonEnabled = false;
+
+			if (PartyCapacityLogicHandler.ShouldRenownBuyBeAvailable()) this.BuyRenownButtonEnabled = true;
+			else this.BuyRenownButtonEnabled = false;*/
 
 			UpdateProperties();
 		}
@@ -130,6 +161,17 @@ namespace GeneralLord
 			this.HealthyCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Cavalry));
 			this.HealthyRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Ranged));
 			this.HealthyHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.HorseArcher));
+
+			this.WoundedInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopWoundedInfo(Party, FormationClass.Infantry));
+			this.WoundedCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopWoundedInfo(Party, FormationClass.Cavalry));
+			this.WoundedRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopWoundedInfo(Party, FormationClass.Ranged));
+			this.WoundedHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopWoundedInfo(Party, FormationClass.HorseArcher));
+
+			this.GarrisonedInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.GarrisonedTroops, FormationClass.Infantry));
+			this.GarrisonedCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.GarrisonedTroops, FormationClass.Cavalry));
+			this.GarrisonedRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.GarrisonedTroops, FormationClass.Ranged));
+			this.GarrisonedHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.GarrisonedTroops, FormationClass.HorseArcher));
+
 			this.HeroHealthHint =new BasicTooltipViewModel(() => CampaignUIHelper.GetHeroHealthTooltip(Party.LeaderHero));
 
 			int num = 0;
@@ -201,6 +243,78 @@ namespace GeneralLord
 			this.HealthyRangedCount = num2;
 			this.HealthyCavalryCount = num3;
 			this.HealthyHorseArcherCount = num4;
+
+
+			num = 0;
+			num2 = 0;
+			num3 = 0;
+			num4 = 0;
+
+			foreach (TroopRosterElement troopRosterElement in this.Party.MemberRoster.GetTroopRoster())
+			{
+				Hero heroObject = troopRosterElement.Character.HeroObject;
+				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
+				{
+
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Infantry))
+				{
+					num += troopRosterElement.WoundedNumber;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Ranged))
+				{
+					num2 += troopRosterElement.WoundedNumber;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Cavalry))
+				{
+					num3 += troopRosterElement.WoundedNumber;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.HorseArcher))
+				{
+					num4 += troopRosterElement.WoundedNumber;
+				}
+			}
+
+
+			this.WoundedInfantryCount = num;
+			this.WoundedRangedCount = num2;
+			this.WoundedCavalryCount = num3;
+			this.WoundedHorseArcherCount = num4;
+
+
+			num = 0;
+			num2 = 0;
+			num3 = 0;
+			num4 = 0;
+			foreach (TroopRosterElement troopRosterElement in PartyUtilsHandler.GarrisonedTroops.GetTroopRoster())
+			{
+				Hero heroObject = troopRosterElement.Character.HeroObject;
+				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
+				{
+
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Infantry))
+				{
+					num += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Ranged))
+				{
+					num2 += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Cavalry))
+				{
+					num3 += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.HorseArcher))
+				{
+					num4 += troopRosterElement.Number;
+				}
+			}
+
+			this.GarrisonedInfantryCount = num;
+			this.GarrisonedRangedCount = num2;
+			this.GarrisonedCavalryCount = num3;
+			this.GarrisonedHorseArcherCount = num4;
 		}
 
 		public void SelectMainHero()
@@ -250,7 +364,29 @@ namespace GeneralLord
 
 		public void ExecuteRanking()
 		{
-			InformationManager.DisplayMessage(new InformationMessage("To Be Implemented!"));
+			//InformationManager.DisplayMessage(new InformationMessage("To Be Implemented!"));
+
+			JsonBattleConfig.ExecuteSubmitAc();
+
+			IEnumerable<Profile> profiles;
+			var task = Task.Run(async () =>
+			{
+				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
+				Profile profile = ProfileHandler.UpdateProfileAc();
+				var result = await WebRequests.PostAsync<IEnumerable<Profile>>(UrlHandler.GetUrlFromString(UrlHandler.GetRankingProfiles));
+				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
+
+				profiles = result.ServerResponse;
+				//Serializer.JsonSerialize(profiles, "enemyProfile.json");
+
+				//InformationManager.DisplayMessage(new InformationMessage(result)); 
+				//ScreenManager.PopScreen();
+				ScreenManager.PushScreen(new OpponentSelectorScreen(profiles, true));
+
+			});
+			task.Wait();
+
+
 			this.RefreshValues();
 		}
 
@@ -293,6 +429,30 @@ namespace GeneralLord
 			});
 			task.Wait();
 
+		}
+
+		public void ExecuteAttackPlanSetup()
+		{
+			ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen());
+		}
+		public void ExecuteDefensePlanSetup()
+		{
+			ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen(false));
+		}
+
+
+		public void IsDefensiveActivePressed()
+		{
+			if(IsDefensiveActiveSelected)
+            {
+				EnemyFormationHandler.UseDefensiveSettings = 1;
+			} else
+            {
+				EnemyFormationHandler.UseDefensiveSettings = 0;
+
+			}
+
+			//ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen(false));
 		}
 
 		/*public void ExecuteStart()
@@ -911,6 +1071,280 @@ namespace GeneralLord
 			}
 		}
 
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel WoundedInfantryHint
+		{
+			get
+			{
+				return this._woundedInfantryHint;
+			}
+			set
+			{
+				if (value != this._woundedInfantryHint)
+				{
+					this._woundedInfantryHint = value;
+					base.OnPropertyChangedWithValue(value, "WoundedInfantryHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel WoundedRangedHint
+		{
+			get
+			{
+				return this._woundedRangedHint;
+			}
+			set
+			{
+				if (value != this._woundedRangedHint)
+				{
+					this._woundedRangedHint = value;
+					base.OnPropertyChangedWithValue(value, "WoundedRangedHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel WoundedCavalryHint
+		{
+			get
+			{
+				return this._woundedCavalryHint;
+			}
+			set
+			{
+				if (value != this._woundedCavalryHint)
+				{
+					this._woundedCavalryHint = value;
+					base.OnPropertyChangedWithValue(value, "WoundedCavalryHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel WoundedHorseArcherHint
+		{
+			get
+			{
+				return this._woundedHorseArcherHint;
+			}
+			set
+			{
+				if (value != this._woundedHorseArcherHint)
+				{
+					this._woundedHorseArcherHint = value;
+					base.OnPropertyChangedWithValue(value, "WoundedHorseArcherHint");
+				}
+			}
+		}
+
+
+		[DataSourceProperty]
+		public int WoundedInfantryCount
+		{
+			get
+			{
+				return this._woundedInfantryCount;
+			}
+			set
+			{
+				if (value != this._woundedInfantryCount)
+				{
+					this._woundedInfantryCount = value;
+					base.OnPropertyChangedWithValue(value, "WoundedInfantryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int WoundedRangedCount
+		{
+			get
+			{
+				return this._woundedRangedCount;
+			}
+			set
+			{
+				if (value != this._woundedRangedCount)
+				{
+					this._woundedRangedCount = value;
+					base.OnPropertyChangedWithValue(value, "WoundedRangedCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int WoundedCavalryCount
+		{
+			get
+			{
+				return this._woundedCavalryCount;
+			}
+			set
+			{
+				if (value != this._woundedCavalryCount)
+				{
+					this._woundedCavalryCount = value;
+					base.OnPropertyChangedWithValue(value, "WoundedCavalryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int WoundedHorseArcherCount
+		{
+			get
+			{
+				return this._woundedHorseArcherCount;
+			}
+			set
+			{
+				if (value != this._woundedHorseArcherCount)
+				{
+					this._woundedHorseArcherCount = value;
+					base.OnPropertyChangedWithValue(value, "WoundedHorseArcherCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel GarrisonedInfantryHint
+		{
+			get
+			{
+				return this._garrisonedInfantryHint;
+			}
+			set
+			{
+				if (value != this._garrisonedInfantryHint)
+				{
+					this._garrisonedInfantryHint = value;
+					base.OnPropertyChangedWithValue(value, "GarrisonedInfantryHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel GarrisonedRangedHint
+		{
+			get
+			{
+				return this._garrisonedRangedHint;
+			}
+			set
+			{
+				if (value != this._garrisonedRangedHint)
+				{
+					this._garrisonedRangedHint = value;
+					base.OnPropertyChangedWithValue(value, "GarrisonedRangedHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel GarrisonedCavalryHint
+		{
+			get
+			{
+				return this._garrisonedCavalryHint;
+			}
+			set
+			{
+				if (value != this._garrisonedCavalryHint)
+				{
+					this._garrisonedCavalryHint = value;
+					base.OnPropertyChangedWithValue(value, "GarrisonedCavalryHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BasicTooltipViewModel GarrisonedHorseArcherHint
+		{
+			get
+			{
+				return this._garrisonedHorseArcherHint;
+			}
+			set
+			{
+				if (value != this._garrisonedHorseArcherHint)
+				{
+					this._garrisonedHorseArcherHint = value;
+					base.OnPropertyChangedWithValue(value, "GarrisonedHorseArcherHint");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int GarrisonedInfantryCount
+		{
+			get
+			{
+				return this._garrisonedInfantryCount;
+			}
+			set
+			{
+				if (value != this._garrisonedInfantryCount)
+				{
+					this._garrisonedInfantryCount = value;
+					base.OnPropertyChangedWithValue(value, "GarrisonedInfantryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int GarrisonedRangedCount
+		{
+			get
+			{
+				return this._garrisonedRangedCount;
+			}
+			set
+			{
+				if (value != this._garrisonedRangedCount)
+				{
+					this._garrisonedRangedCount = value;
+					base.OnPropertyChangedWithValue(value, "GarrisonedRangedCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int GarrisonedCavalryCount
+		{
+			get
+			{
+				return this._garrisonedCavalryCount;
+			}
+			set
+			{
+				if (value != this._garrisonedCavalryCount)
+				{
+					this._garrisonedCavalryCount = value;
+					base.OnPropertyChangedWithValue(value, "GarrisonedCavalryCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public int GarrisonedHorseArcherCount
+		{
+			get
+			{
+				return this._garrisonedHorseArcherCount;
+			}
+			set
+			{
+				if (value != this._garrisonedHorseArcherCount)
+				{
+					this._garrisonedHorseArcherCount = value;
+					base.OnPropertyChangedWithValue(value, "GarrisonedHorseArcherCount");
+				}
+			}
+		}
+
 		[DataSourceProperty]
 		public string Name
 		{
@@ -922,8 +1356,77 @@ namespace GeneralLord
 			{
 				if (value != this._name)
 				{
-					this._name = value;
+					_name = value;
 					base.OnPropertyChangedWithValue(value, "Name");
+				}
+			}
+		}
+
+
+		[DataSourceProperty]
+		public string AttackPlanText
+		{
+			get
+			{
+				return this._attackPlanText;
+			}
+			set
+			{
+				if (value != this._attackPlanText)
+				{
+					_attackPlanText = value;
+					base.OnPropertyChangedWithValue(value, "AttackPlanText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string DefensePlanText
+		{
+			get
+			{
+				return this._defensePlanText;
+			}
+			set
+			{
+				if (value != this._defensePlanText)
+				{
+					_defensePlanText = value;
+					base.OnPropertyChangedWithValue(value, "DefensePlanText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string AttackPlanButtonText
+		{
+			get
+			{
+				return this._attackPlanButtonText;
+			}
+			set
+			{
+				if (value != this._attackPlanButtonText)
+				{
+					_attackPlanButtonText = value;
+					base.OnPropertyChangedWithValue(value, "AttackPlanButtonText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string DefensePlanButtonText
+		{
+			get
+			{
+				return this._defensePlanButtonText;
+			}
+			set
+			{
+				if (value != this._defensePlanButtonText)
+				{
+					_defensePlanButtonText = value;
+					base.OnPropertyChangedWithValue(value, "DefensePlanButtonText");
 				}
 			}
 		}
@@ -958,6 +1461,24 @@ namespace GeneralLord
 				{
 					this._partySizeSubTitleText = value;
 					base.OnPropertyChangedWithValue(value, "PartySizeSubTitleText");
+				}
+			}
+		}
+
+
+		[DataSourceProperty]
+		public bool IsDefensiveActiveSelected
+		{
+			get
+			{
+				return this._isDefensiveActiveSelected;
+			}
+			set
+			{
+				if (value != this._isDefensiveActiveSelected)
+				{
+					this._isDefensiveActiveSelected = value;
+					base.OnPropertyChangedWithValue(value, "IsDefensiveActiveSelected");
 				}
 			}
 		}
@@ -1041,6 +1562,60 @@ namespace GeneralLord
 				}
 			}
 		}
+
+
+		[DataSourceProperty]
+		public bool HealButtonEnabled
+		{
+			get
+			{
+				return this._healButtonEnabled;
+			}
+			set
+			{
+				if (value != this._healButtonEnabled)
+				{
+					this._healButtonEnabled = value;
+					base.OnPropertyChangedWithValue(value, "HealButtonEnabled");
+				}
+			}
+		}
+
+
+		[DataSourceProperty]
+		public bool TrainButtonEnabled
+		{
+			get
+			{
+				return this._trainButtonEnabled;
+			}
+			set
+			{
+				if (value != this._trainButtonEnabled)
+				{
+					this._trainButtonEnabled = value;
+					base.OnPropertyChangedWithValue(value, "TrainButtonEnabled");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool BuyRenownButtonEnabled
+		{
+			get
+			{
+				return this._buyRenownButtonEnabled;
+			}
+			set
+			{
+				if (value != this._buyRenownButtonEnabled)
+				{
+					this._buyRenownButtonEnabled = value;
+					base.OnPropertyChangedWithValue(value, "BuyRenownButtonEnabled");
+				}
+			}
+		}
+
 		public PartyBase Party { get; }
 
 
@@ -1055,6 +1630,7 @@ namespace GeneralLord
 		//private readonly List<SceneData> _scenes;
 		private readonly Clan _faction;
 
+		private bool _isDefensiveActiveSelected;
 		private bool _isAnyValidMemberSelected;
 		private ClanLordItemVM _currentSelectedMember;
 		private bool _isSelected;
@@ -1063,6 +1639,12 @@ namespace GeneralLord
 		private string _expectedGoldText;
 		private string _expectedGold;
 		private string _name;
+
+		private string _attackPlanText;
+		private string _defensePlanText;
+
+		private string _attackPlanButtonText;
+		private string _defensePlanButtonText;
 
 		private string _buyRenown;
 		private string _train;
@@ -1089,6 +1671,16 @@ namespace GeneralLord
 		private BasicTooltipViewModel _healthyCavalryHint;
 		private BasicTooltipViewModel _healthyHorseArcherHint;
 
+		private BasicTooltipViewModel _woundedInfantryHint;
+		private BasicTooltipViewModel _woundedRangedHint;
+		private BasicTooltipViewModel _woundedCavalryHint;
+		private BasicTooltipViewModel _woundedHorseArcherHint;
+
+		private BasicTooltipViewModel _garrisonedInfantryHint;
+		private BasicTooltipViewModel _garrisonedRangedHint;
+		private BasicTooltipViewModel _garrisonedCavalryHint;
+		private BasicTooltipViewModel _garrisonedHorseArcherHint;
+
 		private BasicTooltipViewModel _heroHealthHint;
 
 		private int _infantryCount;
@@ -1101,7 +1693,20 @@ namespace GeneralLord
 		private int _healthyCavalryCount;
 		private int _healthyHorseArcherCount;
 
+		private int _woundedInfantryCount;
+		private int _woundedRangedCount;
+		private int _woundedCavalryCount;
+		private int _woundedHorseArcherCount;
+
+		private int _garrisonedInfantryCount;
+		private int _garrisonedRangedCount;
+		private int _garrisonedCavalryCount;
+		private int _garrisonedHorseArcherCount;
+
 		private string _partySizeText;
 		private string _partySizeSubTitleText;
-	}
+        private bool _buyRenownButtonEnabled;
+        private bool _trainButtonEnabled;
+        private bool _healButtonEnabled;
+    }
 }

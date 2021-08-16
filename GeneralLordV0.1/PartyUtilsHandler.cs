@@ -34,7 +34,7 @@ namespace GeneralLord
             if (totalCount > maxCount)
             {
                 totalCount = 0;
-                InformationManager.DisplayMessage(new InformationMessage(DateTime.Now.ToString()));
+                //InformationManager.DisplayMessage(new InformationMessage(DateTime.Now.ToString()));
 
                 if (CheckIfFirstTimer()) RecoverTroopGroup();
                 mainManagerScreen._viewModel.MainOverview.RefreshValues();

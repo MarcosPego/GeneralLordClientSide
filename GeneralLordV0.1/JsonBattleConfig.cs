@@ -1,5 +1,6 @@
 ﻿
 using GeneralLord.FormationBattleTest;
+using GeneralLord.FormationPlanHandler;
 using GeneralLordWebApiClient;
 using GeneralLordWebApiClient.Model;
 using Helpers;
@@ -60,6 +61,20 @@ namespace GeneralLord
 			return list;
 		}
 
+		public static List<TooltipProperty> GetPartyTroopWoundedInfo(PartyBase party, FormationClass formationClass)
+		{
+			List<TooltipProperty> list = new List<TooltipProperty>();
+			list.Add(new TooltipProperty("", GameTexts.FindText("str_formation_class_string", formationClass.GetName()).ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.Title));
+			foreach (TroopRosterElement troopRosterElement in party.MemberRoster.GetTroopRoster())
+			{
+				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
+				{
+					list.Add(new TooltipProperty(troopRosterElement.Character.Name.ToString(), troopRosterElement.WoundedNumber.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+				}
+			}
+			return list;
+		}
+
 		public static List<TooltipProperty> GetTroopsToRecoverInfo(WoundedTroopGroup woundedTroopGroup)
 		{
 			List<TooltipProperty> list = new List<TooltipProperty>();
@@ -115,7 +130,7 @@ namespace GeneralLord
 			t.Wait();
 		}
 
-		public static void ExecuteSubmitAc()
+		public static void ExecuteSubmitAc(bool isInitialSave = false)
 		{
 
 
@@ -138,6 +153,7 @@ namespace GeneralLord
 			{
 				Profile profile = ProfileHandler.UpdateProfileAc();
 				var result = await WebRequests.PostAsync<Profile>(UrlHandler.GetUrlFromString(UrlHandler.SaveProfile), profile);
+				EnemyFormationHandler.UseDefensiveSettings = result.ServerResponse.UseDefensiveOrder;
 				Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
 			});
 			t.Wait();
@@ -334,7 +350,7 @@ namespace GeneralLord
 				}
 			}
 
-			PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.Add( woundedTroopGroup);
+			if(woundedTroopGroup.totalWoundedTroops > 0) PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.Add( woundedTroopGroup);
 
 			ExecuteSubmitPartyUtils();
 
@@ -347,6 +363,72 @@ namespace GeneralLord
 				CharacterHandler.HandleAfterBattleHealth();
 			}
 			ExecuteSubmitAc();
+		}
+
+		public static ArmyContainer GetPlayerFallenArmyContainer()
+        {
+
+			List<TroopContainer> troopContainers = new List<TroopContainer>();
+			foreach (TroopRosterElement tc in copyOfTroopRosterPreviousToBattle)
+			{
+				if (tc.Character.StringId != "main_hero")
+				{
+					CharacterObject characterObject = CharacterObject.Find(tc.Character.StringId);
+
+					int healthyNumber = tc.Number - tc.WoundedNumber;
+
+					//InformationManager.DisplayMessage(new InformationMessage("Total Previous : " + tc.Number +" Healthy Previous : "+ healthyNumber + " Wounded Previous: " + tc.WoundedNumber));
+
+					if (PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject) == -1)
+					{
+						int fallenTroops = healthyNumber;
+						troopContainers.Add(new TroopContainer { stringId = tc.Character.StringId, troopCount = fallenTroops, troopXP = 0 });
+					}
+					else
+					{
+						int index1 = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
+
+						int numberThatWentToBattle = tc.Number - tc.WoundedNumber;
+
+						int deadSoldiers = numberThatWentToBattle - PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject);
+						int woundedSoldiers = PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1) - tc.WoundedNumber;
+
+						troopContainers.Add(new TroopContainer { stringId = tc.Character.StringId, troopCount = deadSoldiers + woundedSoldiers, troopXP = 0 });
+					}
+				}
+			}
+			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = "" };
+			return ac;
+        }
+
+		public static ArmyContainer GetEnemyFallenArmyContainer(ArmyContainer enemyAC)
+		{
+			List<TroopContainer> troopContainers = new List<TroopContainer>();
+			TroopRoster currentRoster = OpponentPartyHandler.CurrentOpponentParty.Party.MemberRoster;
+			foreach (TroopContainer tc in enemyAC.TroopContainers)
+			{
+				if (tc.stringId != "main_hero")
+				{
+					CharacterObject characterObject = CharacterObject.Find(tc.stringId);
+
+					if (currentRoster.FindIndexOfTroop(characterObject) == -1)
+					{
+						int fallenTroops = tc.troopCount;
+						troopContainers.Add(new TroopContainer { stringId = tc.stringId, troopCount = fallenTroops, troopXP = 0 });
+					}
+					else
+					{
+						int index1 = currentRoster.FindIndexOfTroop(characterObject);
+
+						int deadSoldiers = tc.troopCount - currentRoster.GetElementNumber(characterObject);
+						int woundedSoldiers = currentRoster.GetElementWoundedNumber(index1);
+
+						troopContainers.Add(new TroopContainer { stringId = tc.stringId, troopCount = deadSoldiers + woundedSoldiers, troopXP = 0 });
+					}
+				}
+			}
+			ArmyContainer ac = new ArmyContainer { TroopContainers = troopContainers, CharacterXML = "" };
+			return ac;
 		}
 
 		public static MatchHistory CreateMatchHistory(string battleResult)
@@ -363,6 +445,9 @@ namespace GeneralLord
 			matchHistory.PlayerArmyStrength = (float )playerJson["ArmyStrength"];
 			matchHistory.PlayerTroopCount = (int)playerJson["TotalTroopCount"];
 			matchHistory.PlayerName = (string)playerJson["Name"];
+			matchHistory.PlayerArmyContainer = (string)playerJson["ArmyContainer"];
+			matchHistory.PlayerFallenArmyContainer = JsonConvert.SerializeObject(GetPlayerFallenArmyContainer());
+
 
 			JObject enemyJson = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
 			ArmyContainer enemyAC = Serializer.JsonDeserializeFromStringAc((string)enemyJson["ArmyContainer"]);
@@ -373,6 +458,8 @@ namespace GeneralLord
 			matchHistory.EnemyArmyStrength = (float)enemyJson["ArmyStrength"];
 			matchHistory.EnemyTroopCount = (int)enemyJson["TotalTroopCount"];
 			matchHistory.EnemyName = (string)enemyJson["Name"];
+			matchHistory.EnemyArmyContainer = (string)enemyJson["ArmyContainer"];
+			matchHistory.EnemyFallenArmyContainer = JsonConvert.SerializeObject(GetEnemyFallenArmyContainer(enemyAC));
 
 			DateTime localDateCurrent = DateTime.Now;
 			//String culture = "en-GB";

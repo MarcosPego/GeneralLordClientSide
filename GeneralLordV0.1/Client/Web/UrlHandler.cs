@@ -14,6 +14,7 @@ namespace GeneralLordWebApiClient
 
         public static string GetMatchHistory = "getMatchHistoryRecord";
         public static string GetPartyUtils = "getPartyUtils";
+        public static string GetRankingProfiles = "getRankingProfiles";
         public static string PostBattleProcess = "postBattleProcess";
         public static string MultipleFromProfile = "multipleFromProfile";
         public static string SingleId = "singleId";

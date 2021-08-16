@@ -58,6 +58,12 @@ namespace GeneralLord
                 {
                     PlayerEncounter.Finish(false);
                     if(MobileParty.MainParty.CurrentSettlement != null) LeaveSettlementAction.ApplyForParty(MobileParty.MainParty);
+
+                    int hasNPCBrother = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(CharacterObject.Find("tutorial_npc_brother"));
+                    if (hasNPCBrother != -1)
+                    {
+                        PartyBase.MainParty.MemberRoster.RemoveTroop(CharacterObject.Find("tutorial_npc_brother"));
+                    }
                 }
 
                 else if (PlayerEncounter.Current.EncounterState == PlayerEncounterState.Wait)
@@ -205,16 +211,7 @@ namespace GeneralLord
                     PlayerEncounter.StartBattle();
                     CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
                 }
-                if (Input.IsKeyReleased(InputKey.E))
-                {
-                    //RecruitmentManager.OpenNPCRecruitmentRoster();
-                    ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen());
-                }
-                if (Input.IsKeyReleased(InputKey.W))
-                {
-                    //RecruitmentManager.OpenNPCRecruitmentRoster();
-                    ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen(false));
-                }
+               
                 if (Input.IsKeyReleased(InputKey.T))
                 {
                     PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
@@ -271,11 +268,6 @@ namespace GeneralLord
 
 
 
-        }
-
-        private void GauntletMenuRecruitVolunteers()
-        {
-            throw new NotImplementedException();
         }
 
         public override void RegisterEvents()

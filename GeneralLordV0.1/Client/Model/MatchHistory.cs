@@ -27,6 +27,13 @@ namespace GeneralLordWebApiClient.Model
 
         public int EnemyEloChange;
 
+
+        public string PlayerArmyContainer;
+        public string PlayerFallenArmyContainer;
+
+        public string EnemyArmyContainer;
+        public string EnemyFallenArmyContainer;
+
         public DateTime LocalTimeDatePostMatch;
     }
 }

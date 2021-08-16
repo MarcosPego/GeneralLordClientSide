@@ -15,15 +15,16 @@ namespace GeneralLord
     public class OpponentSelectorScreen : ScreenBase
 	{
 
-		public OpponentSelectorScreen(IEnumerable<Profile> opponentProfiles)
+		public OpponentSelectorScreen(IEnumerable<Profile> opponentProfiles, bool isRankingScreen = false)
         {
 			_opponentProfiles = opponentProfiles;
+			_isRankingScreen = isRankingScreen;
 		}
 
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
-			this._viewModel = new OpponentSelectorViewModel(_opponentProfiles);
+			this._viewModel = new OpponentSelectorViewModel(_opponentProfiles, _isRankingScreen);
 			this._gauntletLayer = new GauntletLayer(1, "GauntletLayer");
 			this._gauntletLayer.LoadMovie("OpponentSelector", this._viewModel);
 			this._gauntletLayer.InputRestrictions.SetInputRestrictions(true, TaleWorlds.Library.InputUsageMask.All);
@@ -42,6 +43,8 @@ namespace GeneralLord
 			this._clanCategory.Load(resourceContext, uiresourceDepot);
 			this._partyscreenCategory = spriteData.SpriteCategories["ui_partyscreen"];
 			this._partyscreenCategory.Load(resourceContext, uiresourceDepot);
+			this._inventoryCategory = spriteData.SpriteCategories["ui_inventory"];
+			this._inventoryCategory.Load(resourceContext, uiresourceDepot);
 			ScreenManager.TrySetFocus(_gauntletLayer);
 			LoadingWindow.DisableGlobalLoadingWindow();
 		}
@@ -58,6 +61,7 @@ namespace GeneralLord
 			base.OnFinalize();
 			this._clanCategory.Unload();
 			this._partyscreenCategory.Unload();
+			this._inventoryCategory.Unload();
 			base.RemoveLayer(this._gauntletLayer);
 			this._gauntletLayer = null;
 			this._viewModel = null;
@@ -69,5 +73,8 @@ namespace GeneralLord
 		private GauntletLayer _gauntletLayer;
 		private OpponentSelectorViewModel _viewModel;
 		private IEnumerable<Profile> _opponentProfiles;
-	}
+        private SpriteCategory _inventoryCategory;
+
+		private bool _isRankingScreen;
+    }
 }

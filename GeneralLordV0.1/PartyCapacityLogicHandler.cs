@@ -48,7 +48,24 @@ namespace GeneralLord
 
         }
 
+        public static bool ShouldTrainBeAvailable()
+        {
+            if(PartyBase.MainParty.LeaderHero.Gold - TrainStewardship > 0)
+            {
+                return true;
+            }
 
+            return false;
+        }
+
+        public static bool ShouldRenownBuyBeAvailable()
+        {
+            if (PartyBase.MainParty.LeaderHero.Gold - BuyRenownPrice > 0)
+            {
+                return true;
+            }
+            return false;
+        }
 
     }
 }

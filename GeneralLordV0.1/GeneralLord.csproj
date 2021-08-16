@@ -145,6 +145,7 @@
     <Compile Include="OpponentEntryTupleViewModel.cs" />
     <Compile Include="OpponentPartyHandler.cs" />
     <Compile Include="OpponentSelectorScreen.cs" />
+    <Compile Include="OpponentSelectorSortControllerViewModel.cs" />
     <Compile Include="OpponentSelectorViewModel.cs" />
     <Compile Include="PartyCapacityLogicHandler.cs" />
     <Compile Include="PartyManager.cs" />

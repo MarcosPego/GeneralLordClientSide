@@ -17,10 +17,10 @@ namespace GeneralLord
 {
     public class OpponentSelectorViewModel : ViewModel
     {
-        public OpponentSelectorViewModel(IEnumerable<Profile> opponentProfiles)
+        public OpponentSelectorViewModel(IEnumerable<Profile> opponentProfiles, bool isRankingScreen = false)
         {
-
-            _opponentProfiles = opponentProfiles;
+			_isRankingScreen = isRankingScreen;
+			_opponentProfiles = opponentProfiles;
 			this.Opponents = new MBBindingList<OpponentEntryTupleViewModel>();
 
 			this.HealthyInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(PartyBase.MainParty, FormationClass.Infantry));
@@ -32,7 +32,8 @@ namespace GeneralLord
 			JObject json = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
 			this.EloText = new TextObject("{=ATEloText}Elo: ", null).ToString();
 			this.Elo = json["Elo"].ToString();
-
+			this.OppenentSortController = new OpponentSelectorSortControllerViewModel(ref this._opponents, isRankingScreen);
+			this.OppenentSortController.SortByDefaultState();
 			RefreshMembersList();
 			RefreshValues();
 		}
@@ -89,10 +90,12 @@ namespace GeneralLord
 		public void RefreshMembersList()
 		{
 			this.Opponents.Clear();
+			int rankingPosition = 1;
 			foreach (Profile profile in _opponentProfiles)
 			{
 				//InformationManager.DisplayMessage(new InformationMessage(profile.Name.ToString()));
-				this.Opponents.Add(new OpponentEntryTupleViewModel(profile));
+				this.Opponents.Add(new OpponentEntryTupleViewModel(profile, rankingPosition, _isRankingScreen));
+				rankingPosition++;
 			}
 		}
 
@@ -367,6 +370,23 @@ namespace GeneralLord
 			}
 		}
 
+		[DataSourceProperty]
+		public OpponentSelectorSortControllerViewModel OppenentSortController
+		{
+			get
+			{
+				return this._oppenentSortController;
+			}
+			set
+			{
+				if (value != this._oppenentSortController)
+				{
+					this._oppenentSortController = value;
+					base.OnPropertyChangedWithValue(value, "OppenentSortController");
+				}
+			}
+		}
+
 		private string _eloText;
 		private string _elo;
 
@@ -389,5 +409,8 @@ namespace GeneralLord
 		private string _partySizeText;
 		private string _partySizeSubTitleText;
 		private string _name;
+        private OpponentSelectorSortControllerViewModel _oppenentSortController;
+
+		private bool _isRankingScreen;
 	}
 }

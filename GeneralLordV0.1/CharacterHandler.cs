@@ -38,7 +38,7 @@ namespace GeneralLord
 				InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Go to the Doctor!"));
 			} else if (PartyBase.MainParty.LeaderHero.HitPoints == PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints())
             {
-				InformationManager.DisplayMessage(new InformationMessage("WIP! Block this button when full health!"));
+				InformationManager.DisplayMessage(new InformationMessage("You feel in perfect condition"));
 			}
 			else
 			{

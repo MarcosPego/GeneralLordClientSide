@@ -31,5 +31,7 @@ namespace GeneralLordWebApiClient.Model
         public string DefensiveFormation { get; set; }
         public string DefensiveOrders { get; set; }
 
+        public string GameMetrics { get; set; }
+
     }
 }
