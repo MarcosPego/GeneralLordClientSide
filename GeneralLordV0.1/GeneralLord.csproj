@@ -88,8 +88,6 @@
     <Compile Include="Client\Model\ProfileHandler.cs" />
     <Compile Include="Client\Model\Serializer.cs" />
     <Compile Include="BattleGeneralConfig.cs" />
-    <Compile Include="Campaign.cs" />
-    <Compile Include="CharacterEntry.cs" />
     <Compile Include="Client\Model\ArmyContainer.cs" />
     <Compile Include="Client\Model\Profile.cs" />
     <Compile Include="Client\Model\TroopContainer.cs" />
@@ -100,10 +98,10 @@
     <Compile Include="Client\Web\Constants\KnownContentSerializers.cs" />
     <Compile Include="Client\Web\Constants\KnownContentSerializersExtensions.cs" />
     <Compile Include="Client\Web\HttpWebResponseExtensions.cs" />
+    <Compile Include="Client\Web\ServerRequestsHandler.cs" />
     <Compile Include="Client\Web\UrlHandler.cs" />
     <Compile Include="Client\Web\WebRequestResult.cs" />
     <Compile Include="Client\Web\WebRequests.cs" />
-    <Compile Include="CustomTroopRoster.cs" />
     <Compile Include="FormationBattleTest\BattleTestCustomView\BattleTestEmptyView.cs" />
     <Compile Include="FormationBattleTest\BattleTestCustomView\BattleTestView.cs" />
     <Compile Include="FormationBattleTest\BattleTestCustomView\BattleTestViewModel.cs" />
@@ -125,14 +123,13 @@
     <Compile Include="FormationPlanHandler\PlanDefinition\PlanOrderEnum.cs" />
     <Compile Include="FormationPlanHandler\PlanDefinition\PlanStateEnum.cs" />
     <Compile Include="FormationPlanHandler\TextViewModel.cs" />
-    <Compile Include="GeneralLordMainGameState.cs" />
-    <Compile Include="GeneralState.cs" />
     <Compile Include="HarmonyOverrides\BattleRewardsOverride.cs" />
+    <Compile Include="HarmonyOverrides\CampaignOptionsVMOverride.cs" />
+    <Compile Include="HarmonyOverrides\CheatEngineOverride.cs" />
     <Compile Include="HarmonyOverrides\MissionOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenLeaveOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
     <Compile Include="HarmonyOverrides\PlayerEncounterOverride.cs" />
-    <Compile Include="HarmonyOverrides\RecruitmentOverride.cs" />
     <Compile Include="ItemRosterGeneratorHandler.cs" />
     <Compile Include="JsonBattleConfig.cs" />
     <Compile Include="MainManager.cs" />
@@ -148,17 +145,11 @@
     <Compile Include="OpponentSelectorSortControllerViewModel.cs" />
     <Compile Include="OpponentSelectorViewModel.cs" />
     <Compile Include="PartyCapacityLogicHandler.cs" />
-    <Compile Include="PartyManager.cs" />
-    <Compile Include="PartyManagerData.cs" />
-    <Compile Include="PartyManagerLogic.cs" />
-    <Compile Include="PartyManagerScreen.cs" />
-    <Compile Include="PartyManagerViewModel.cs" />
     <Compile Include="PartyScreenState.cs" />
     <Compile Include="PartyUtilsHandler.cs" />
     <Compile Include="RecruitmentManager.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TroopVM.cs" />
     <Content Include="Readme.txt" />
     <Content Include="SubModule.xml" />
   </ItemGroup>

@@ -27,6 +27,7 @@ using GeneralLordWebApiClient;
 using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
 using GeneralLord.FormationBattleTest;
 using CunningLords.Interaction;
+using GeneralLord.Client.Web;
 
 namespace GeneralLord
 {
@@ -35,12 +36,7 @@ namespace GeneralLord
         public MainManager()
         {
             this._initializeState = true;
-
-            //JsonBattleConfig.ExecuteSubmitAc();
-
-            //this._partyManager = new PartyManager();
-            //this._partyManagerLogic = new PartyManagerLogic();
-            //this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());
+            this._isFirstGameLaunch = false;
         }
 
         public void TickCampaignBehavior()
@@ -64,6 +60,8 @@ namespace GeneralLord
                     {
                         PartyBase.MainParty.MemberRoster.RemoveTroop(CharacterObject.Find("tutorial_npc_brother"));
                     }
+
+                    _isFirstGameLaunch = true;
                 }
 
                 else if (PlayerEncounter.Current.EncounterState == PlayerEncounterState.Wait)
@@ -93,14 +91,8 @@ namespace GeneralLord
                         {
                             matchHistory = JsonBattleConfig.CreateMatchHistory("PlayerDefeat");
                         }
-                        var t = Task.Run(async () =>
-                        {
-                            await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.PostBattleProcess), matchHistory);
-                            //Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
-                        });
+                        var t = Task.Run(async () => await ServerRequestsHandler.SavePostBattle(matchHistory));
                         t.Wait();
-
-                        //JsonBattleConfig.UpdateArmyAfterBattle();
                     }
                     JsonBattleConfig.UpdateArmyAfterBattle();
                     if (MobileParty.MainParty.CurrentSettlement != null) LeaveSettlementAction.ApplyForParty(MobileParty.MainParty);
@@ -159,62 +151,25 @@ namespace GeneralLord
             {
                 Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
                 JsonBattleConfig.VerifyUniqueFile();
-                if(this._initializeState) JsonBattleConfig.ReceivePartyUtils();
-                this._partyManager = new PartyManager();
-                this._partyManagerLogic = new PartyManagerLogic();
-                this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());
+                if(this._initializeState && !this._isFirstGameLaunch) JsonBattleConfig.ReceivePartyUtils();
 
                 _initializeState = false;
-                _mainManagerScreen = new MainManagerScreen(_partyManagerLogic);
+                _mainManagerScreen = new MainManagerScreen();
 
 
                 ScreenManager.PushScreen(_mainManagerScreen);
 
             }
-            if(ScreenManager.TopScreen is MainManagerScreen)  { PartyUtilsHandler.TickForRecovery(_mainManagerScreen); }
+            if(ScreenManager.TopScreen is MainManagerScreen)  { PartyUtilsHandler.TickForRecovery(_mainManagerScreen); } /**/
 
             if (Mission.Current == null && Input.IsKeyDown(InputKey.LeftControl))
-            {
-                if (false && Input.IsKeyReleased(InputKey.R))
-                {
-                    JObject json = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
-                    //InformationManager.DisplayMessage(new InformationMessage(json.ToString()));
-                    ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["ArmyContainer"]) as ArmyContainer;
-
-                    //Serializer.JsonDeserialize("enemyProfile.json");
-                    //string jsonString = profile.ArmyContainer;
-                    //Clan clan = Clan.All.First();
-
-
-                    //Hero bestAvailableCommander = clan.Heroes.First();
-                    //Hero bestAvailableCommander = CharacterObject.Find("enemy_general_lord").HeroObject;
-
-                    //Hero bestAvailableCommander = Hero.CreateHero(CharacterObject.Find("lordTest").StringId);
-                    //bestAvailableCommander.SetCharacterObject(CharacterObject.Find("lordTest"));
-
-                    Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
-                    Clan clan = Clan.BanditFactions.FirstOrDefault((Clan t) => t.Culture == closestHideout.Culture);
-                    //this._questBanditMobileParty = 
-
-
-                    //MobileParty mobileParty = MobilePartyHelper.SpawnLordParty(bestAvailableCommander, new Vec2(Hero.MainHero.GetPosition().x, Hero.MainHero.GetPosition().z), 1f);
-                    MobileParty mobileParty = BanditPartyComponent.CreateBanditParty("EnemyClan", clan, closestHideout.Hideout, false);
-                    mobileParty.InitializeMobileParty(
-                                JsonBattleConfig.EnemyParty(ac),
-                                JsonBattleConfig.EnemyParty(ac),
-                                mobileParty.Position2D,
-                                0);
-                    PlayerEncounter.Start();
-
-                    //InformationManager.DisplayMessage(new InformationMessage(PartyBase.MainParty.IsSettlement.ToString()));
-                    PlayerEncounter.Current.SetupFields(PartyBase.MainParty, mobileParty.Party);
-                    PlayerEncounter.StartBattle();
-                    CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
-                }
-               
+            {            
                 if (Input.IsKeyReleased(InputKey.T))
                 {
-                    PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
+
+                    PartyScreenState.currentState = PartyScreenStateEnum.RecruitmentScreen;
+                    RecruitmentManager.OpenRecruitmentRoster();
+                    //PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
                 }
                 if (Input.IsKeyReleased(InputKey.G))
                 {
@@ -230,44 +185,12 @@ namespace GeneralLord
                     }
 
                 }
-                if (Input.IsKeyReleased(InputKey.K))
+                if (false && Input.IsKeyReleased(InputKey.K))
                 {
                     PartyBase.MainParty.MemberRoster.WoundNumberOfTroopsRandomly(3);
                 }
-                /*
-                if (Input.IsKeyReleased(InputKey.T))
-                {
-                    if (ScreenManager.TopScreen is MapScreen)
-                    {
-                        this._partyManager = new PartyManager();
-                        this._partyManagerLogic = new PartyManagerLogic();
-                        this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());
 
-                        _initializeState = false;
-                        ScreenManager.PushScreen(new MainManagerScreen(_partyManagerLogic));
-                    }
-                }
-                if (Input.IsKeyReleased(InputKey.U))
-                {
-                    DateTime localDateCurrent = DateTime.Now;
-                    //String culture = "en-GB";
-                    InformationManager.DisplayMessage(new InformationMessage(localDateCurrent.ToString("G", CultureInfo.CreateSpecificCulture("en-GB"))));
-                    InformationManager.DisplayMessage(new InformationMessage(localDateCurrent.ToString() + "   " + localDateCurrent.Kind));
-
-
-                    //InformationManager.DisplayMessage(new InformationMessage(DateTime.Parse(localDateCurrent.ToString("G", CultureInfo.CreateSpecificCulture("en-GB")));
-                    /*CharacterHandler.saveLocationFile = "enemygeneral.xml";
-                    CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
-                    CharacterHandler.LoadXML();
-
-                }*/
             }
-
-
-
-
-
-
         }
 
         public override void RegisterEvents()
@@ -280,8 +203,7 @@ namespace GeneralLord
         private Settlement randomSettlement;
 
         private bool _initializeState = true;
-        private PartyManagerLogic _partyManagerLogic;
-        private PartyManager _partyManager = null;
+        private bool _isFirstGameLaunch;
         private object localDate;
 
         private MainManagerScreen _mainManagerScreen;

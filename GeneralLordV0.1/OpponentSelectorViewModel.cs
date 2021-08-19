@@ -1,4 +1,6 @@
-﻿using GeneralLordWebApiClient.Model;
+﻿using GeneralLord.Client.Web;
+using GeneralLordWebApiClient;
+using GeneralLordWebApiClient.Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -17,10 +19,10 @@ namespace GeneralLord
 {
     public class OpponentSelectorViewModel : ViewModel
     {
-        public OpponentSelectorViewModel(IEnumerable<Profile> opponentProfiles, bool isRankingScreen = false)
+        public OpponentSelectorViewModel(bool isRankingScreen = false)
         {
 			_isRankingScreen = isRankingScreen;
-			_opponentProfiles = opponentProfiles;
+			//_opponentProfiles = opponentProfiles;
 			this.Opponents = new MBBindingList<OpponentEntryTupleViewModel>();
 
 			this.HealthyInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(PartyBase.MainParty, FormationClass.Infantry));
@@ -31,6 +33,7 @@ namespace GeneralLord
 
 			JObject json = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
 			this.EloText = new TextObject("{=ATEloText}Elo: ", null).ToString();
+			this.ExplanationText = new TextObject("{=ATExplanationText}Choose your opponent! After you defeat one opponent he will be unchallengeable for the next 12 hours. If no Opponent is available consider taking a rest and coming back later :)", null).ToString();
 			this.Elo = json["Elo"].ToString();
 			this.OppenentSortController = new OpponentSelectorSortControllerViewModel(ref this._opponents, isRankingScreen);
 			this.OppenentSortController.SortByDefaultState();
@@ -90,11 +93,44 @@ namespace GeneralLord
 		public void RefreshMembersList()
 		{
 			this.Opponents.Clear();
-			int rankingPosition = 1;
-			foreach (Profile profile in _opponentProfiles)
+			Profile userProfile = ProfileHandler.UpdateProfileAc();
+			var task = Task.Run(async () => await ServerRequestsHandler.GetMatchHistory(userProfile.Id));
+			task.Wait();
+			IEnumerable<MatchHistory>  matchHistories = task.Result;
+			var task1 = Task.Run(async () => await ServerRequestsHandler.GetMatchMakingProfiles(userProfile, _isRankingScreen));
+			task1.Wait();
+			IEnumerable<Profile> profiles = task1.Result;
+
+
+			Dictionary<int, DateTime> blockedIds = new Dictionary<int, DateTime>();
+			foreach (MatchHistory matchHistory in matchHistories)
 			{
-				//InformationManager.DisplayMessage(new InformationMessage(profile.Name.ToString()));
-				this.Opponents.Add(new OpponentEntryTupleViewModel(profile, rankingPosition, _isRankingScreen));
+				if (matchHistory.Id == userProfile.Id)
+				{
+					double hourdifference = (DateTime.Now - matchHistory.LocalTimeDatePostMatch).TotalHours;
+					if (hourdifference < JsonBattleConfig.rankedHourCooldown && matchHistory.BattleResult == "PlayerVictory")
+					{
+						blockedIds.Add(matchHistory.EnemyId, matchHistory.LocalTimeDatePostMatch);
+					}
+				}
+			}
+
+			int rankingPosition = 1;
+			foreach (Profile profile in profiles)
+			{
+				bool isNotChallengeable = false;
+				if (blockedIds.ContainsKey(profile.Id))
+				{
+					isNotChallengeable = true;
+					
+					this.Opponents.Add(new OpponentEntryTupleViewModel(profile, rankingPosition, _isRankingScreen, isNotChallengeable, blockedIds[profile.Id]));
+				}
+				else
+                {
+
+					this.Opponents.Add(new OpponentEntryTupleViewModel(profile, rankingPosition, _isRankingScreen, isNotChallengeable));
+				}
+
 				rankingPosition++;
 			}
 		}
@@ -186,6 +222,23 @@ namespace GeneralLord
 				{
 					this._partySizeSubTitleText = value;
 					base.OnPropertyChangedWithValue(value, "PartySizeSubTitleText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string ExplanationText
+		{
+			get
+			{
+				return this._explanationText;
+			}
+			set
+			{
+				if (value != this._explanationText)
+				{
+					this._explanationText = value;
+					base.OnPropertyChangedWithValue(value, "ExplanationText");
 				}
 			}
 		}
@@ -404,7 +457,7 @@ namespace GeneralLord
 		private int _healthyHorseArcherCount;
 
 		private MBBindingList<OpponentEntryTupleViewModel> _opponents;
-		private IEnumerable<Profile> _opponentProfiles;
+		//private IEnumerable<Profile> _opponentProfiles;
 
 		private string _partySizeText;
 		private string _partySizeSubTitleText;
@@ -412,5 +465,6 @@ namespace GeneralLord
         private OpponentSelectorSortControllerViewModel _oppenentSortController;
 
 		private bool _isRankingScreen;
-	}
+        private string _explanationText;
+    }
 }

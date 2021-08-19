@@ -15,16 +15,15 @@ namespace GeneralLord
     public class OpponentSelectorScreen : ScreenBase
 	{
 
-		public OpponentSelectorScreen(IEnumerable<Profile> opponentProfiles, bool isRankingScreen = false)
+		public OpponentSelectorScreen(bool isRankingScreen = false)
         {
-			_opponentProfiles = opponentProfiles;
 			_isRankingScreen = isRankingScreen;
 		}
 
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
-			this._viewModel = new OpponentSelectorViewModel(_opponentProfiles, _isRankingScreen);
+			this._viewModel = new OpponentSelectorViewModel(_isRankingScreen);
 			this._gauntletLayer = new GauntletLayer(1, "GauntletLayer");
 			this._gauntletLayer.LoadMovie("OpponentSelector", this._viewModel);
 			this._gauntletLayer.InputRestrictions.SetInputRestrictions(true, TaleWorlds.Library.InputUsageMask.All);
@@ -72,7 +71,7 @@ namespace GeneralLord
 		private SpriteCategory _partyscreenCategory;
 		private GauntletLayer _gauntletLayer;
 		private OpponentSelectorViewModel _viewModel;
-		private IEnumerable<Profile> _opponentProfiles;
+		//private IEnumerable<Profile> _opponentProfiles;
         private SpriteCategory _inventoryCategory;
 
 		private bool _isRankingScreen;

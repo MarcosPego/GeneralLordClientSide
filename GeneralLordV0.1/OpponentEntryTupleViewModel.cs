@@ -26,14 +26,20 @@ namespace GeneralLord
 		public static string HighlightBrush = "NameTitle.Highlight";
 
 
-		public OpponentEntryTupleViewModel(Profile profile, int addedOrder, bool isRankingScreen = false)
+		public OpponentEntryTupleViewModel(Profile profile, int addedOrder, bool isRankingScreen = false, bool isNotChallengeable = true, DateTime cooldown = new DateTime())
 		{
-			this.IsChalleangeble = false;
+			_startedAsNotChallengeable = isNotChallengeable;
+			this.IsNotChalleangeble = isNotChallengeable;
+			_cooldownTimer = cooldown;
 			_profile = profile;
 			_troopCount = profile.TotalTroopCount;
+			_isRankingScreen = isRankingScreen;
 			if (profile.UniqueUser == 2)
             {
-				_troopCount = profile.TotalTroopCount - 1;
+				if (profile.TotalTroopCount > 0)
+                {
+					_troopCount = profile.TotalTroopCount - 1;
+				}
 			}
 
 
@@ -45,7 +51,7 @@ namespace GeneralLord
 			if (isRankingScreen && uniqueId==_profile.UniqueUser)
             {
 				this.OpponentNameBrush = HighlightBrush;
-				this.IsChalleangeble = true;
+				this.IsNotChalleangeble = true;
             }
 
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
@@ -197,6 +203,26 @@ namespace GeneralLord
 			this.RangedCount = num2;
 			this.CavalryCount = num3;
 			this.HorseArcherCount = num4;
+
+			this.RankedCooldown = (_cooldownTimer.AddHours(JsonBattleConfig.rankedHourCooldown) - DateTime.Now).ToString(@"hh\:mm");
+
+			JObject playerJson = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
+			int uniqueId = (int)playerJson["UniqueUser"];
+
+			if (uniqueId == _profile.UniqueUser)
+            {
+				this.IsNotInCooldown = true;
+				this.IsNotChalleangeble = true;
+			}
+			else if(_isRankingScreen && _startedAsNotChallengeable && _cooldownTimer.AddHours(JsonBattleConfig.rankedHourCooldown) > DateTime.Now)
+            {
+                this.IsNotInCooldown = false;
+				this.IsNotChalleangeble = true;
+            } else
+            {
+				this.IsNotInCooldown = true;
+				this.IsNotChalleangeble = false;
+			}
 		}
 
 		public override void OnFinalize()
@@ -409,18 +435,54 @@ namespace GeneralLord
 		}
 
 		[DataSourceProperty]
-		public bool IsChalleangeble
+		public bool IsNotChalleangeble
         {
 			get
 			{
-				return this._isChalleangeble;
+				return this._isNotChalleangeble;
 			}
 			set
 			{
-				if (value != this._isChalleangeble)
+				if (value != this._isNotChalleangeble)
 				{
-					this._isChalleangeble = value;
-					base.OnPropertyChangedWithValue(value, "IsChalleangeble");
+					this._isNotChalleangeble = value;
+					base.OnPropertyChangedWithValue(value, "IsNotChalleangeble");
+				}
+			}
+		}
+
+        private DateTime _cooldownTimer;
+
+        [DataSourceProperty]
+		public bool IsNotInCooldown
+		{
+			get
+			{
+				return this._isNotInCooldown;
+			}
+			set
+			{
+				if (value != this._isNotInCooldown)
+				{
+					this._isNotInCooldown = value;
+					base.OnPropertyChangedWithValue(value, "IsNotInCooldown");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string RankedCooldown
+		{
+			get
+			{
+				return this._rankedCooldown;
+			}
+			set
+			{
+				if (value != this._rankedCooldown)
+				{
+					this._rankedCooldown = value;
+					base.OnPropertyChangedWithValue(value, "RankedCooldown");
 				}
 			}
 		}
@@ -462,7 +524,11 @@ namespace GeneralLord
 
 		public float _armyStrengthRatio;
         public int _troopCount;
-		public bool _isChalleangeble;
-        private string _opponentNameBrush;
+        private bool _isRankingScreen;
+        public bool _isNotChalleangeble;
+		public bool _isNotInCooldown;
+		private string _rankedCooldown;
+		private string _opponentNameBrush;
+        private bool _startedAsNotChallengeable;
     }
 }

@@ -54,7 +54,7 @@ namespace GeneralLord
 			}
 
 
-			UrlHandler.ReleaseVersion(false);
+			UrlHandler.ReleaseVersion(true);
 
 			//EnhancedBattleTestSubModule.Instance = this;
 
@@ -123,7 +123,6 @@ namespace GeneralLord
 			}
 		}
 
-		private PartyManager _partyManager = null;
 		private MainManager _mainManager = null;
 	}
 }

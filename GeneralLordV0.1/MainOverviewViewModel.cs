@@ -30,6 +30,7 @@ using TaleWorlds.Core.ViewModelCollection;
 using System.Globalization;
 using CunningLords.Interaction;
 using GeneralLord.FormationPlanHandler;
+using GeneralLord.Client.Web;
 
 namespace GeneralLord
 {
@@ -101,8 +102,8 @@ namespace GeneralLord
 				RecoveryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetTroopsToRecoverInfo(woundedTroopGroup));
 				if (woundedTroopGroup.timeUntilRecovery <= DateTime.Now)
                 {
-					this.RecoveryCount = new TextObject("{=ATRecoveryCount}"+ woundedTroopGroup.totalWoundedTroops.ToString() + " will recover shortly!", null).ToString();
-					this.Timer = "";
+					this.RecoveryCount = woundedTroopGroup.totalWoundedTroops.ToString();
+					this.Timer = new TextObject("{=ATTimer}" +" will recover shortly!", null).ToString();
 				} else
                 {
 					this.RecoveryCount = woundedTroopGroup.totalWoundedTroops.ToString();
@@ -364,36 +365,22 @@ namespace GeneralLord
 
 		public void ExecuteRanking()
 		{
-			//InformationManager.DisplayMessage(new InformationMessage("To Be Implemented!"));
+			JsonBattleConfig.ExecuteSubmitProfileWithAc();
+			ScreenManager.PushScreen(new OpponentSelectorScreen(true));
+			this.RefreshValues();
 
-			JsonBattleConfig.ExecuteSubmitAc();
-
-			IEnumerable<Profile> profiles;
-			var task = Task.Run(async () =>
+			/*var task = Task.Run(async () =>
 			{
-				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
+				IEnumerable<Profile> profiles;
 				Profile profile = ProfileHandler.UpdateProfileAc();
 				var result = await WebRequests.PostAsync<IEnumerable<Profile>>(UrlHandler.GetUrlFromString(UrlHandler.GetRankingProfiles));
-				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
-
 				profiles = result.ServerResponse;
-				//Serializer.JsonSerialize(profiles, "enemyProfile.json");
-
-				//InformationManager.DisplayMessage(new InformationMessage(result)); 
-				//ScreenManager.PopScreen();
-				ScreenManager.PushScreen(new OpponentSelectorScreen(profiles, true));
-
 			});
-			task.Wait();
-
-
-			this.RefreshValues();
+			task.Wait();*/
 		}
 
 		public void ExecuteFormation()
 		{
-
-
 			BattleTestHandler.OpenBattleTestMission();
 			//this.RefreshValues();
 		}
@@ -403,32 +390,22 @@ namespace GeneralLord
 			InformationManager.DisplayMessage(new InformationMessage("Exiting to Main Menu!"));
 
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
-			JsonBattleConfig.ExecuteSubmitAc();
+			JsonBattleConfig.ExecuteSubmitProfileWithAc();
 			this._exitOnSaveOver = true;
 		}
 
 		public void ExecuteQueue()
         {
-			JsonBattleConfig.ExecuteSubmitAc();
-
-			IEnumerable<Profile> profiles;
-			var task = Task.Run(async () =>
+			JsonBattleConfig.ExecuteSubmitProfileWithAc();
+			ScreenManager.PushScreen(new OpponentSelectorScreen());
+			/*var task = Task.Run(async () =>
 			{
-				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
+				IEnumerable<Profile> profiles;
 				Profile profile = ProfileHandler.UpdateProfileAc();
 				var result = await WebRequests.PostAsync<IEnumerable<Profile>>(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile), profile);
-				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
-
 				profiles = result.ServerResponse;
-				//Serializer.JsonSerialize(profiles, "enemyProfile.json");
-
-				//InformationManager.DisplayMessage(new InformationMessage(result)); 
-				//ScreenManager.PopScreen();
-				ScreenManager.PushScreen(new OpponentSelectorScreen(profiles));
-
 			});
-			task.Wait();
-
+			task.Wait();*/
 		}
 
 		public void ExecuteAttackPlanSetup()
@@ -511,21 +488,12 @@ namespace GeneralLord
 
 
 			IEnumerable<MatchHistory> matchHistories;
-			var task = Task.Run(async () =>
-			{
-				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
-				Profile profile = ProfileHandler.UpdateProfileAc();
-				var result = await WebRequests.PostAsync<IEnumerable<MatchHistory>>(UrlHandler.GetUrlFromString(UrlHandler.GetMatchHistory), profile.Id);
-				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
+			Profile profile = ProfileHandler.UpdateProfileAc();
+			var task = Task.Run(async () => await ServerRequestsHandler.GetMatchHistory(profile.Id));
+			task.Wait();
+			matchHistories = task.Result;
 
-				matchHistories = result.ServerResponse;
-				//Serializer.JsonSerialize(profiles, "enemyProfile.json");
-
-				//InformationManager.DisplayMessage(new InformationMessage(result)); 
-				//ScreenManager.PopScreen();
-				ScreenManager.PushScreen(new MatchHistoryScreen(matchHistories));
-
-			});
+			ScreenManager.PushScreen(new MatchHistoryScreen(matchHistories));
 			task.Wait();
 		
 		}
@@ -1634,7 +1602,6 @@ namespace GeneralLord
 		private bool _isAnyValidMemberSelected;
 		private ClanLordItemVM _currentSelectedMember;
 		private bool _isSelected;
-		private PartyManagerLogic _partyManagerLogic;
 		private string _skillsText;
 		private string _expectedGoldText;
 		private string _expectedGold;

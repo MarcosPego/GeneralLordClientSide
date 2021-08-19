@@ -51,7 +51,7 @@ namespace GeneralLord.HarmonyOverrides
 
                     if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
                     {
-                        JsonBattleConfig.ExecuteSubmitAc();
+                        JsonBattleConfig.ExecuteSubmitProfileWithAc();
 
                         GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, PartyScreenState.goldToChange, false);
                         PartyScreenState.goldToChange = 0;
@@ -62,7 +62,7 @@ namespace GeneralLord.HarmonyOverrides
                         PartyScreenState.currentState = PartyScreenStateEnum.NormalScreen;
 
                         JsonBattleConfig.ExecuteSubmitPartyUtils();
-                        JsonBattleConfig.ExecuteSubmitAc();
+                        JsonBattleConfig.ExecuteSubmitProfileWithAc();
                     }
                     else
                     {

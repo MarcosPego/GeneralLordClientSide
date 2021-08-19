@@ -16,16 +16,15 @@ namespace GeneralLord
     {
 
         public static TroopRoster GarrisonedTroops = new TroopRoster(PartyBase.MainParty);
+        public static TroopRoster WoundedTroops = new TroopRoster(PartyBase.MainParty);
+
 
         public static WoundedTroopArmy WoundedTroopArmy = new WoundedTroopArmy();
 
 
         private static int totalCount = 3500;
         private static double maxCount = 5000;
-        private static TimeSpan timeLimit = TimeSpan.FromSeconds(60);
-        private static DateTime lastIncrementTime;
-
-        private Timer timer1;
+        public static float healingRatio = 0.5f;
 
 
         public static void TickForRecovery(MainManagerScreen mainManagerScreen)
@@ -57,13 +56,29 @@ namespace GeneralLord
             //InformationManager.DisplayMessage(new InformationMessage("Worked"));
             foreach (WoundedTroop wt  in woundedTroopGroupToRecover.woundedTroops)
             {
-                PartyBase.MainParty.MemberRoster.WoundTroop(CharacterObject.Find(wt.stringId), -wt.troopCount);
+                CharacterObject characterObject = CharacterObject.Find(wt.stringId);
+
+                int id = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
+                if(id != -1)
+                {
+                    int woundedNumber = PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(id);
+                    if (woundedNumber >= wt.troopCount)
+                    {
+                        PartyBase.MainParty.MemberRoster.WoundTroop(characterObject, -wt.troopCount);
+                    }
+                    else
+                    {
+                        PartyBase.MainParty.MemberRoster.WoundTroop(characterObject, -woundedNumber);
+                    }
+                }
+
+
             }
 
             WoundedTroopArmy.WoundedTroopsGroup.RemoveAt(0);
 
             JsonBattleConfig.ExecuteSubmitPartyUtils();
-            JsonBattleConfig.ExecuteSubmitAc();
+            JsonBattleConfig.ExecuteSubmitProfileWithAc();
         }
 
 
@@ -93,16 +108,47 @@ namespace GeneralLord
 
         private static void SellPrisonersDoneHandler(PartyBase leftOwnerParty, TroopRoster leftMemberRoster, TroopRoster leftPrisonRoster, PartyBase rightOwnerParty, TroopRoster rightMemberRoster, TroopRoster rightPrisonRoster)
         {
-            //SellPrisonersAction.ApplyForSelectedPrisoners(MobileParty.MainParty, leftPrisonRoster, Hero.MainHero.CurrentSettlement);
-
-            //GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, 100, false);
-            //return true;
         }
 
         public static bool RightTransferableDelegate(CharacterObject character, PartyScreenLogic.TroopType type, PartyScreenLogic.PartyRosterSide side, PartyBase LeftOwnerParty)
         {
             //return side == PartyScreenLogic.PartyRosterSide.Left && type == PartyScreenLogic.TroopType.Member;
             return true;
+        }
+
+
+        public void UpdateWoundedTroopsReforged()
+        {
+            WoundedTroopGroup woundedTroopGroup = new WoundedTroopGroup();
+            woundedTroopGroup.timeUntilRecovery = DateTime.Now.AddMinutes(JsonBattleConfig.recoveryMinuteCooldown);
+
+            foreach (TroopRosterElement tc in JsonBattleConfig.copyOfTroopRosterPreviousToBattle)
+            {
+                if (tc.Character.StringId != "main_hero")
+                {
+                    CharacterObject characterObject = CharacterObject.Find(tc.Character.StringId);
+                    if (PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject) == -1)
+                    {
+                        int troopsToRecover = (int)(healingRatio * tc.Number);
+                        int downedTroops = tc.Number - troopsToRecover;
+
+
+                        PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
+
+                        if (downedTroops > 0)
+                        {
+                            WoundedTroops.AddToCounts(characterObject, downedTroops, false, 0, 0, true, -1);
+                            WoundedTroop woundedTroop = new WoundedTroop { stringId = tc.Character.StringId, troopCount = downedTroops };
+                            woundedTroopGroup.woundedTroops.Add(woundedTroop);
+                            woundedTroopGroup.totalWoundedTroops += downedTroops;
+                        }
+
+                        //InformationManager.DisplayMessage(new InformationMessage("Character" + characterObject.Name + " recovered and lost:" + troopsToRecover + "; " + downedTroops));
+                    }
+
+
+                }
+            }
         }
     }
 }

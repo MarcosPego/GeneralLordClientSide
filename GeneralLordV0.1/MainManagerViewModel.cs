@@ -24,11 +24,9 @@ namespace GeneralLord
     public class MainManagerViewModel : ViewModel
     {
 
-        public MainManagerViewModel(PartyManagerLogic partyManagerLogic) {
+        public MainManagerViewModel() {
 
 			ItemRosterGeneratorHandler.InitializeItemRosterForShop();
-
-			this._partyManagerLogic = partyManagerLogic;
 			//this._partyManagerLogic.Initialize(this._partyManager.TestRosterLeft(), this._partyManager.TestRosterRight());
 
 			this._clan = Hero.MainHero.Clan;
@@ -495,11 +493,10 @@ namespace GeneralLord
         private string _partyText;
 		private string _shopText;
 
-		private PartyManagerLogic _partyManagerLogic;
 
 		private MapNavigationHandler _mapNavigationHandler;
 		private INavigationHandler _navigationHandler;
-		private PartyManager _partyManager = null;
+
 
 		private BasicTooltipViewModel _renownHint;
 		private int _minRenownForCurrentTier;

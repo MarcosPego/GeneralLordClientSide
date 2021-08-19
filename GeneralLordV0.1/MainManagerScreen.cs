@@ -18,36 +18,16 @@ using SandBox.View.Map;
 
 namespace GeneralLord
 {
-	[GameStateScreen(typeof(GeneralLordMainGameState))]
 	public class MainManagerScreen : ScreenBase, IGameStateListener
 	{
-		private readonly GeneralLordMainGameState _state;
-
-		public MainManagerScreen(PartyManagerLogic partyManagerLogic)
+		public MainManagerScreen()
 		{
-
-			this._partyManagerLogic = partyManagerLogic;
-
-
-			
-		}
-
-		public MainManagerScreen(GeneralLordMainGameState state, PartyManagerLogic partyManagerLogic)
-        {
-			this._state = state;
-			this._partyManagerLogic = partyManagerLogic;
-        }
-
-		public MainManagerScreen(GeneralLordMainGameState state)
-		{
-			this._state = state;
-			this._partyManagerLogic = this._state._partyManagerLogic;
 		}
 
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
-			this._viewModel = new MainManagerViewModel(this._partyManagerLogic);
+			this._viewModel = new MainManagerViewModel();
 			this._gauntletLayer = new GauntletLayer(1, "GauntletLayer");
 			this._gauntletLayer.LoadMovie("MainViewer", this._viewModel);
 			this._gauntletLayer.InputRestrictions.SetInputRestrictions(true, TaleWorlds.Library.InputUsageMask.All);
@@ -108,7 +88,6 @@ namespace GeneralLord
 		//private PartyManagerLogic _partyManagerLogic;
 		private SpriteCategory _partyscreenCategory;
 		private SpriteCategory _clanCategory;
-		private PartyManagerLogic _partyManagerLogic;
 
 		private MapNavigationHandler _mapNavigationHandler;
 	}

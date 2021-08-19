@@ -56,7 +56,9 @@ namespace GeneralLordWebApiClient.Model
                 }
 
 
-                profile.DefensiveOrders = Serializer.JsonString("DefenseDecisiontree.json");
+       
+
+
                 //profile.DefensiveOrders = Serializer.JsonString("data.json");
                 profile.UseDefensiveOrder = EnemyFormationHandler.UseDefensiveSettings;
 
@@ -65,7 +67,11 @@ namespace GeneralLordWebApiClient.Model
                 string formation_filePath = Path.Combine(formation_path, "ModuleData", "DefenderSelectedFormation.json");
 
 
+                //formation_filePath = Path.Combine(formation_path, "ModuleData", "DefenseDecisiontree.json");
 
+                string defenseFilePath = Path.Combine(Serializer.SaveFolderPath(), "DefenseDecisiontree.json");
+                //profile.DefensiveOrders = File.ReadAllText(formation_filePath);
+                if(File.Exists(defenseFilePath)) profile.DefensiveOrders = Serializer.JsonString("DefenseDecisiontree.json");
                 profile.SelectedFormation = EnemyFormationHandler.DefensiveSelectedFormation;
   
                 formation_filePath = Path.Combine(formation_path, "ModuleData", "data.json");
