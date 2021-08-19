@@ -85,7 +85,7 @@ namespace GeneralLord
 			Serializer.JsonSerialize(_profile, "enemyProfile.json");
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
 
-			if(false && _profile.SelectedFormation != -1)
+			if(_profile.SelectedFormation != -1)
             {
 				EnemyFormationHandler.EnemySelectedFormation = _profile.SelectedFormation;
 

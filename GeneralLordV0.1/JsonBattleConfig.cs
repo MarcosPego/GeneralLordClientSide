@@ -32,7 +32,7 @@ namespace GeneralLord
 
 		public static List<TroopRosterElement> copyOfTroopRosterPreviousToBattle = new List<TroopRosterElement>();
 
-		public static int recoveryMinuteCooldown = 30;
+		public static int recoveryMinuteCooldown = 4;
 		public static int rankedHourCooldown = 12;
 
 
@@ -45,6 +45,28 @@ namespace GeneralLord
 				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
 				{
 					list.Add(new TooltipProperty(troopRosterElement.Character.Name.ToString(), troopRosterElement.Number.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+				}
+			}
+			return list;
+		}
+
+		public static List<TooltipProperty> GetPartyTroopInfoFromTwoRosters(TroopRoster troopRoster, TroopRoster troopRoster2, FormationClass formationClass)
+		{
+			List<TooltipProperty> list = new List<TooltipProperty>();
+			list.Add(new TooltipProperty("", GameTexts.FindText("str_formation_class_string", formationClass.GetName()).ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.Title));
+			foreach (TroopRosterElement troopRosterElement in troopRoster.GetTroopRoster())
+			{
+				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
+				{
+					list.Add(new TooltipProperty(troopRosterElement.Character.Name.ToString(), troopRosterElement.Number.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+				}
+			}
+
+			foreach (TroopRosterElement troopRosterElement in troopRoster2.GetTroopRoster())
+			{
+				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
+				{
+					list.Add(new TooltipProperty("Wounded " + troopRosterElement.Character.Name.ToString(), troopRosterElement.Number.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
 				}
 			}
 			return list;
@@ -184,7 +206,7 @@ namespace GeneralLord
 
 					PartyUtilsHandler.GarrisonedTroops = troopRoster;
 					PartyUtilsHandler.WoundedTroopArmy = JsonConvert.DeserializeObject<WoundedTroopArmy>(partyUtils.WoundedTroopsGroup);
-
+					PartyUtilsHandler.TransferWoundedTroopArmyToRoster();
 				}
 			}
 
@@ -259,94 +281,8 @@ namespace GeneralLord
 
 		public static void UpdateArmyAfterBattle()
         {
-			//Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
 
-			JObject json = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
-			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["ArmyContainer"]);
-
-			WoundedTroopGroup woundedTroopGroup = new WoundedTroopGroup();
-
-			///woundedTroopGroup.timeUntilRecovery = DateTime.Now.AddHours(recoveryCooldown);
-			woundedTroopGroup.timeUntilRecovery = DateTime.Now.AddMinutes(recoveryMinuteCooldown);
-
-			foreach (TroopRosterElement tc in copyOfTroopRosterPreviousToBattle)
-			{
-				if (tc.Character.StringId != "main_hero")
-				{
-					CharacterObject characterObject = CharacterObject.Find(tc.Character.StringId);
-
-					int healthyNumber = tc.Number - tc.WoundedNumber;
-
-					//InformationManager.DisplayMessage(new InformationMessage("Total Previous : " + tc.Number +" Healthy Previous : "+ healthyNumber + " Wounded Previous: " + tc.WoundedNumber));
-
-					if (PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject) == -1)
-					{
-						int troopsToRecover = (int)(healingRatio * healthyNumber);
-						int downedTroops = healthyNumber - troopsToRecover;
-
-
-						PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
-						PartyBase.MainParty.AddMember(characterObject, downedTroops, downedTroops);
-
-						if (downedTroops > 0)
-						{
-							WoundedTroop woundedTroop = new WoundedTroop { stringId = tc.Character.StringId, troopCount = downedTroops };
-							woundedTroopGroup.woundedTroops.Add(woundedTroop);
-							woundedTroopGroup.totalWoundedTroops += downedTroops;
-						}
-						
-						//InformationManager.DisplayMessage(new InformationMessage("Character" + characterObject.Name + " recovered and lost:" + troopsToRecover + "; " + downedTroops));
-					}
-                    else
-                    {
-						int index1 = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
-
-						int numberThatWentToBattle = tc.Number - tc.WoundedNumber;
-
-						//int survingHealthySoldiers = PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject) - PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1);
-						int deadSoldiers = numberThatWentToBattle - PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject);
-						int woundedSoldiers = PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1) - tc.WoundedNumber;
-
-						//int dead = healthyNumber - (PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject) - PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1));
-
-						//InformationManager.DisplayMessage(new InformationMessage("Previous Wounded :" +  tc.WoundedNumber + " Wounded :" + woundedSoldiers + " Dead :" + deadSoldiers));
-
-						//InformationManager.DisplayMessage(new InformationMessage("Current Wounded :" + PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1) + " Current Alive :" + PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject)));
-						if( (deadSoldiers + woundedSoldiers) > 0)
-                        {
-							int troopsToRecover = (int)(healingRatio * (deadSoldiers + woundedSoldiers));
-							int downedTroops = (deadSoldiers + woundedSoldiers) - troopsToRecover;
-
-							//PartyBase.MainParty.MemberRoster.WoundTroop(characterObject, -woundedSoldiers);
-							if(woundedSoldiers > 0) PartyBase.MainParty.MemberRoster.AddToCounts(characterObject, -woundedSoldiers, false, -woundedSoldiers, 0, true, -1);
-
-							//InformationManager.DisplayMessage(new InformationMessage("Post change --- Current Wounded :" + PartyBase.MainParty.MemberRoster.GetElementWoundedNumber(index1) + " Current Alive :" + PartyBase.MainParty.MemberRoster.GetElementNumber(characterObject)));
-
-							PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
-							PartyBase.MainParty.AddMember(characterObject, downedTroops, downedTroops);
-
-							if (tc.Number != PartyBase.MainParty.MemberRoster.GetElementNumber(index1))
-							{
-								PartyBase.MainParty.AddMember(characterObject, tc.Number - PartyBase.MainParty.MemberRoster.GetElementNumber(index1));
-							}
-
-							if (downedTroops > 0)
-							{
-								WoundedTroop woundedTroop = new WoundedTroop { stringId = tc.Character.StringId, troopCount = downedTroops };
-								woundedTroopGroup.woundedTroops.Add(woundedTroop);
-								woundedTroopGroup.totalWoundedTroops += downedTroops;
-							}
-						}
-
-
-						//InformationManager.DisplayMessage(new InformationMessage("Character" + characterObject.Name + " recovered and lost:" + troopsToRecover+ "; " + downedTroops));
-
-					}
-				}
-			}
-
-			if(woundedTroopGroup.totalWoundedTroops > 0) PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.Add( woundedTroopGroup);
-
+			PartyUtilsHandler.UpdateWoundedTroopsReforged();
 			ExecuteSubmitPartyUtils();
 
 			//SAVE

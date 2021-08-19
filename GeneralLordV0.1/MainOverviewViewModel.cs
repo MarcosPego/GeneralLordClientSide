@@ -72,6 +72,9 @@ namespace GeneralLord
 			this.Train = new TextObject("{=ATTrain} Train your stewardship: ", null).ToString();
 			this.HealHeroText = new TextObject("{=ATHealHeroText} Pay a visit to the doctor to heal your wounds: ", null).ToString();
 
+			this.WoundedTroopText = new TextObject("{=ATWoundedTroopText} Check Toops in Infirmary: ", null).ToString();
+			this.WoundedTroopButtonText = new TextObject("{=ATWoundedTroopButtonText} Wounded Troops", null).ToString();
+
 			this.RenownCost = PartyCapacityLogicHandler.BuyRenownPrice.ToString();
 			this.TrainCost = PartyCapacityLogicHandler.TrainStewardship.ToString();
 
@@ -153,20 +156,20 @@ namespace GeneralLord
 			GameTexts.SetVariable("RIGHT", text);
 			this.PartySizeSubTitleText = GameTexts.FindText("str_LEFT_colon_RIGHT", null).ToString();
 
-			this.InfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(Party.MemberRoster, FormationClass.Infantry));
-			this.CavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(Party.MemberRoster, FormationClass.Cavalry));
-			this.RangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(Party.MemberRoster, FormationClass.Ranged));
-			this.HorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(Party.MemberRoster, FormationClass.HorseArcher));
+			this.InfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromTwoRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, FormationClass.Infantry));
+			this.CavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromTwoRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, FormationClass.Cavalry));
+			this.RangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromTwoRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, FormationClass.Ranged));
+			this.HorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromTwoRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, FormationClass.HorseArcher));
 
 			this.HealthyInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Infantry));
 			this.HealthyCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Cavalry));
 			this.HealthyRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Ranged));
 			this.HealthyHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.HorseArcher));
 
-			this.WoundedInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopWoundedInfo(Party, FormationClass.Infantry));
-			this.WoundedCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopWoundedInfo(Party, FormationClass.Cavalry));
-			this.WoundedRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopWoundedInfo(Party, FormationClass.Ranged));
-			this.WoundedHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopWoundedInfo(Party, FormationClass.HorseArcher));
+			this.WoundedInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.WoundedTroops, FormationClass.Infantry));
+			this.WoundedCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.WoundedTroops, FormationClass.Cavalry));
+			this.WoundedRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.WoundedTroops, FormationClass.Ranged));
+			this.WoundedHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.WoundedTroops, FormationClass.HorseArcher));
 
 			this.GarrisonedInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.GarrisonedTroops, FormationClass.Infantry));
 			this.GarrisonedCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.GarrisonedTroops, FormationClass.Cavalry));
@@ -174,6 +177,37 @@ namespace GeneralLord
 			this.GarrisonedHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(PartyUtilsHandler.GarrisonedTroops, FormationClass.HorseArcher));
 
 			this.HeroHealthHint =new BasicTooltipViewModel(() => CampaignUIHelper.GetHeroHealthTooltip(Party.LeaderHero));
+
+			int wounded = 0;
+			int wounded2 = 0;
+			int wounded3 = 0;
+			int wounded4 = 0;
+			foreach (TroopRosterElement troopRosterElement in PartyUtilsHandler.WoundedTroops.GetTroopRoster())
+			{
+				Hero heroObject = troopRosterElement.Character.HeroObject;
+				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
+				{
+
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Infantry))
+				{
+					wounded += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Ranged))
+				{
+					wounded2 += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Cavalry))
+				{
+					wounded3 += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.HorseArcher))
+				{
+					wounded4 += troopRosterElement.Number;
+				}
+			}
+
+
 
 			int num = 0;
 			int num2 = 0;
@@ -204,10 +238,10 @@ namespace GeneralLord
 				}
 			}
 
-			this.InfantryCount = num;
-			this.RangedCount = num2;
-			this.CavalryCount = num3;
-			this.HorseArcherCount = num4;
+			this.InfantryCount = num + wounded;
+			this.RangedCount = num2 + wounded2;
+			this.CavalryCount = num3 + wounded3;
+			this.HorseArcherCount = num4 + wounded4;
 
 
 			num = 0;
@@ -245,42 +279,10 @@ namespace GeneralLord
 			this.HealthyCavalryCount = num3;
 			this.HealthyHorseArcherCount = num4;
 
-
-			num = 0;
-			num2 = 0;
-			num3 = 0;
-			num4 = 0;
-
-			foreach (TroopRosterElement troopRosterElement in this.Party.MemberRoster.GetTroopRoster())
-			{
-				Hero heroObject = troopRosterElement.Character.HeroObject;
-				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
-				{
-
-				}
-				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Infantry))
-				{
-					num += troopRosterElement.WoundedNumber;
-				}
-				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Ranged))
-				{
-					num2 += troopRosterElement.WoundedNumber;
-				}
-				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Cavalry))
-				{
-					num3 += troopRosterElement.WoundedNumber;
-				}
-				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.HorseArcher))
-				{
-					num4 += troopRosterElement.WoundedNumber;
-				}
-			}
-
-
-			this.WoundedInfantryCount = num;
-			this.WoundedRangedCount = num2;
-			this.WoundedCavalryCount = num3;
-			this.WoundedHorseArcherCount = num4;
+			this.WoundedInfantryCount = wounded;
+			this.WoundedRangedCount = wounded2;
+			this.WoundedCavalryCount = wounded3;
+			this.WoundedHorseArcherCount = wounded4;
 
 
 			num = 0;
@@ -382,6 +384,12 @@ namespace GeneralLord
 		public void ExecuteFormation()
 		{
 			BattleTestHandler.OpenBattleTestMission();
+			//this.RefreshValues();
+		}
+
+		public void ExecuteOpenWoundedScreen()
+		{
+			PartyUtilsHandler.OpenWoundedRoster();
 			//this.RefreshValues();
 		}
 
@@ -1584,6 +1592,40 @@ namespace GeneralLord
 			}
 		}
 
+		[DataSourceProperty]
+		public string WoundedTroopText
+		{
+			get
+			{
+				return this._woundedTroopText;
+			}
+			set
+			{
+				if (value != this._woundedTroopText)
+				{
+					this._woundedTroopText = value;
+					base.OnPropertyChangedWithValue(value, "WoundedTroopText");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string WoundedTroopButtonText
+		{
+			get
+			{
+				return this._woundedTroopButtonText;
+			}
+			set
+			{
+				if (value != this._woundedTroopButtonText)
+				{
+					this._woundedTroopButtonText = value;
+					base.OnPropertyChangedWithValue(value, "WoundedTroopButtonText");
+				}
+			}
+		}
+
 		public PartyBase Party { get; }
 
 
@@ -1675,5 +1717,7 @@ namespace GeneralLord
         private bool _buyRenownButtonEnabled;
         private bool _trainButtonEnabled;
         private bool _healButtonEnabled;
+        private string _woundedTroopText;
+        private string _woundedTroopButtonText;
     }
 }

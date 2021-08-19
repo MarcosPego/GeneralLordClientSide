@@ -12,6 +12,10 @@ using TaleWorlds.Core;
 using CunningLords.Patches;
 using CunningLords.Behaviors;
 using GeneralLordWebApiClient.Model;
+using TaleWorlds.Engine;
+using TaleWorlds.Library;
+using GeneralLord.FormationBattleTest;
+using GeneralLord.FormationPlanHandler;
 
 namespace CunningLords.PlanDefinition
 {
@@ -27,15 +31,19 @@ namespace CunningLords.PlanDefinition
         public Formation heavyInfantry;
         public Formation lightCavalry;
         public Formation heavyCavalry;
-
+        public int positionCounter = 0;
         private int engageCounterStart = -1;
 
         private bool isEngaged = false;
 
         private PlanStateEnum previousState = PlanStateEnum.Prepare;
 
+        public int positionLimit = 1500;
+        private bool _isPlayerSide;
+
         public PlanGenerator(bool isPlayerSide = true)
         {
+            this._isPlayerSide = isPlayerSide;
             string finalPath; 
             if (isPlayerSide)
             {
@@ -69,6 +77,7 @@ namespace CunningLords.PlanDefinition
                     foreach (Formation f in playerTeam.Formations)
                     {
                         //f.IsAIControlled = true;
+
                         switch (f.FormationIndex)
                         {
                             case FormationClass.Infantry:
@@ -110,7 +119,7 @@ namespace CunningLords.PlanDefinition
             {
                 if (isAiTeam)
                 {
-                    InformationManager.DisplayMessage(new InformationMessage("AI Mission has entered " + state.ToString() + " State"));
+                    //InformationManager.DisplayMessage(new InformationMessage("AI Mission has entered " + state.ToString() + " State"));
                 } else
                 {
                     InformationManager.DisplayMessage(new InformationMessage("Mission has entered " + state.ToString() + " State"));
@@ -128,8 +137,106 @@ namespace CunningLords.PlanDefinition
                 {
                     //Team playerTeam = Mission.Current.MainAgent.Team;
 
+                    
                     foreach (Formation f in team.Formations)
                     {
+                        f.IsAIControlled = false;
+                        if (positionCounter > positionLimit)
+                        {
+                            f.IsAIControlled = true;
+                        }
+
+
+                        int index; //METER AQUI O INDICE DA POSITION QUE SE QUER!!!
+
+                        string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", ".."));
+
+                        string finalPath;
+                        List<PositionData> deserialized;
+                        bool usePosition = true;
+                        if (!isAiTeam)
+                        {
+                            index = EnemyFormationHandler.AttackSelectedFormation; //METER AQUI O INDICE DA POSITION QUE SE QUER!!!
+                            finalPath = Path.Combine(path, "ModuleData", "data.json");
+                            deserialized = Deserialize(finalPath);
+                        } else
+                        {
+                            index = EnemyFormationHandler.EnemySelectedFormation;
+                            finalPath = Path.Combine(path, "ModuleData", "enemydata.json");
+                            deserialized = Deserialize(finalPath);
+                        }
+                        if (index == -1) usePosition = false;
+                        if (usePosition && state == PlanStateEnum.Position)
+                        {
+
+                            if (positionCounter < 3)
+                            {
+                                
+                                Mission mission = Mission.Current;
+
+                                Formation mainFormation = GetFormationPriority(mission, team);
+
+                                if (f.FormationIndex == FormationClass.Infantry)
+                                {
+                                    ApplyArrangement(f, deserialized[index].InfantryArrangementOrder);
+                                }
+                                else if (f.FormationIndex == FormationClass.Ranged && f.FormationIndex != mainFormation.FormationIndex)
+                                {
+                                    WorldPosition position = CalculateWorldpositionsBasedOnOffset(mainFormation, mission, deserialized[index].ArchersXOffset, deserialized[index].ArchersYOffset);
+                                    f.SetMovementOrder(MovementOrder.MovementOrderMove(position));
+
+                                    ApplyArrangement(f, deserialized[index].ArchersArrangementOrder);
+                                }
+                                else if (f.FormationIndex == FormationClass.Cavalry && f.FormationIndex != mainFormation.FormationIndex)
+                                {
+                                    WorldPosition position = CalculateWorldpositionsBasedOnOffset(mainFormation, mission, deserialized[index].CavalryXOffset, deserialized[index].CavalryYOffset);
+                                    f.SetMovementOrder(MovementOrder.MovementOrderMove(position));
+
+                                    ApplyArrangement(f, deserialized[index].CavalryArrangementOrder);
+                                }
+                                else if (f.FormationIndex == FormationClass.HorseArcher && f.FormationIndex != mainFormation.FormationIndex)
+                                {
+                                    WorldPosition position = CalculateWorldpositionsBasedOnOffset(mainFormation, mission, deserialized[index].HorseArchersXOffset, deserialized[index].HorseArchersYOffset);
+                                    f.SetMovementOrder(MovementOrder.MovementOrderMove(position));
+
+                                    ApplyArrangement(f, deserialized[index].HorseArchersArrangementOrder);
+                                }
+                                else if (f.FormationIndex == FormationClass.Skirmisher && f.FormationIndex != mainFormation.FormationIndex)
+                                {
+                                    WorldPosition position = CalculateWorldpositionsBasedOnOffset(mainFormation, mission, deserialized[index].SkirmisherXOffset, deserialized[index].SkirmisherYOffset);
+                                    f.SetMovementOrder(MovementOrder.MovementOrderMove(position));
+
+                                    ApplyArrangement(f, deserialized[index].SkirmisherArrangementOrder);
+                                }
+                                else if (f.FormationIndex == FormationClass.HeavyInfantry && f.FormationIndex != mainFormation.FormationIndex)
+                                {
+                                    WorldPosition position = CalculateWorldpositionsBasedOnOffset(mainFormation, mission, deserialized[index].HeavyInfantryXOffset, deserialized[index].HeavyInfantryYOffset);
+                                    f.SetMovementOrder(MovementOrder.MovementOrderMove(position));
+
+                                    ApplyArrangement(f, deserialized[index].HeavyInfantryArrangementOrder);
+                                }
+                                else if (f.FormationIndex == FormationClass.LightCavalry && f.FormationIndex != mainFormation.FormationIndex)
+                                {
+                                    WorldPosition position = CalculateWorldpositionsBasedOnOffset(mainFormation, mission, deserialized[index].LightCavalryXOffset, deserialized[index].LightCavalryYOffset);
+                                    f.SetMovementOrder(MovementOrder.MovementOrderMove(position));
+
+                                    ApplyArrangement(f, deserialized[index].LightCavalryArrangementOrder);
+                                }
+                                else if (f.FormationIndex == FormationClass.HeavyCavalry && f.FormationIndex != mainFormation.FormationIndex)
+                                {
+                                    WorldPosition position = CalculateWorldpositionsBasedOnOffset(mainFormation, mission, deserialized[index].HeavyCavalryXOffset, deserialized[index].HeavyCavalryYOffset);
+                                    f.SetMovementOrder(MovementOrder.MovementOrderMove(position));
+
+                                    ApplyArrangement(f, deserialized[index].HeavyCavalryArrangementOrder);
+                                }
+                            }
+                        }
+                        else if (positionCounter == positionLimit || !usePosition)
+                        {
+                            f.IsAIControlled = true;
+                        }
+
+
                         //f.IsAIControlled = true;
                         switch (f.FormationIndex)
                         {
@@ -142,7 +249,7 @@ namespace CunningLords.PlanDefinition
                                 {
                                     ApplyBehavior(f, plan.infantryPhaseRanged);
                                 }
-                                else if(state == PlanStateEnum.Engage)
+                                else if (state == PlanStateEnum.Engage)
                                 {
                                     ApplyBehavior(f, plan.infantryPhaseEngage);
                                 }
@@ -310,7 +417,16 @@ namespace CunningLords.PlanDefinition
                                 }
                                 break;
                         }
+                        //InformationManager.DisplayMessage(new InformationMessage(f.FormationIndex + "ai is" + f.IsAIControlled.ToString()));
+                        //f.IsAIControlled = false;
                     }
+
+                    if (positionCounter == positionLimit)
+                    {
+                        positionCounter++;
+                    }
+
+
                 }
             }
         }
@@ -373,6 +489,13 @@ namespace CunningLords.PlanDefinition
                     float alliedCasualityRatio = 0.0f;
 
                     int numberOfFormations = 0;
+
+                    if (positionCounter < positionLimit)
+                    {
+                        positionCounter++;
+                        return PlanStateEnum.Position;
+                    }
+
 
                     if (!isEngaged)
                     {
@@ -502,5 +625,91 @@ namespace CunningLords.PlanDefinition
             return result;
         }
 
+
+
+        public Formation GetFormationPriority(Mission mission, Team team)
+        {
+            Formation infantry = team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.Infantry);
+            Formation archers = team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.Ranged);
+            Formation cavalry = team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.Cavalry);
+            Formation horseArcher = team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.HorseArcher);
+            Formation skirmisher = team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.Skirmisher);
+            Formation heavyInfantry = team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.HeavyInfantry);
+            Formation lightCavalry = team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.LightCavalry);
+            Formation heavyCavalry = team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.HeavyInfantry);
+
+            List<Formation> formations = new List<Formation>();
+
+            formations.Add(infantry);
+            formations.Add(archers);
+            formations.Add(cavalry);
+            formations.Add(horseArcher);
+            formations.Add(skirmisher);
+            formations.Add(heavyInfantry);
+            formations.Add(lightCavalry);
+            formations.Add(heavyCavalry);
+
+            foreach (Formation f in formations)
+            {
+                if (f != null)
+                {
+                    return f;
+                }
+            }
+
+            return null;
+        }
+
+
+        private List<PositionData> Deserialize(string path)
+        {
+            using (StreamReader file = File.OpenText(path))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                List<PositionData> data = (List<PositionData>)serializer.Deserialize(file, typeof(List<PositionData>));
+                return data;
+            }
+        }
+        private static WorldPosition CalculateWorldpositionsBasedOnOffset(Formation formation, Mission __instance, float XOffset, float YOffset)
+        {
+            float num = formation.Direction.x * YOffset;
+            float num2 = formation.Direction.y * YOffset;
+            float num3 = formation.Direction.y * XOffset;
+            float num4 = -formation.Direction.x * XOffset;
+            Vec2 currentPosition = formation.CurrentPosition;
+            Vec3 position = new Vec3(currentPosition.X + num + num3, currentPosition.Y + num2 + num4, 0f, -1f);
+            WorldPosition result = new WorldPosition(__instance.Scene, position);
+            return result;
+        }
+        public void ApplyArrangement(Formation f, ArrangementOrder.ArrangementOrderEnum ae)
+        {
+            switch (ae)
+            {
+                case ArrangementOrder.ArrangementOrderEnum.Circle:
+                    f.ArrangementOrder = ArrangementOrder.ArrangementOrderCircle;
+                    break;
+                case ArrangementOrder.ArrangementOrderEnum.Column:
+                    f.ArrangementOrder = ArrangementOrder.ArrangementOrderColumn;
+                    break;
+                case ArrangementOrder.ArrangementOrderEnum.Line:
+                    f.ArrangementOrder = ArrangementOrder.ArrangementOrderLine;
+                    break;
+                case ArrangementOrder.ArrangementOrderEnum.Loose:
+                    f.ArrangementOrder = ArrangementOrder.ArrangementOrderLoose;
+                    break;
+                case ArrangementOrder.ArrangementOrderEnum.Scatter:
+                    f.ArrangementOrder = ArrangementOrder.ArrangementOrderScatter;
+                    break;
+                case ArrangementOrder.ArrangementOrderEnum.ShieldWall:
+                    f.ArrangementOrder = ArrangementOrder.ArrangementOrderShieldWall;
+                    break;
+                case ArrangementOrder.ArrangementOrderEnum.Skein:
+                    f.ArrangementOrder = ArrangementOrder.ArrangementOrderSkein;
+                    break;
+                case ArrangementOrder.ArrangementOrderEnum.Square:
+                    f.ArrangementOrder = ArrangementOrder.ArrangementOrderSquare;
+                    break;
+            }
+        }
     }
 }

@@ -189,7 +189,10 @@ namespace GeneralLord
                 {
                     PartyBase.MainParty.MemberRoster.WoundNumberOfTroopsRandomly(3);
                 }
-
+                if (Input.IsKeyReleased(InputKey.U))
+                {
+                    PartyUtilsHandler.OpenWoundedRoster();
+                }
             }
         }
 

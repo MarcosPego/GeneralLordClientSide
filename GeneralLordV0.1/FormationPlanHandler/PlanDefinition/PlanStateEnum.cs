@@ -8,6 +8,7 @@ namespace CunningLords.PlanDefinition
 {
     public enum PlanStateEnum
     {
+        Position,
         Prepare,
         Ranged,
         Engage,
