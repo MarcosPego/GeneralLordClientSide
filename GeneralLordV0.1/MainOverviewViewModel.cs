@@ -350,6 +350,7 @@ namespace GeneralLord
 		{
 
 			CharacterHandler.HandleHealthBuy();
+			GameMetrics.timesHeroHealed++;
 			this.RefreshValues();
 		}
 
@@ -357,16 +358,19 @@ namespace GeneralLord
 		{
 
 			PartyCapacityLogicHandler.HandleRenownBuy();
+			GameMetrics.stewardship++;
 			this.RefreshValues();
 		}
 		public void ExecuteBuyRenown()
 		{
 			PartyCapacityLogicHandler.HandleTrainSteward();
+			GameMetrics.renownPurchased++;
 			this.RefreshValues();
 		}
 
 		public void ExecuteRanking()
 		{
+			GameMetrics.rankingScreenOpened++;
 			JsonBattleConfig.ExecuteSubmitProfileWithAc();
 			ScreenManager.PushScreen(new OpponentSelectorScreen(true));
 			this.RefreshValues();
@@ -383,12 +387,14 @@ namespace GeneralLord
 
 		public void ExecuteFormation()
 		{
+			GameMetrics.formationScreenOpened++;
 			BattleTestHandler.OpenBattleTestMission();
 			//this.RefreshValues();
 		}
 
 		public void ExecuteOpenWoundedScreen()
 		{
+			GameMetrics.woundedScreenOpened++;
 			PartyUtilsHandler.OpenWoundedRoster();
 			//this.RefreshValues();
 		}
@@ -396,7 +402,7 @@ namespace GeneralLord
 		public void ExectuteLeaveGme()
         {
 			InformationManager.DisplayMessage(new InformationMessage("Exiting to Main Menu!"));
-
+			GameMetrics.savedAndExited++;
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 			JsonBattleConfig.ExecuteSubmitProfileWithAc();
 			this._exitOnSaveOver = true;
@@ -404,6 +410,7 @@ namespace GeneralLord
 
 		public void ExecuteQueue()
         {
+			GameMetrics.findOponentsScreenOpened++;
 			JsonBattleConfig.ExecuteSubmitProfileWithAc();
 			ScreenManager.PushScreen(new OpponentSelectorScreen());
 			/*var task = Task.Run(async () =>
@@ -418,17 +425,20 @@ namespace GeneralLord
 
 		public void ExecuteAttackPlanSetup()
 		{
+			GameMetrics.attackScreenOpened++;
 			ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen());
 		}
 		public void ExecuteDefensePlanSetup()
 		{
+			GameMetrics.defensiveScreenOpened++;
 			ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen(false));
 		}
 
 
 		public void IsDefensiveActivePressed()
 		{
-			if(IsDefensiveActiveSelected)
+			GameMetrics.defensiveBoolPressed++;
+			if (IsDefensiveActiveSelected)
             {
 				EnemyFormationHandler.UseDefensiveSettings = 1;
 			} else
@@ -440,60 +450,9 @@ namespace GeneralLord
 			//ScreenManager.PushScreen(new CunningLordsPlanDefinitionScreen(false));
 		}
 
-		/*public void ExecuteStart()
-		{
-			JsonBattleConfig.ExecuteSubmitAc();
-			var task =  Task.Run(async () =>
-			{
-				//var result = await WebRequests.RawMessageWebGet(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile));
-				Profile profile = ProfileHandler.UpdateProfileAc();
-				var result = await WebRequests.PostAsync<IEnumerable<Profile>>(UrlHandler.GetUrlFromString(UrlHandler.MultipleFromProfile), profile);
-				//var result = await WebRequests.PostAsync<Profile>("http://localhost:40519/values/singleLast");
-
-				var profiles = result.ServerResponse.FirstOrDefault();
-				Serializer.JsonSerialize(profiles, "enemyProfile.json");
-
-				//InformationManager.DisplayMessage(new InformationMessage(result)); 
-
-			});
-
-			task.Wait();
-
-			JObject json = JObject.Parse(Serializer.ReadStringFromFile("enemyProfile.json"));
-			//InformationManager.DisplayMessage(new InformationMessage(json.ToString()));
-			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc((string)json["ArmyContainer"]);
-
-
-
-			CharacterHandler.saveLocationFile = "enemygeneral.xml";
-			CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
-			CharacterHandler.WriteToFile(ac.CharacterXML);
-			CharacterHandler.LoadXML();
-
-
-			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
-			Clan clan = Clan.BanditFactions.FirstOrDefault((Clan t) => t.Culture == closestHideout.Culture);
-
-			//MobileParty mobileParty = MobilePartyHelper.SpawnLordParty(bestAvailableCommander, new Vec2(Hero.MainHero.GetPosition().x, Hero.MainHero.GetPosition().z), 1f);
-			MobileParty mobileParty = BanditPartyComponent.CreateBanditParty("EnemyClan", clan, closestHideout.Hideout, false);
-			mobileParty.InitializeMobileParty(
-						JsonBattleConfig.EnemyParty(ac),
-						JsonBattleConfig.EnemyParty(ac),
-						mobileParty.Position2D,
-						0);
-			PlayerEncounter.Start();
-
-			//InformationManager.DisplayMessage(new InformationMessage(PartyBase.MainParty.IsSettlement.ToString()));
-			PlayerEncounter.Current.SetupFields(PartyBase.MainParty, mobileParty.Party);
-			PlayerEncounter.StartBattle();
-			CampaignMission.OpenBattleMission(PlayerEncounter.GetBattleSceneForMapPosition(MobileParty.MainParty.Position2D));
-
-
-		}*/
-
 		public void ExecuteMatchHistory()
 		{
-
+			GameMetrics.matchScreenOpened++;
 
 			IEnumerable<MatchHistory> matchHistories;
 			Profile profile = ProfileHandler.UpdateProfileAc();

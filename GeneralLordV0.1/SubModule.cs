@@ -51,7 +51,7 @@ namespace GeneralLord
 			}
 
 
-			UrlHandler.ReleaseVersion(true);
+			UrlHandler.ReleaseVersion(false);
 		}
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarterObject)

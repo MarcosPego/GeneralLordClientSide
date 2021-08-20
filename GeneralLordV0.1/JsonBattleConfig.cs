@@ -1,4 +1,5 @@
 ﻿
+using GeneralLord.Client.Model;
 using GeneralLord.Client.Web;
 using GeneralLord.FormationBattleTest;
 using GeneralLord.FormationPlanHandler;
@@ -172,6 +173,7 @@ namespace GeneralLord
 			//XDocument xd = ArmyContainerSerializer.LoadArmyContainerXML(ac);
 			Serializer.JsonSerialize(ac);
 			Profile profile = ProfileHandler.UpdateProfileAc();
+
 
 			var t = Task.Run(async () => await ServerRequestsHandler.SubmitPlayerProfile(profile));
 			t.Wait();

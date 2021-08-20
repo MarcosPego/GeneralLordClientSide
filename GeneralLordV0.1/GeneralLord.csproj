@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="CharacterHandler.cs" />
     <Compile Include="CharacterTierHandler.cs" />
+    <Compile Include="Client\Model\GameMetricsServer.cs" />
     <Compile Include="Client\Model\MatchHistory.cs" />
     <Compile Include="Client\Model\PartyUtils.cs" />
     <Compile Include="Client\Model\ProfileHandler.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="FormationPlanHandler\PlanDefinition\PlanOrderEnum.cs" />
     <Compile Include="FormationPlanHandler\PlanDefinition\PlanStateEnum.cs" />
     <Compile Include="FormationPlanHandler\TextViewModel.cs" />
+    <Compile Include="GameMetrics.cs" />
     <Compile Include="HarmonyOverrides\BattleRewardsOverride.cs" />
     <Compile Include="HarmonyOverrides\CampaignOptionsVMOverride.cs" />
     <Compile Include="HarmonyOverrides\CheatEngineOverride.cs" />

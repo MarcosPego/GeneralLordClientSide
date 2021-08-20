@@ -59,6 +59,7 @@ namespace GeneralLord
 
         public static void AddGoldToParty()
         {
+            GameMetrics.totalGoldEarned = GoldToAdd;
             GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, GoldToAdd, false);
             GoldToAdd = 0;
         }

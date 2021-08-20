@@ -1,5 +1,7 @@
 ﻿using GeneralLord;
+using GeneralLord.Client.Model;
 using GeneralLord.FormationPlanHandler;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -78,6 +80,22 @@ namespace GeneralLordWebApiClient.Model
                 profile.DefensiveFormation = File.ReadAllText(formation_filePath);
                 //profile.Elo = 2000;
                 //InformationManager.DisplayMessage(new InformationMessage(profile.Id.ToString()));
+
+                try{
+                    GameMetricsServer gms = JsonConvert.DeserializeObject<GameMetricsServer>(profile.GameMetrics);
+                    gms.AddGameMetrics();
+                    gms.remainingGold = PartyBase.MainParty.LeaderHero.Gold;
+                    //1000 first gold + gold earned
+                    int totalGold = 1000 + gms.totalGoldEarned;
+                    gms.totalGoldSpent = totalGold  - gms.remainingGold;
+                    string gameMetricsString = JsonConvert.SerializeObject(gms);
+                    profile.GameMetrics = gameMetricsString;
+                } catch
+                {
+                    string gameMetricsString = JsonConvert.SerializeObject(new GameMetricsServer());
+                    profile.GameMetrics = gameMetricsString;
+                }
+
                 return profile;
 
             }
@@ -97,6 +115,9 @@ namespace GeneralLordWebApiClient.Model
                 profile.DefensiveOrders = "";
                 profile.UseDefensiveOrder = EnemyFormationHandler.UseDefensiveSettings;
                 profile.SelectedFormation = -1;
+
+                string gameMetricsString = JsonConvert.SerializeObject(new GameMetricsServer());
+                profile.GameMetrics = gameMetricsString;
                 Serializer.JsonSerialize(profile, filePath);
                 return profile;
             }

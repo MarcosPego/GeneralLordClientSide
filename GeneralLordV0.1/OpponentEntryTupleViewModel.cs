@@ -85,44 +85,39 @@ namespace GeneralLord
 			Serializer.JsonSerialize(_profile, "enemyProfile.json");
 			ArmyContainer ac = Serializer.JsonDeserializeFromStringAc(_profile.ArmyContainer);
 
-			if(_profile.SelectedFormation != -1)
+			EnemyFormationHandler.EnemySelectedFormation = -1;
+			if (_profile.SelectedFormation != -1)
             {
-				EnemyFormationHandler.EnemySelectedFormation = _profile.SelectedFormation;
-
 				string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", ".."));
-
 				string finalPath = Path.Combine(path, "ModuleData", "enemydata.json");
-
-				using (JsonReader reader = new JsonTextReader(new System.IO.StringReader(_profile.DefensiveFormation)))
-				{
-					JsonSerializer serializer = new JsonSerializer();
-					List<PositionData> data = serializer.Deserialize<List<PositionData>>(reader);
-					Serializer.JsonSerialize(data, finalPath);
+				if(_profile.DefensiveFormation != null)
+                {
+					EnemyFormationHandler.EnemySelectedFormation = _profile.SelectedFormation;
+					using (JsonReader reader = new JsonTextReader(new System.IO.StringReader(_profile.DefensiveFormation)))
+					{
+						JsonSerializer serializer = new JsonSerializer();
+						List<PositionData> data = serializer.Deserialize<List<PositionData>>(reader);
+						Serializer.JsonSerialize(data, finalPath);
+					}
 				}
 			}
 
-			if(_profile.UseDefensiveOrder == 1)
+			EnemyFormationHandler.EnemyUseDefensiveSettings = 0;
+			if (_profile.UseDefensiveOrder == 1)
             {
-				EnemyFormationHandler.EnemyUseDefensiveSettings = 1;
-
 				string defensiveOrders = _profile.DefensiveOrders;
 
-				using (JsonReader reader = new JsonTextReader(new System.IO.StringReader(defensiveOrders)))
+				if (defensiveOrders != null)
 				{
-					JsonSerializer serializer = new JsonSerializer();
-					Plan plan =  serializer.Deserialize<Plan>(reader);
-					Serializer.JsonSerialize(plan, "EnemyDecisiontree.json");
+					EnemyFormationHandler.EnemyUseDefensiveSettings = 1;
+					using (JsonReader reader = new JsonTextReader(new System.IO.StringReader(defensiveOrders)))
+					{
+						JsonSerializer serializer = new JsonSerializer();
+						Plan plan =  serializer.Deserialize<Plan>(reader);
+						Serializer.JsonSerialize(plan, "EnemyDecisiontree.json");
+					}
 				}
-				//Plan plan = Serializer.JsonDeserializeFromStringAc(_profile.DefensiveOrders);
-
-
-
-				//Serializer.JsonSerialize(_profile.DefensiveFormation, "enemydata.json");
-			} else
-            {
-				EnemyFormationHandler.EnemyUseDefensiveSettings = 0;
 			}
-
 			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
 			Clan clan = Clan.BanditFactions.FirstOrDefault((Clan t) => t.Culture == closestHideout.Culture);
 

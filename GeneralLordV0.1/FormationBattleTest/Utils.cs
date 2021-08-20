@@ -99,6 +99,7 @@ namespace GeneralLord.FormationBattleTest
                         //IC.ApplyActiontoFormation(mission);
                         //IC.ApplyPosition(mission);
                         IC.SaveOffsets(mission, 0);
+
                     }
                     else if (Input.IsKeyPressed(InputKey.F11))
                     {
@@ -116,6 +117,8 @@ namespace GeneralLord.FormationBattleTest
                         //IC.ApplyPosition(mission);
                         IC.SaveOffsets(mission, 2);
                     }
+
+                    GameMetrics.numberOfLoadoutsSaved++;
                 }
                 else
                 {
@@ -126,6 +129,8 @@ namespace GeneralLord.FormationBattleTest
                         //IC.ApplyActiontoFormation(mission);
                         //IC.ApplyPosition(mission);
                         IC.ApplyPosition(mission, 0);
+
+                        GameMetrics.numberOfLoadoutsUsed++;
                     }
                     else if (Input.IsKeyPressed(InputKey.F11))
                     {
@@ -134,6 +139,8 @@ namespace GeneralLord.FormationBattleTest
                         //IC.ApplyActiontoFormation(mission);
                         //IC.ApplyPosition(mission);
                         IC.ApplyPosition(mission, 1);
+
+                        GameMetrics.numberOfLoadoutsUsed++;
                     }
                     else if (Input.IsKeyPressed(InputKey.F12))
                     {
@@ -142,6 +149,8 @@ namespace GeneralLord.FormationBattleTest
                         //IC.ApplyActiontoFormation(mission);
                         //IC.ApplyPosition(mission);
                         IC.ApplyPosition(mission, 2);
+
+                        GameMetrics.numberOfLoadoutsUsed++;
                     }
                     else if (Input.IsKeyPressed(InputKey.PageUp))
                     {
@@ -149,6 +158,7 @@ namespace GeneralLord.FormationBattleTest
                         if (MissionOverride.IsPlanActive)
                         {
                             InformationManager.DisplayMessage(new InformationMessage("Battle Plan Has been Activated"));
+                            GameMetrics.numberOfPlansActivated++;
                         }
                         else
                         {
