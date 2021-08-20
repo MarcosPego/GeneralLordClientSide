@@ -33,7 +33,7 @@ namespace GeneralLord
 
 		public static List<TroopRosterElement> copyOfTroopRosterPreviousToBattle = new List<TroopRosterElement>();
 
-		public static int recoveryMinuteCooldown = 4;
+		public static int recoveryMinuteCooldown = 30;
 		public static int rankedHourCooldown = 12;
 
 

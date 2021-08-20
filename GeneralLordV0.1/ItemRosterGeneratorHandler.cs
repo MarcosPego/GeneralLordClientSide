@@ -45,6 +45,11 @@ namespace GeneralLord
 
 		public static void GlobalItems()
         {
+			//Horse Saddles
+			TryAddItemToRoster(itemRosterShop, "bandit_saddle_steppe", 999);
+			TryAddItemToRoster(itemRosterShop, "light_harness", 999);
+			TryAddItemToRoster(itemRosterShop, "chain_horse_harness", 999);
+
 			//Horses
 			TryAddItemToRoster(itemRosterShop, "sumpter_horse", 999);
 			TryAddItemToRoster(itemRosterShop, "mule", 999);
@@ -90,6 +95,10 @@ namespace GeneralLord
 
 		public static void AseraiCultureItems()
         {
+			//Horse Saddles
+			TryAddItemToRoster(itemRosterShop, "bandit_saddle_desert", 999);
+
+
 			//Horses
 			TryAddItemToRoster(itemRosterShop, "aserai_horse", 999);
 			TryAddItemToRoster(itemRosterShop, "t2_aserai_horse", 999);
@@ -151,6 +160,10 @@ namespace GeneralLord
 
 		public static void BattanianCultureItems()
 		{
+			//Horse Saddles
+			TryAddItemToRoster(itemRosterShop, "bandit_saddle_highland", 999);
+			TryAddItemToRoster(itemRosterShop, "celtic_frost", 999);
+
 			//Horses
 			TryAddItemToRoster(itemRosterShop, "battania_horse", 999);
 			TryAddItemToRoster(itemRosterShop, "t2_battania_horse", 999);
@@ -297,6 +310,10 @@ namespace GeneralLord
 
 		public static void VlandianCultureItems()
 		{
+			//Horse Saddles
+			TryAddItemToRoster(itemRosterShop, "halfchain_barding", 999);
+			TryAddItemToRoster(itemRosterShop, "chain_barding", 999);
+
 			//Horses
 
 			TryAddItemToRoster(itemRosterShop, "vlandia_horse", 999);
@@ -426,6 +443,13 @@ namespace GeneralLord
 		}
 		public static void EmpireCultureItems()
 		{
+			//Horse Saddles
+			TryAddItemToRoster(itemRosterShop, "fortunas_choice", 999);
+			TryAddItemToRoster(itemRosterShop, "chain_barding", 999);
+			TryAddItemToRoster(itemRosterShop, "stripped_leather_harness", 999);
+			TryAddItemToRoster(itemRosterShop, "half_scale_barding", 999);
+			TryAddItemToRoster(itemRosterShop, "imperial_scale_barding", 999);
+
 			//Horses
 			TryAddItemToRoster(itemRosterShop, "empire_horse", 999);
 			TryAddItemToRoster(itemRosterShop, "t2_empire_horse", 999);

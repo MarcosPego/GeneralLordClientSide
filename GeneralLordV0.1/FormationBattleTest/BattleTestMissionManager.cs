@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Source.Missions;
 using TaleWorlds.MountAndBlade.Source.Missions.Handlers.Logic;
@@ -63,7 +64,10 @@ namespace GeneralLord.FormationBattleTest
 				Hero leaderHero = MapEvent.PlayerMapEvent.AttackerSide.LeaderParty.LeaderHero;
 				string attackerGeneralName = (leaderHero != null) ? leaderHero.Name.ToString() : null;
 				Hero leaderHero2 = MapEvent.PlayerMapEvent.DefenderSide.LeaderParty.LeaderHero;
-				array[num] = new CreateBodyguardMissionBehavior(attackerGeneralName, (leaderHero2 != null) ? leaderHero2.Name.ToString() : null, null, null, true);
+				//1.6.0
+				//array[num] = new CreateBodyguardMissionBehavior(attackerGeneralName, (leaderHero2 != null) ? leaderHero2.Name.ToString() : null, null, null, true);
+				//1.6.1
+				array[num] = new CreateBodyguardMissionBehavior(new TextObject(attackerGeneralName), new TextObject((leaderHero2 != null) ? leaderHero2.Name.ToString() : null), null, null, true);
 				array[26] = new EquipmentControllerLeaveLogic();
 				return array;
 			}, true, true);

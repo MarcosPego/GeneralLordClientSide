@@ -164,14 +164,20 @@ namespace GeneralLord
 
             if (Mission.Current == null && Input.IsKeyDown(InputKey.LeftControl))
             {            
-                if (Input.IsKeyReleased(InputKey.T))
+                if (false && Input.IsKeyReleased(InputKey.T))
                 {
+                    Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
+                    JsonBattleConfig.VerifyUniqueFile();
+                    if (this._initializeState && !this._isFirstGameLaunch) JsonBattleConfig.ReceivePartyUtils();
 
-                    PartyScreenState.currentState = PartyScreenStateEnum.RecruitmentScreen;
-                    RecruitmentManager.OpenRecruitmentRoster();
+                    _initializeState = false;
+                    _mainManagerScreen = new MainManagerScreen();
+
+
+                    ScreenManager.PushScreen(_mainManagerScreen);
                     //PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
                 }
-                if (Input.IsKeyReleased(InputKey.G))
+                if (false && Input.IsKeyReleased(InputKey.G))
                 {
                     foreach  (TroopRosterElement element in  PartyBase.MainParty.MemberRoster.GetTroopRoster())
                     {
@@ -188,10 +194,6 @@ namespace GeneralLord
                 if (false && Input.IsKeyReleased(InputKey.K))
                 {
                     PartyBase.MainParty.MemberRoster.WoundNumberOfTroopsRandomly(3);
-                }
-                if (Input.IsKeyReleased(InputKey.U))
-                {
-                    PartyUtilsHandler.OpenWoundedRoster();
                 }
             }
         }

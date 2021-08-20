@@ -96,7 +96,7 @@ namespace GeneralLord
 			}
 			if(value ==2)
             {
-				ScreenManager.PopScreen();
+				//ScreenManager.PopScreen();
 				GameMetrics.garrisonScreenOpened++;
 				//ScreenManager.PushScreen(new PartyManagerScreen(this._partyManagerLogic));
 				PartyScreenState.currentState = PartyScreenStateEnum.GarrisonScreen;
@@ -104,7 +104,7 @@ namespace GeneralLord
 			}
 			if (value == 3)
 			{
-				ScreenManager.PopScreen();
+				//ScreenManager.PopScreen();
 				GameMetrics.recruitmentScreenOpened++;
 				PartyScreenState.currentState = PartyScreenStateEnum.RecruitmentScreen;
 				RecruitmentManager.OpenRecruitmentRoster();
@@ -113,8 +113,7 @@ namespace GeneralLord
 
 			if (value == 4)
 			{
-				ScreenManager.PopScreen();
-				ScreenManager.PopScreen();
+				//ScreenManager.PopScreen();
 				GameMetrics.shopScreenOpened++;
 				Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsActive && x.IsTown);
 				//InformationManager.DisplayMessage(new InformationMessage(closestHideout.Name.ToString()));
