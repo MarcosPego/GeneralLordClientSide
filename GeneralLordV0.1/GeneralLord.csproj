@@ -132,6 +132,7 @@
     <Compile Include="HarmonyOverrides\PartyScreenLeaveOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
     <Compile Include="HarmonyOverrides\PlayerEncounterOverride.cs" />
+    <Compile Include="HarmonyOverrides\RecruitmentCostOverride.cs" />
     <Compile Include="ItemRosterGeneratorHandler.cs" />
     <Compile Include="JsonBattleConfig.cs" />
     <Compile Include="MainManager.cs" />
