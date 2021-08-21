@@ -93,7 +93,7 @@
 														<!--Clan Name-->
 														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight" HorizontalAlignment="Center" UpdateChildrenStates="true">
 															<Children>
-																<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" Brush="Kingdom.NameTitle.Text" Text="@Name"/>
+																<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" Brush="Kingdom.NameTitle.Text" Text="@Name"/>
 																<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="29" SuggestedHeight="37" HorizontalAlignment="Right" VerticalAlignment="Center" MarginLeft="10" IsEnabled="@PlayerCanChangeClanName" Brush="Kingdom.Name.Edit.Icon"  />
 															</Children>
 														</ListPanel>
@@ -152,7 +152,7 @@
 								<ListPanel DataSource="{RenownHint}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="40" MarginTop="50" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop">
 									<Children>
 
-										<TextWidget DataSource="{..}" DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Brush="Clan.Renown.Text" PositionYOffset="5" Text="@CurrentRenownText" ClipContents="false" />
+										<TextWidget DataSource="{..}" DoNotAcceptEvents="true" WidthSizePolicy="Fixed" SuggestedWidth="200"  HeightSizePolicy="Fixed" SuggestedHeight="32" HorizontalAlignment="Center" Brush="Clan.Renown.Text" PositionYOffset="5" Text="@CurrentRenownText" ClipContents="false" />
 
 										<ListPanel DataSource="{..}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsEnabled="false" MarginTop="10" IsHidden="@IsRenownProgressComplete">
 											<Children>

@@ -53,7 +53,7 @@
 														<ListPanel Id="OuterList" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Top" LayoutImp.LayoutMethod="VerticalBottomToTop">
 															<Children>
 
-																<!--
+				
 																<ListPanel Id="OuterList" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Top" LayoutImp.LayoutMethod="VerticalBottomToTop">
 																	<Children>
 
@@ -97,7 +97,7 @@
 																			</Children>
 																		</ListPanel>
 																	</Children>
-																</ListPanel>-->
+																</ListPanel>
 
 																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
 																	<Children>
