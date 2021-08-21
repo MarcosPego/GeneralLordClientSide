@@ -16,7 +16,7 @@ namespace GeneralLord
         {
 			//InformationManager.DisplayMessage(new InformationMessage(CharacterTierHandler.CharacterMainCulture.StringId));
 
-			if (CharacterTierHandler.CharacterMainCulture.StringId == stringIdObject)
+			if (PartyBase.MainParty.LeaderHero.Culture.StringId == stringIdObject)
             {
 				return true;
             }

@@ -82,7 +82,6 @@
   <!-- Files & Classes -->
   <ItemGroup>
     <Compile Include="CharacterHandler.cs" />
-    <Compile Include="CharacterTierHandler.cs" />
     <Compile Include="Client\Model\GameMetricsServer.cs" />
     <Compile Include="Client\Model\MatchHistory.cs" />
     <Compile Include="Client\Model\PartyUtils.cs" />

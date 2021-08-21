@@ -62,6 +62,12 @@ namespace GeneralLord.HarmonyOverrides
                         troopAmount = availableToTransfer;
                     }
 
+                    if (__instance.Side == PartyScreenLogic.PartyRosterSide.Left && troopAmount > PartyBase.MainParty.PartySizeLimit - PartyBase.MainParty.MemberRoster.TotalManCount)
+                    {
+                        InformationManager.DisplayMessage(new InformationMessage("Can't go over party capacity! Consider putting some troops in the garrison first!"));
+                        return false;
+                    }
+
                     __instance.OnTransfer(__instance, -1, troopAmount, __instance.Side);
                     __instance.ThrowOnPropertyChanged();
                     //__instance.ApplyTransfer(transferAmount, __instance.Side);
@@ -111,6 +117,12 @@ namespace GeneralLord.HarmonyOverrides
             if (Input.IsKeyDown(InputKey.LeftControl))
             {
                 troopAmount = __instance.Troop.Number;
+            }
+
+            if(troopAmount > PartyBase.MainParty.PartySizeLimit - PartyBase.MainParty.MemberRoster.TotalManCount)
+            {
+                InformationManager.DisplayMessage(new InformationMessage("Can't go over party capacity! Consider putting some troops in the garrison first!"));
+                return false;
             }
 
             if (PartyBase.MainParty.LeaderHero.Gold + (PartyScreenState.goldToChange - CalculateGoldValue(__instance) * troopAmount) < 0)

@@ -22,6 +22,7 @@ namespace GeneralLord.HarmonyOverrides
         {
             static void Postfix(CampaignOptionsControllerVM __instance, ref CampaignOptionItemVM ____difficultyPresetOption)
             {
+             
                 ____difficultyPresetOption.SelectionSelector.SelectedIndex = 3;
             }
         }
@@ -53,9 +54,10 @@ namespace GeneralLord.HarmonyOverrides
                         }
                     }
                 }
-                                ____isChangingDifficultyPreset = false;
+                ____isChangingDifficultyPreset = false;
                 ____difficultyPresetOption.SelectionSelector.SelectedIndex = 3;
-
+                InformationManager.DisplayMessage(new InformationMessage("Info: Game difficulty is set by default in this mod, " +
+                 "so there is no need to change any difficulty option and changing them won't affect the game."));
             }
         }
 

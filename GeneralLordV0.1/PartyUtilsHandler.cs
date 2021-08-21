@@ -250,7 +250,10 @@ namespace GeneralLord
                             int troopsToRecover = (int)(healingRatio * (deadSoldiers + woundedSoldiers));
                             int downedTroops = (deadSoldiers + woundedSoldiers) - troopsToRecover;
 
-                            if (woundedSoldiers > 0)  PartyBase.MainParty.MemberRoster.WoundTroop(characterObject, -woundedSoldiers);
+                            if (woundedSoldiers > 0) {
+                                PartyBase.MainParty.MemberRoster.WoundTroop(characterObject, -woundedSoldiers);
+                                PartyBase.MainParty.MemberRoster.RemoveTroop(characterObject, woundedSoldiers);
+                            };
                             //if (woundedSoldiers > 0) PartyBase.MainParty.MemberRoster.AddToCounts(characterObject, -woundedSoldiers, false, -woundedSoldiers, 0, true, -1);
 
                             PartyBase.MainParty.AddMember(characterObject, troopsToRecover);
@@ -281,8 +284,11 @@ namespace GeneralLord
             foreach (WoundedTroop wt in woundedTroopGroupToRecover.woundedTroops)
             {
                 CharacterObject characterObject = CharacterObject.Find(wt.stringId);
+                //Recover into main party
+                //PartyBase.MainParty.AddMember(characterObject, wt.troopCount);
+                //Recover into garrison
+                GarrisonedTroops.AddToCounts(characterObject, wt.troopCount);
 
-                PartyBase.MainParty.AddMember(characterObject, wt.troopCount);
                 WoundedTroops.RemoveTroop(characterObject, wt.troopCount);
                 /*int id = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
                 if (id != -1)

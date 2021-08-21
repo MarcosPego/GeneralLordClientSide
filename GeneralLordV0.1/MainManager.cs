@@ -177,7 +177,7 @@ namespace GeneralLord
                     ScreenManager.PushScreen(_mainManagerScreen);
                     //PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
                 }
-                if (false && Input.IsKeyReleased(InputKey.G))
+                if ( Input.IsKeyReleased(InputKey.G))
                 {
                     foreach  (TroopRosterElement element in  PartyBase.MainParty.MemberRoster.GetTroopRoster())
                     {
@@ -191,9 +191,10 @@ namespace GeneralLord
                     }
 
                 }
-                if (false && Input.IsKeyReleased(InputKey.K))
+                if (Input.IsKeyReleased(InputKey.K))
                 {
-                    PartyBase.MainParty.MemberRoster.WoundNumberOfTroopsRandomly(3);
+                    //PartyBase.MainParty.MemberRoster.WoundNumberOfTroopsRandomly(3);
+                    RecruitmentManager.OpenNPCRecruitmentRoster();
                 }
             }
         }

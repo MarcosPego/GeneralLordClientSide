@@ -156,10 +156,10 @@ namespace GeneralLord
 			GameTexts.SetVariable("RIGHT", text);
 			this.PartySizeSubTitleText = GameTexts.FindText("str_LEFT_colon_RIGHT", null).ToString();
 
-			this.InfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromTwoRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, FormationClass.Infantry));
-			this.CavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromTwoRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, FormationClass.Cavalry));
-			this.RangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromTwoRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, FormationClass.Ranged));
-			this.HorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromTwoRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, FormationClass.HorseArcher));
+			this.InfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromThreeRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, PartyUtilsHandler.GarrisonedTroops, FormationClass.Infantry));
+			this.CavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromThreeRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, PartyUtilsHandler.GarrisonedTroops, FormationClass.Cavalry));
+			this.RangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromThreeRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, PartyUtilsHandler.GarrisonedTroops, FormationClass.Ranged));
+			this.HorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfoFromThreeRosters(Party.MemberRoster, PartyUtilsHandler.WoundedTroops, PartyUtilsHandler.GarrisonedTroops, FormationClass.HorseArcher));
 
 			this.HealthyInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Infantry));
 			this.HealthyCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopHealthyInfo(Party, FormationClass.Cavalry));
@@ -238,10 +238,40 @@ namespace GeneralLord
 				}
 			}
 
-			this.InfantryCount = num + wounded;
-			this.RangedCount = num2 + wounded2;
-			this.CavalryCount = num3 + wounded3;
-			this.HorseArcherCount = num4 + wounded4;
+			int garrison = 0;
+			int garrison2 = 0;
+			int garrison3 = 0;
+			int garrison4 = 0;
+			foreach (TroopRosterElement troopRosterElement in PartyUtilsHandler.GarrisonedTroops.GetTroopRoster())
+			{
+				Hero heroObject = troopRosterElement.Character.HeroObject;
+				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
+				{
+
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Infantry))
+				{
+					garrison += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Ranged))
+				{
+					garrison2 += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Cavalry))
+				{
+					garrison3 += troopRosterElement.Number;
+				}
+				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.HorseArcher))
+				{
+					garrison4 += troopRosterElement.Number;
+				}
+			}
+
+
+			this.InfantryCount = num + wounded + garrison;
+			this.RangedCount = num2 + wounded2 + garrison2;
+			this.CavalryCount = num3 + wounded3 + garrison3;
+			this.HorseArcherCount = num4 + wounded4 + garrison4;
 
 
 			num = 0;
@@ -284,40 +314,10 @@ namespace GeneralLord
 			this.WoundedCavalryCount = wounded3;
 			this.WoundedHorseArcherCount = wounded4;
 
-
-			num = 0;
-			num2 = 0;
-			num3 = 0;
-			num4 = 0;
-			foreach (TroopRosterElement troopRosterElement in PartyUtilsHandler.GarrisonedTroops.GetTroopRoster())
-			{
-				Hero heroObject = troopRosterElement.Character.HeroObject;
-				if (heroObject != null && heroObject.Clan == Clan.PlayerClan)
-				{
-
-				}
-				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Infantry))
-				{
-					num += troopRosterElement.Number;
-				}
-				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Ranged))
-				{
-					num2 += troopRosterElement.Number;
-				}
-				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.Cavalry))
-				{
-					num3 += troopRosterElement.Number;
-				}
-				else if (troopRosterElement.Character.DefaultFormationClass.Equals(FormationClass.HorseArcher))
-				{
-					num4 += troopRosterElement.Number;
-				}
-			}
-
-			this.GarrisonedInfantryCount = num;
-			this.GarrisonedRangedCount = num2;
-			this.GarrisonedCavalryCount = num3;
-			this.GarrisonedHorseArcherCount = num4;
+			this.GarrisonedInfantryCount = garrison;
+			this.GarrisonedRangedCount = garrison2;
+			this.GarrisonedCavalryCount = garrison3;
+			this.GarrisonedHorseArcherCount = garrison4;
 		}
 
 		public void SelectMainHero()
@@ -401,6 +401,16 @@ namespace GeneralLord
 
 		public void ExectuteLeaveGme()
         {
+
+
+			PartyUtilsHandler.GarrisonedTroops = new TroopRoster(PartyBase.MainParty);
+			PartyUtilsHandler.WoundedTroops = new TroopRoster(PartyBase.MainParty);
+			PartyUtilsHandler.WoundedTroopArmy = new WoundedTroopArmy();
+
+			OpponentPartyHandler.CurrentOpponentParty = null;
+
+			OpponentPartyHandler.PreBattleTroopRoster = null;
+
 			InformationManager.DisplayMessage(new InformationMessage("Exiting to Main Menu!"));
 			GameMetrics.savedAndExited++;
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();

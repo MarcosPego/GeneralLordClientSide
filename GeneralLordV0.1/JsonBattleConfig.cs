@@ -73,6 +73,37 @@ namespace GeneralLord
 			return list;
 		}
 
+		public static List<TooltipProperty> GetPartyTroopInfoFromThreeRosters(TroopRoster troopRoster, TroopRoster troopRoster2, TroopRoster troopRoster3, FormationClass formationClass)
+		{
+			List<TooltipProperty> list = new List<TooltipProperty>();
+			list.Add(new TooltipProperty("", GameTexts.FindText("str_formation_class_string", formationClass.GetName()).ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.Title));
+			foreach (TroopRosterElement troopRosterElement in troopRoster.GetTroopRoster())
+			{
+				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
+				{
+					list.Add(new TooltipProperty(troopRosterElement.Character.Name.ToString(), troopRosterElement.Number.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+				}
+			}
+
+			foreach (TroopRosterElement troopRosterElement in troopRoster2.GetTroopRoster())
+			{
+				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
+				{
+					list.Add(new TooltipProperty("Wounded " + troopRosterElement.Character.Name.ToString(), troopRosterElement.Number.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+				}
+			}
+
+
+			foreach (TroopRosterElement troopRosterElement in troopRoster3.GetTroopRoster())
+			{
+				if (!troopRosterElement.Character.IsHero && troopRosterElement.Character.DefaultFormationClass.Equals(formationClass))
+				{
+					list.Add(new TooltipProperty("Garrisoned " + troopRosterElement.Character.Name.ToString(), troopRosterElement.Number.ToString(), 0, false, TooltipProperty.TooltipPropertyFlags.None));
+				}
+			}
+			return list;
+		}
+
 		public static List<TooltipProperty> GetPartyTroopHealthyInfo(PartyBase party, FormationClass formationClass)
 		{
 			List<TooltipProperty> list = new List<TooltipProperty>();
