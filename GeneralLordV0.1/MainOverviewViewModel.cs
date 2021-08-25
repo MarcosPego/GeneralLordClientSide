@@ -103,7 +103,8 @@ namespace GeneralLord
             {
 				WoundedTroopGroup woundedTroopGroup = PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.First();
 				RecoveryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetTroopsToRecoverInfo(woundedTroopGroup));
-				if (woundedTroopGroup.timeUntilRecovery <= DateTime.Now)
+				string Timer = (woundedTroopGroup.timeUntilRecovery - DateTime.Now).ToString(@"hh\:mm");
+				if (woundedTroopGroup.timeUntilRecovery <= DateTime.Now || Timer == "00:00")
                 {
 					this.RecoveryCount = woundedTroopGroup.totalWoundedTroops.ToString();
 					this.Timer = new TextObject("{=ATTimer}" +" will recover shortly!", null).ToString();
@@ -410,6 +411,10 @@ namespace GeneralLord
 			OpponentPartyHandler.CurrentOpponentParty = null;
 
 			OpponentPartyHandler.PreBattleTroopRoster = null;
+
+			//GameMetrics.currenLastPlaythroughStart = DateTime.Now;
+			GameMetrics.currentLastPlaythroughEnd = DateTime.Now;
+			GameMetrics.timePlayed = GameMetrics.currentLastPlaythroughEnd - GameMetrics.currentLastPlaythroughStart;
 
 			InformationManager.DisplayMessage(new InformationMessage("Exiting to Main Menu!"));
 			GameMetrics.savedAndExited++;

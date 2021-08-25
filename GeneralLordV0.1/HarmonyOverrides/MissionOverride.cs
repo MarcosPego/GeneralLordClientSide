@@ -52,18 +52,6 @@ namespace CunningLords.Patches
                     MissionOverride.IsPlanActive = false;
                     MissionOverride.AttackerGenerator = new PlanGenerator();
 
-                    if (false && EnemyFormationHandler.AttackSelectedFormation != -1)
-                    {
-                        InputCommands IC = new InputCommands();
-                        IC.ApplyPosition(__instance, EnemyFormationHandler.AttackSelectedFormation);
-                        //InformationManager.DisplayMessage(new InformationMessage("Moving into selected starting formation index: " + EnemyFormationHandler.AttackSelectedFormation.ToString()));
-                    }
-
-                    if (false && EnemyFormationHandler.EnemySelectedFormation != -1)
-                    {
-                        InputCommands IC = new InputCommands();
-                        IC.ApplyPosition(__instance, EnemyFormationHandler.EnemySelectedFormation, false, "enemydata.json");
-                    }
                     if (EnemyFormationHandler.EnemyUseDefensiveSettings == 1)
                     {
                         

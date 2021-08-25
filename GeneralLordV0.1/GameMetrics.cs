@@ -39,5 +39,10 @@ namespace GeneralLord
 
         public static int savedAndExited = 0;
 
+
+        public static int timesOpenedTheGame = 0;
+        public static TimeSpan timePlayed;
+        public static DateTime currentLastPlaythroughStart;
+        public static DateTime currentLastPlaythroughEnd;
     }
 }

@@ -159,6 +159,18 @@ namespace GeneralLord
 			//this.TryAddCharacterToRoster(troopRosterA, "mercenary_2", 20);
 			//InformationManager.DisplayMessage(new InformationMessage(troopRoster.TotalManCount.ToString()));
 
+
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_trained_infantryman", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_trained_infantryman", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_legionary", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_equite", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_cataphract", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_elite_cataphract", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_legionary", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_trained_archer", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_veteran_archer", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_palatine_guard", 999);
+
 			return troopRosterA;
 		}
 	}

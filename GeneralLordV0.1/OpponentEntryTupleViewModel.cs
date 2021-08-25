@@ -109,13 +109,17 @@ namespace GeneralLord
 
 				if (defensiveOrders != null)
 				{
-					EnemyFormationHandler.EnemyUseDefensiveSettings = 1;
 					using (JsonReader reader = new JsonTextReader(new System.IO.StringReader(defensiveOrders)))
 					{
 						JsonSerializer serializer = new JsonSerializer();
 						Plan plan =  serializer.Deserialize<Plan>(reader);
-						Serializer.JsonSerialize(plan, "EnemyDecisiontree.json");
+						if (plan != null) {
+							EnemyFormationHandler.EnemyUseDefensiveSettings = 1;
+							Serializer.JsonSerialize(plan, "EnemyDecisiontree.json");
+						}
+
 					}
+
 				}
 			}
 			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
@@ -199,7 +203,7 @@ namespace GeneralLord
 			this.CavalryCount = num3;
 			this.HorseArcherCount = num4;
 
-			this.RankedCooldown = (_cooldownTimer.AddHours(JsonBattleConfig.rankedHourCooldown) - DateTime.Now).ToString(@"hh\:mm");
+			this.RankedCooldown = "Protected for the next " +(_cooldownTimer.AddHours(JsonBattleConfig.rankedHourCooldown) - DateTime.Now).ToString(@"hh\:mm") + " hours";
 
 			JObject playerJson = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));
 			int uniqueId = (int)playerJson["UniqueUser"];

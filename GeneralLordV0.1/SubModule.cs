@@ -51,12 +51,19 @@ namespace GeneralLord
 			}
 
 
-			UrlHandler.ReleaseVersion(true);
+
+			UrlHandler.ReleaseVersion(false);
 		}
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
 		{
 			base.OnGameStart(game, gameStarterObject);
+
+			GameMetrics.timesOpenedTheGame++;
+			GameMetrics.currentLastPlaythroughStart = DateTime.Now;
+			GameMetrics.currentLastPlaythroughEnd = GameMetrics.currentLastPlaythroughStart;
+			GameMetrics.timePlayed = TimeSpan.Zero;
+
 			CampaignGameStarter campaignGameStarter = gameStarterObject as CampaignGameStarter;
 			if (campaignGameStarter != null)
 			{

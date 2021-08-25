@@ -12,7 +12,7 @@ namespace GeneralLord.FormationBattleTest.BattleTestCustomView
     {
         public BattleTestViewModel()
         {
-			this.FirstText = new TextObject("{=ATFirstText} This is a simulator where you can define your army's formations, after concluding kill the lone enemy to conclude the battle", null).ToString();
+			this.FirstText = new TextObject("{=ATFirstText} This is a simulator where you can define your army's formations, after concluding kill the lone enemy or press tab and press retreat to conclude the battle", null).ToString();
 			this.SecondText = new TextObject("{=ATSecondText} Place each formation where you desire (being aware that the formation I is the reference point)", null).ToString();
 			this.ThirdText = new TextObject("{=ATThirdText}Save the final formation using \n Ctrl + (F10 / F11 / F12) to save to the slot 0 / 1 / 2", null).ToString();
 			this.FourthText = new TextObject("{=ATFourthText}You can load the saved formations anytime using \n  F10 / F11 / F12 to load the slot 0 / 1 / 2", null).ToString();

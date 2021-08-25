@@ -28,6 +28,7 @@ using MatchHistory = GeneralLordWebApiClient.Model.MatchHistory;
 using GeneralLord.FormationBattleTest;
 using CunningLords.Interaction;
 using GeneralLord.Client.Web;
+using GeneralLord.FormationPlanHandler;
 
 namespace GeneralLord
 {
@@ -60,7 +61,7 @@ namespace GeneralLord
                     {
                         PartyBase.MainParty.MemberRoster.RemoveTroop(CharacterObject.Find("tutorial_npc_brother"));
                     }
-
+                    InformationManager.DisplayMessage(new InformationMessage("If this is your first playtrough consider hovering the general lord title on the top of the screen for more information"));
                     _isFirstGameLaunch = true;
                 }
 
@@ -100,7 +101,8 @@ namespace GeneralLord
                     PlayerEncounter.Finish(false);
 
                     OpponentPartyHandler.RemoveOpponentParty();
-
+                    EnemyFormationHandler.EnemySelectedFormation = -1;
+                    EnemyFormationHandler.EnemyUseDefensiveSettings = 0;
 
                     if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None) ScreenManager.PopScreen();
 

@@ -31,7 +31,7 @@ namespace GeneralLord
 
 			this._clan = Hero.MainHero.Clan;
 
-
+			this.GameModHint = new BasicTooltipViewModel(() => GameModHintExplanation());
 			this._name = new TextObject("{=ATName}Main Overview", null).ToString();
 
 			this._overviewText = new TextObject("{=ATOverviewText}Character", null).ToString();
@@ -96,7 +96,7 @@ namespace GeneralLord
 			}
 			if(value ==2)
             {
-				//ScreenManager.PopScreen();
+				ScreenManager.PopScreen();
 				GameMetrics.garrisonScreenOpened++;
 				//ScreenManager.PushScreen(new PartyManagerScreen(this._partyManagerLogic));
 				PartyScreenState.currentState = PartyScreenStateEnum.GarrisonScreen;
@@ -104,7 +104,7 @@ namespace GeneralLord
 			}
 			if (value == 3)
 			{
-				//ScreenManager.PopScreen();
+				ScreenManager.PopScreen();
 				GameMetrics.recruitmentScreenOpened++;
 				PartyScreenState.currentState = PartyScreenStateEnum.RecruitmentScreen;
 				RecruitmentManager.OpenRecruitmentRoster();
@@ -113,7 +113,7 @@ namespace GeneralLord
 
 			if (value == 4)
 			{
-				//ScreenManager.PopScreen();
+				ScreenManager.PopScreen();
 				GameMetrics.shopScreenOpened++;
 				Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsActive && x.IsTown);
 				//InformationManager.DisplayMessage(new InformationMessage(closestHideout.Name.ToString()));
@@ -343,9 +343,7 @@ namespace GeneralLord
 			}
 		}
 
-		// Token: 0x170007FF RID: 2047
-		// (get) Token: 0x06001719 RID: 5913 RVA: 0x00055CD2 File Offset: 0x00053ED2
-		// (set) Token: 0x0600171A RID: 5914 RVA: 0x00055CDA File Offset: 0x00053EDA
+
 		[DataSourceProperty]
 		public int CurrentTier
 		{
@@ -363,9 +361,7 @@ namespace GeneralLord
 			}
 		}
 
-		// Token: 0x17000800 RID: 2048
-		// (get) Token: 0x0600171B RID: 5915 RVA: 0x00055CFD File Offset: 0x00053EFD
-		// (set) Token: 0x0600171C RID: 5916 RVA: 0x00055D05 File Offset: 0x00053F05
+
 		[DataSourceProperty]
 		public int MinRenownForCurrentTier
 		{
@@ -383,9 +379,7 @@ namespace GeneralLord
 			}
 		}
 
-		// Token: 0x17000801 RID: 2049
-		// (get) Token: 0x0600171D RID: 5917 RVA: 0x00055D28 File Offset: 0x00053F28
-		// (set) Token: 0x0600171E RID: 5918 RVA: 0x00055D30 File Offset: 0x00053F30
+
 		[DataSourceProperty]
 		public int NextTier
 		{
@@ -403,9 +397,7 @@ namespace GeneralLord
 			}
 		}
 
-		// Token: 0x17000802 RID: 2050
-		// (get) Token: 0x0600171F RID: 5919 RVA: 0x00055D53 File Offset: 0x00053F53
-		// (set) Token: 0x06001720 RID: 5920 RVA: 0x00055D5B File Offset: 0x00053F5B
+
 		[DataSourceProperty]
 		public int CurrentRenown
 		{
@@ -474,11 +466,82 @@ namespace GeneralLord
 			}
 		}
 
+		[DataSourceProperty]
+		public BasicTooltipViewModel GameModHint
+		{
+			get
+			{
+				return this._gameModHint;
+			}
+			set
+			{
+				if (value != this._gameModHint)
+				{
+					this._gameModHint = value;
+					base.OnPropertyChangedWithValue(value, "GameModHint");
+				}
+
+			}
+		}
+
 		public void UpdateBannerVisuals()
 		{
 			this.ClanBanner = new ImageIdentifierVM(BannerCode.CreateFrom(this._clan.Banner), true);
 			this.ClanBannerHint = new HintViewModel(new TextObject("{=t1lSXN9O}Your clan's standard carried into battle", null), null);
 			this.RefreshValues();
+		}
+
+		public List<TooltipProperty> GameModHintExplanation()
+		{
+			List<TooltipProperty> list = new List<TooltipProperty>();
+			list.Add(new TooltipProperty("", "General Lord", 0, false, TooltipProperty.TooltipPropertyFlags.Title));
+			list.Add(new TooltipProperty("General Lord is a new game mod that uses Bannerlord's party and character progression and uses it to create a semi-multiplayer game mode.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("Where you can bring your own personal army to fight several battles agaisnt other player's armies.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("You start with alone in your endeavours and must recruit and train soldiers to help you climb to the top of the ladder.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+
+			list.Add(new TooltipProperty("For new players we recommend you spend your initial gold recruiting troops to your army as fighting alone could prove too hard in the future", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "Garrison Manager:", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("In the garrison manager ou are free to store away your troops (as many as you want) in the garrison.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("These troops will not go to battle until you retrieve them again to the main party. ", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "Wounded Troops:", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("After every battle some of the troops will be instatly restored but others will be incapacitaded for half an hour.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("You can see on the right column which troops will recover next and can check all wounded troops in the Infirmary.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "Player Health:", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("After a battle 30% of the max health will be restored to the player character if he is not full hp.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("You can pay for a doctor's visit to health the remaining missing points.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "Clan Tier:", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("Clan tier determines how many troops can your party have and unlocks more recruitable troops and items at certain levels.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("You increase clan tier buy acquiring renown which can be gained in the following ways:", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("Winning difficult battles", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("Purchasing reputation for your clan for 250 gold", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+			list.Add(new TooltipProperty("", "Stewardship:", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("Stewardship also increases the max troops you can have in your party, you can train stewardship for 50 gold", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+
+
+			return list;
 		}
 
 		private ImageIdentifierVM _clanBanner;
@@ -511,5 +574,6 @@ namespace GeneralLord
 		private int _nextTier;
 		private string _currentRenownText;
 		private bool _isRenownProgressComplete;
-	}
+        private BasicTooltipViewModel _gameModHint;
+    }
 }

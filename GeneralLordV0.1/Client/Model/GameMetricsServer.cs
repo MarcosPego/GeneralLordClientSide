@@ -34,6 +34,8 @@ namespace GeneralLord.Client.Model
             numberOfLoadoutsSaved = GameMetrics.numberOfLoadoutsSaved;
 
             savedAndExited = GameMetrics.savedAndExited;
+            currentLastPlaythroughStart = GameMetrics.currentLastPlaythroughStart;
+            currentLastPlaythroughEnd = GameMetrics.currentLastPlaythroughEnd;
         }
 
 
@@ -66,6 +68,12 @@ namespace GeneralLord.Client.Model
 
             savedAndExited += GameMetrics.savedAndExited;
 
+            timesOpenedTheGame += GameMetrics.timesOpenedTheGame;
+            timePlayed += GameMetrics.timePlayed;
+            currentLastPlaythroughStart = GameMetrics.currentLastPlaythroughStart;
+            currentLastPlaythroughEnd = GameMetrics.currentLastPlaythroughEnd;
+
+
             GameMetrics.timesHeroHealed = 0;
             GameMetrics.renownPurchased = 0;
             GameMetrics.stewardship = 0;
@@ -90,7 +98,10 @@ namespace GeneralLord.Client.Model
             GameMetrics.numberOfLoadoutsSaved = 0;
 
             GameMetrics.savedAndExited = 0;
+            GameMetrics.timesOpenedTheGame = 0;
+            GameMetrics.timePlayed = TimeSpan.Zero;
         }
+
 
         public void LoadGameMetrics()
         {
@@ -151,5 +162,10 @@ namespace GeneralLord.Client.Model
         public int numberOfLoadoutsSaved;
 
         public int savedAndExited;
+
+        public int timesOpenedTheGame;
+        public TimeSpan timePlayed;
+        public DateTime currentLastPlaythroughStart;
+        public DateTime currentLastPlaythroughEnd;
     }
 }
