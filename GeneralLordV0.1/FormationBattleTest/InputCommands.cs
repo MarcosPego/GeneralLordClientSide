@@ -435,7 +435,7 @@ namespace GeneralLord.FormationBattleTest
                     break;
                 case OrderType.FollowEntity:
                 case OrderType.GuardMe:
-                case OrderType.Attach:
+                //case OrderType.Attach:
                 case OrderType.LookAtDirection:
                 case OrderType.FormCustom:
                 case OrderType.CohesionHigh:

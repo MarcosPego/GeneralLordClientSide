@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.Core;
 
 namespace GeneralLord.FormationBattleTest
 {
@@ -57,6 +58,7 @@ namespace GeneralLord.FormationBattleTest
 			//TroopRoster troopRoster = TroopRoster.CreateDummyTroopRoster();
 			TroopRoster troopRoster = new TroopRoster(PartyBase.MainParty);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRoster, "imperial_recruit", 1);
+
 			//JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_recruit", 1);
 			//this.TryAddCharacterToRoster(troopRosterA, "vlandian_recruit", 32);
 			//this.TryAddCharacterToRoster(troopRosterA, "sturgian_recruit", 18);

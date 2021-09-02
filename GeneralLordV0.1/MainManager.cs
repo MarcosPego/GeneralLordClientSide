@@ -75,10 +75,7 @@ namespace GeneralLord
                         OpponentPartyHandler.RemoveOpponentParty();
                     }*/
 
-                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.BattleTest)
-                    {
-                        CharacterHandler.HandleBattleTestlRestoreHealth();
-                    }
+
 
                     if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None)
                     {
@@ -106,9 +103,13 @@ namespace GeneralLord
 
                     if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None) ScreenManager.PopScreen();
 
+
+
+                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.BattleTest)
+                    {
+                        CharacterHandler.HandleBattleTestRestoreHealth();
+                    }
                     _mainManagerScreen._viewModel.MainOverview.RefreshValues();
-
-
                     //InformationManager.DisplayMessage(new InformationMessage("Wait worked"));
                     //else if (PlayerEncounter.CampaignBattleResult != null) PlayerEncounter.Update();
 
@@ -151,15 +152,41 @@ namespace GeneralLord
 
             if (ScreenManager.TopScreen is MapScreen)
             {
-                Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
-                JsonBattleConfig.VerifyUniqueFile();
-                if(this._initializeState && !this._isFirstGameLaunch) JsonBattleConfig.ReceivePartyUtils();
+                if (ProfileHandler.IsCurrentVersion)
+                {
+                    Serializer.ThisCharacterName = PartyBase.MainParty.LeaderHero.Name.ToString();
 
-                _initializeState = false;
-                _mainManagerScreen = new MainManagerScreen();
+                    Serializer.EnsureSaveDirectory();
+                    var filePath = Path.Combine(Serializer.SaveFolderPath(), "playerprofile.json");
+
+                    if (this._initializeState && !this._isFirstGameLaunch)
+                    {
+                        try
+                        {
+                            Profile profile = (Profile)Serializer.JsonDeserializeProfile(filePath);
+                            EnemyFormationHandler.UseDefensiveSettings = profile.UseDefensiveOrder;
+                        }
+                        catch
+                        {
+                            EnemyFormationHandler.UseDefensiveSettings = 0;
+                        }
+                    }
 
 
-                ScreenManager.PushScreen(_mainManagerScreen);
+                    JsonBattleConfig.VerifyUniqueFile();
+                    if (this._initializeState && !this._isFirstGameLaunch) JsonBattleConfig.ReceivePartyUtils();
+
+                    _initializeState = false;
+                    _mainManagerScreen = new MainManagerScreen();
+
+
+                    ScreenManager.PushScreen(_mainManagerScreen);
+                }
+                else
+                {
+                    ScreenManager.PushScreen(new VersionBlockerScreen());
+                }
+
 
             }
             if(ScreenManager.TopScreen is MainManagerScreen)  { PartyUtilsHandler.TickForRecovery(_mainManagerScreen); } /**/
@@ -179,7 +206,7 @@ namespace GeneralLord
                     ScreenManager.PushScreen(_mainManagerScreen);
                     //PartyBase.MainParty.LeaderHero.HitPoints = PartyBase.MainParty.LeaderHero.CharacterObject.MaxHitPoints();
                 }
-                if ( Input.IsKeyReleased(InputKey.G))
+                if (false && Input.IsKeyReleased(InputKey.G))
                 {
                     foreach  (TroopRosterElement element in  PartyBase.MainParty.MemberRoster.GetTroopRoster())
                     {

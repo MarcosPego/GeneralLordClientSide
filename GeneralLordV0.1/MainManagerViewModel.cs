@@ -117,7 +117,9 @@ namespace GeneralLord
 				GameMetrics.shopScreenOpened++;
 				Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsActive && x.IsTown);
 				//InformationManager.DisplayMessage(new InformationMessage(closestHideout.Name.ToString()));
-				InventoryManager.OpenScreenAsTrade(ItemRosterGeneratorHandler.itemRosterShop, closestHideout.GetComponent<SettlementComponent>(), InventoryManager.InventoryCategoryType.None, null);
+				ItemRosterGeneratorHandler.InitializeItemRosterForShop();
+				InventoryManager.OpenScreenAsTrade(ItemRosterGeneratorHandler.itemRosterShop, closestHideout.GetComponent<SettlementComponent>(), 
+												InventoryManager.InventoryCategoryType.None, null);
 
 			}
 		}
@@ -517,6 +519,7 @@ namespace GeneralLord
 			list.Add(new TooltipProperty("", "Wounded Troops:", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 			list.Add(new TooltipProperty("After every battle some of the troops will be instatly restored but others will be incapacitaded for half an hour.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 			list.Add(new TooltipProperty("You can see on the right column which troops will recover next and can check all wounded troops in the Infirmary.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("Altough the timer keeps counting offline, the troops will only recover after a few minutes loading the game. So you may consider waiting a bit so the troops fully recover", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 
 			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));

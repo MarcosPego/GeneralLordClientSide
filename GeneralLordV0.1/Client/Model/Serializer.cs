@@ -48,6 +48,7 @@ namespace GeneralLordWebApiClient.Model
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(ArmyContainer));
                     serializer.Serialize(writer, armyContainer);
+                    writer.Dispose();
                 }
 
             }
@@ -148,6 +149,7 @@ namespace GeneralLordWebApiClient.Model
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(writer, objectToSerialize);
+                writer.Dispose();
             }
         }
 
@@ -160,6 +162,7 @@ namespace GeneralLordWebApiClient.Model
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(writer, json);
+                writer.Dispose();
             }
         }
 
@@ -172,6 +175,7 @@ namespace GeneralLordWebApiClient.Model
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(writer, json);
+                writer.Dispose();
             }
         }
 

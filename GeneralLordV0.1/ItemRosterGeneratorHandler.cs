@@ -91,6 +91,17 @@ namespace GeneralLord
 			TryAddItemToRoster(itemRosterShop, "piercing_arrows", 999);
 			TryAddItemToRoster(itemRosterShop, "heavy_steppe_arrows", 999);
 			TryAddItemToRoster(itemRosterShop, "barbed_arrows", 999);
+
+
+			TryAddItemToRoster(itemRosterShop, "bolt_a", 999);
+			TryAddItemToRoster(itemRosterShop, "bolt_b", 999);
+			TryAddItemToRoster(itemRosterShop, "bolt_c", 999);
+			TryAddItemToRoster(itemRosterShop, "bolt_d", 999);
+
+
+			TryAddItemToRoster(itemRosterShop, "western_javelin_1_t2", 999);
+			TryAddItemToRoster(itemRosterShop, "cleaver_2hsword_t3", 999);
+			TryAddItemToRoster(itemRosterShop, "ridged_2hsword_t4", 999);
 		}
 
 		public static void AseraiCultureItems()
@@ -156,6 +167,9 @@ namespace GeneralLord
 			TryAddItemToRoster(itemRosterShop, "longbow_recurve_desert_bow", 999);
 			TryAddItemToRoster(itemRosterShop, "southern_spear_3_t3", 999);
 			TryAddItemToRoster(itemRosterShop, "southern_spear_3_t4", 999);
+
+			TryAddItemToRoster(itemRosterShop, "kaskara_2hsword_t3", 999);
+			
 		}
 
 		public static void BattanianCultureItems()
@@ -229,6 +243,11 @@ namespace GeneralLord
 
 
 			TryAddItemToRoster(itemRosterShop, "battania_sword_1_t2", 999);
+			TryAddItemToRoster(itemRosterShop, "battania_2hsword_1_t2", 999);
+			TryAddItemToRoster(itemRosterShop, "battania_2hsword_2_t3", 999);
+			TryAddItemToRoster(itemRosterShop, "battania_2hsword_3_t3", 999);
+			TryAddItemToRoster(itemRosterShop, "battania_2hsword_4_t4", 999);
+			TryAddItemToRoster(itemRosterShop, "battania_2hsword_5_t4", 999);
 
 			TryAddItemToRoster(itemRosterShop, "hunting_bow", 999);
 			TryAddItemToRoster(itemRosterShop, "mountain_hunting_bow", 999);
@@ -237,6 +256,8 @@ namespace GeneralLord
 
 			TryAddItemToRoster(itemRosterShop, "woodland_yew_bow", 999);
 			TryAddItemToRoster(itemRosterShop, "woodland_longbow", 999);
+
+			TryAddItemToRoster(itemRosterShop, "northern_javelin_2_t3", 999);
 		}
 		public static void KhuzaitCultureItems()
 		{
@@ -306,6 +327,10 @@ namespace GeneralLord
 
 			TryAddItemToRoster(itemRosterShop, "steppe_arrows", 999);
 			TryAddItemToRoster(itemRosterShop, "heavy_steppe_arrows", 999);
+
+			TryAddItemToRoster(itemRosterShop, "eastern_javelin_1_t2", 999);
+			TryAddItemToRoster(itemRosterShop, "eastern_javelin_2_t3", 999);
+			TryAddItemToRoster(itemRosterShop, "eastern_javelin_3_t4", 999);
 		}
 
 		public static void VlandianCultureItems()
@@ -377,6 +402,19 @@ namespace GeneralLord
 			TryAddItemToRoster(itemRosterShop, "lowland_longbow", 999);
 
 			TryAddItemToRoster(itemRosterShop, "vlandic_arrows", 999);
+
+
+			TryAddItemToRoster(itemRosterShop, "crossbow_a", 999);
+			TryAddItemToRoster(itemRosterShop, "crossbow_c", 999);
+			TryAddItemToRoster(itemRosterShop, "crossbow_e", 999);
+			TryAddItemToRoster(itemRosterShop, "crossbow_g", 999);
+			TryAddItemToRoster(itemRosterShop, "crossbow_f", 999);
+
+			TryAddItemToRoster(itemRosterShop, "western_javelin_2_t3", 999);
+			TryAddItemToRoster(itemRosterShop, "western_javelin_3_t4", 999);
+
+
+			TryAddItemToRoster(itemRosterShop, "western_2hsword_t3", 999);
 		}
 
 		public static void SturgianCultureItems()
@@ -440,6 +478,11 @@ namespace GeneralLord
 			TryAddItemToRoster(itemRosterShop, "sturgia_sword_1_t2", 999);
 
 			TryAddItemToRoster(itemRosterShop, "nordic_shortbow", 999);
+
+			TryAddItemToRoster(itemRosterShop, "northern_javelin_1_t2", 999);
+			TryAddItemToRoster(itemRosterShop, "generic_javelin_1_t3", 999);
+
+			TryAddItemToRoster(itemRosterShop, "northern_2hsword_t4", 999);
 		}
 		public static void EmpireCultureItems()
 		{
@@ -513,6 +556,10 @@ namespace GeneralLord
 
 
 			TryAddItemToRoster(itemRosterShop, "arrow_emp_1_a", 999);
+
+
+			TryAddItemToRoster(itemRosterShop, "crossbow_b", 999);
+			TryAddItemToRoster(itemRosterShop, "crossbow_d", 999);
 		}
 
 

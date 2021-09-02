@@ -42,6 +42,11 @@ namespace GeneralLord
 				}
 			}
 
+            if (_troopCount <= 0)
+            {
+				_troopCount = 1;
+
+			}
 
 
 			JObject playerJson = JObject.Parse(Serializer.ReadStringFromFile("playerprofile.json"));

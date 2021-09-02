@@ -160,6 +160,58 @@ namespace GeneralLord.HarmonyOverrides
             }
         }
 
+
+        [HarmonyPatch(typeof(PartyTradeVM))]
+        [HarmonyPatch("ExecuteApplyTransaction")]
+        class ExecuteApplyTransactionOverride
+        {
+            static bool Prefix(PartyCharacterVM __instance)
+            {
+                if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
+                {
+                    return false;
+                } else
+                {
+                    return true;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(PartyTradeVM))]
+        [HarmonyPatch("ExecuteIncreaseOtherStock")]
+        class ExecuteIncreaseOtherStockOverride
+        {
+            static bool Prefix(PartyCharacterVM __instance)
+            {
+                if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(PartyTradeVM))]
+        [HarmonyPatch("ExecuteIncreasePlayerStock")]
+        class ExecuteIncreasePlayerStockOverride
+        {
+            static bool Prefix(PartyCharacterVM __instance)
+            {
+                if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+
         public static bool ValidateCommand(PartyCharacterVM __instance)
         {
             int troopAmount = 1;

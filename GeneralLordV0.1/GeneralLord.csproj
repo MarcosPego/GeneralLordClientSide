@@ -125,9 +125,11 @@
     <Compile Include="FormationPlanHandler\TextViewModel.cs" />
     <Compile Include="GameMetrics.cs" />
     <Compile Include="HarmonyOverrides\BattleRewardsOverride.cs" />
+    <Compile Include="HarmonyOverrides\BehaviorDefendOverride.cs" />
     <Compile Include="HarmonyOverrides\CampaignOptionsVMOverride.cs" />
     <Compile Include="HarmonyOverrides\CheatEngineOverride.cs" />
     <Compile Include="HarmonyOverrides\MissionOverride.cs" />
+    <Compile Include="HarmonyOverrides\OrderControllerOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenLeaveOverride.cs" />
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
     <Compile Include="HarmonyOverrides\PlayerEncounterOverride.cs" />
@@ -152,6 +154,8 @@
     <Compile Include="RecruitmentManager.cs" />
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VersionBlockerScreen.cs" />
+    <Compile Include="VersionBlockerViewModel.cs" />
     <Content Include="Readme.txt" />
     <Content Include="SubModule.xml" />
   </ItemGroup>

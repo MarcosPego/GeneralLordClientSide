@@ -18,6 +18,7 @@ namespace GeneralLord
     public class CharacterHandler
     {
 		public static CharacterObject characterObject;
+		public static Hero heroObject;
 		public static string saveLocationFile = "playergeneral.xml";
 		public static SaveLocationEnum saveLocationPath = SaveLocationEnum.Configs;
 		public static bool debugMode = false;
@@ -72,7 +73,7 @@ namespace GeneralLord
 
 		}
 
-		public static void HandleBattleTestlRestoreHealth()
+		public static void HandleBattleTestRestoreHealth()
 		{
 			PartyBase.MainParty.LeaderHero.HitPoints = BattleTestHandler.CurrentPlayerHealth;
 
@@ -115,12 +116,28 @@ namespace GeneralLord
 				"\t\tlevel=\""+ Hero.MainHero.Level.ToString() +"\"",
 				"\t\tname=\""+ Hero.MainHero.Name.ToString()+"\"",
 				"\t\tis_female=\""+ Hero.MainHero.IsFemale.ToString().ToLower() +"\"",
-				"\t\tculture=\"Culture."+  Hero.MainHero.Culture.ToString().ToLower() +"\"",
+				"\t\tculture=\"Culture."+  GetValidCulture() +"\"",
 				"\t\toccupation=\"Soldier\">",
 
 			}, "NPCCharacter base traits added.", "Error occured while trying to output NPCCharacter  base traits.");
 
 		}
+
+		public static string GetValidCulture()
+        {
+			string cultureGot = Hero.MainHero.Culture.ToString().ToLower();
+
+
+			if (cultureGot != "vlandia" && cultureGot != "sturgia" && cultureGot != "empire" && cultureGot != "khuzait" && cultureGot != "battania" && cultureGot != "aserai")
+            {
+				return "vlandia";
+			}
+			else
+            {
+				return cultureGot;
+			}
+
+        }
 
 		public static void OutputCharacterFaceProperties()
 		{
@@ -138,7 +155,7 @@ namespace GeneralLord
 			TryOutputLines(new List<string>
 			{
 				"\t\t<face>",
-				"\t\t\t<face_key_template value=\"BodyProperty.fighter_" + Hero.MainHero.Culture.ToString().ToLower() + "\" />",
+				"\t\t\t<face_key_template value=\"BodyProperty.fighter_" + GetValidCulture() + "\" />",
 				"\t\t</face>",
 
 			}, "NPCCharacter face properties added.", "Error occured while trying to output NPCCharacter  base traits.");
@@ -311,10 +328,8 @@ namespace GeneralLord
 						//MBObjectManager.Instance.UnregisterObject(object2);
 						if (object2 != null)
 						{
-
-							object2.Deserialize(Game.Current.ObjectManager, xmlNode3);
-							characterObject = object2;
-					
+							characterObject = new CharacterObject();
+							characterObject.Deserialize(Game.Current.ObjectManager, xmlNode3);
 						}
 					}
 				}
@@ -323,5 +338,6 @@ namespace GeneralLord
 			}
 		}
 
-	}
+
+    }
 }

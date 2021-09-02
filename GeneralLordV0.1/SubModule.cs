@@ -13,6 +13,7 @@ using GeneralLordWebApiClient;
 using System.IO;
 using System.Reflection;
 using GeneralLord.FormationPlanHandler;
+using GeneralLord.Client.Web;
 
 namespace GeneralLord
 {
@@ -52,10 +53,13 @@ namespace GeneralLord
 
 
 
-			UrlHandler.ReleaseVersion(false);
+			UrlHandler.ReleaseVersion(true);
+			ProfileHandler.GameVersion = "1.0.3";
+			ProfileHandler.IsCurrentVersion =  ServerRequestsHandler.GetIsCurrentVersion(ProfileHandler.GameVersion).Result;
 		}
 
-		protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+
+        protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
 		{
 			base.OnGameStart(game, gameStarterObject);
 

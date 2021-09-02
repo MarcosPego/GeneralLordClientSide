@@ -314,14 +314,12 @@ namespace GeneralLord
 
 		public static void UpdateArmyAfterBattle()
         {
-
-			PartyUtilsHandler.UpdateWoundedTroopsReforged();
-			ExecuteSubmitPartyUtils();
-
 			//SAVE
 			//Campaign.Current.SaveHandler.QuickSaveCurrentGame();
 			if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.None)
 			{
+				PartyUtilsHandler.UpdateWoundedTroopsReforged();
+				ExecuteSubmitPartyUtils();
 				OpponentPartyHandler.AddGoldToParty();
 				CommitGeneralLordPartyXP();
 				CharacterHandler.HandleAfterBattleHealth();
@@ -460,8 +458,8 @@ namespace GeneralLord
 				CharacterHandler.saveLocationPath = CharacterHandler.SaveLocationEnum.ModuleData;
 				CharacterHandler.WriteToFile(armyContainer.CharacterXML);
 				CharacterHandler.LoadXML();
-				TryAddCharacterObjectToRoster(troopRoster, CharacterHandler.characterObject, 1); 
-			
+				TryAddCharacterObjectToRoster(troopRoster, CharacterHandler.characterObject, 1);
+
 			}
 			foreach (TroopContainer tc in armyContainer.TroopContainers)
             {

@@ -22,6 +22,7 @@ namespace GeneralLordWebApiClient
         public static string SaveProfile = "save";
         public static string SubmitPartyUtils = "submitPartyUtils";
         public static string CalculateElo = "calculateElo";
+        public static string IsCurrentVersion = "isCorrectVersion";
 
         //public static string PostBattleProcess = "postBattleProcess";
 

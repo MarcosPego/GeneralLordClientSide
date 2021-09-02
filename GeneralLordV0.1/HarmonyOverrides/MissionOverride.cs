@@ -52,15 +52,9 @@ namespace CunningLords.Patches
                     MissionOverride.IsPlanActive = false;
                     MissionOverride.AttackerGenerator = new PlanGenerator();
 
-                    if (EnemyFormationHandler.EnemyUseDefensiveSettings == 1)
-                    {
-                        
-                        //InformationManager.DisplayMessage(new InformationMessage("Formation Orders IS ACTIVE!"));
-                        MissionOverride.DefenderGenerator = new PlanGenerator(false);
-                    }
                     Utils.OnStartOrders(__instance);
 
-                    if (false)
+                    if (BattleTestHandler.BattleTestEnabled == BattleTestHandler.BattleTestEnabledState.BattleTest)
                     {
                         Mission m = Mission.Current;
 
@@ -70,10 +64,15 @@ namespace CunningLords.Patches
                         {
                             f.FiringOrder = FiringOrder.FiringOrderHoldYourFire;
                         }
+                    } else if (EnemyFormationHandler.EnemyUseDefensiveSettings == 1)
+                    {
+                        MissionOverride.DefenderGenerator = new PlanGenerator(false);
                     }
-                    MissionOverride.FrameCounter++;
+
                 }
 
+
+                MissionOverride.FrameCounter++;
                 Utils.ManageInputKeys(__instance);
 
                 if (MissionOverride.IsPlanActive && __instance.MainAgent != null)

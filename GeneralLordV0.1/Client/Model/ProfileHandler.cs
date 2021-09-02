@@ -16,6 +16,8 @@ namespace GeneralLordWebApiClient.Model
 {
     public class ProfileHandler
     {
+        public static string GameVersion;
+        public static bool IsCurrentVersion = true;
 
         public static Profile GetVerifyProfile()
         {
@@ -110,11 +112,13 @@ namespace GeneralLordWebApiClient.Model
                     profile = new Profile { Name = PartyBase.MainParty.LeaderHero.Name.ToString(), Elo = 1500, ArmyContainer = Serializer.JsonString("armyConfig.json"), UniqueUser = JsonBattleConfig.UniqueId };
                 }
                 profile.ArmyStrength = PartyBase.MainParty.TotalStrength;
+                profile.TotalTroopCount = PartyBase.MainParty.MemberRoster.TotalManCount;
 
                 profile.DefensiveFormation = "";
                 profile.DefensiveOrders = "";
                 profile.UseDefensiveOrder = EnemyFormationHandler.UseDefensiveSettings;
                 profile.SelectedFormation = -1;
+
 
                 string gameMetricsString = JsonConvert.SerializeObject(new GameMetricsServer());
                 profile.GameMetrics = gameMetricsString;

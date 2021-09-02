@@ -40,6 +40,7 @@ namespace CunningLords.PlanDefinition
 
         public int positionLimit = 1500;
         private bool _isPlayerSide;
+        private bool usePosition;
 
         public PlanGenerator(bool isPlayerSide = true)
         {
@@ -113,7 +114,7 @@ namespace CunningLords.PlanDefinition
 
         public void Run(Team team, bool isAiTeam = false)
         {
-            PlanStateEnum state = GetMissionState();
+            PlanStateEnum state = GetMissionState(team);
 
             if (this.previousState != state)
             {
@@ -140,11 +141,11 @@ namespace CunningLords.PlanDefinition
                     
                     foreach (Formation f in team.Formations)
                     {
-                        f.IsAIControlled = false;
-                        if (positionCounter > positionLimit)
+                        
+                        /*if (positionCounter > positionLimit)
                         {
                             f.IsAIControlled = true;
-                        }
+                        }*/
 
 
                         int index; //METER AQUI O INDICE DA POSITION QUE SE QUER!!!
@@ -153,7 +154,7 @@ namespace CunningLords.PlanDefinition
 
                         string finalPath;
                         List<PositionData> deserialized;
-                        bool usePosition = true;
+                        usePosition = true;
                         if (!isAiTeam)
                         {
                             index = EnemyFormationHandler.AttackSelectedFormation; //METER AQUI O INDICE DA POSITION QUE SE QUER!!!
@@ -168,16 +169,20 @@ namespace CunningLords.PlanDefinition
                         if (index == -1) usePosition = false;
                         if (usePosition && state == PlanStateEnum.Position)
                         {
-
+                            f.IsAIControlled = false;
                             if (positionCounter < 3)
                             {
                                 
                                 Mission mission = Mission.Current;
 
                                 Formation mainFormation = GetFormationPriority(mission, team);
+                            
 
                                 if (f.FormationIndex == FormationClass.Infantry)
                                 {
+                                    WorldPosition position = CalculateWorldpositionsBasedOnOffset(mainFormation, mission, 0, 0);
+                                    f.SetMovementOrder(MovementOrder.MovementOrderMove(position));
+
                                     ApplyArrangement(f, deserialized[index].InfantryArrangementOrder);
                                 }
                                 else if (f.FormationIndex == FormationClass.Ranged && f.FormationIndex != mainFormation.FormationIndex)
@@ -231,7 +236,7 @@ namespace CunningLords.PlanDefinition
                                 }
                             }
                         }
-                        else if (positionCounter == positionLimit || !usePosition)
+                        else if (positionCounter == positionLimit)
                         {
                             f.IsAIControlled = true;
                         }
@@ -241,6 +246,7 @@ namespace CunningLords.PlanDefinition
                         switch (f.FormationIndex)
                         {
                             case FormationClass.Infantry:
+                                f.AI.IsMainFormation = true;
                                 if (state == PlanStateEnum.Prepare)
                                 {
                                     ApplyBehavior(f, plan.infantryPhasePrepare);
@@ -421,9 +427,10 @@ namespace CunningLords.PlanDefinition
                         //f.IsAIControlled = false;
                     }
 
-                    if (positionCounter == positionLimit)
+                    if (!(usePosition && state == PlanStateEnum.Position) && positionCounter == positionLimit)
                     {
                         positionCounter++;
+                        
                     }
 
 
@@ -441,7 +448,11 @@ namespace CunningLords.PlanDefinition
                     break;
                 case PlanOrderEnum.HoldPosition:
                     f.AI.ResetBehaviorWeights();
+
+                    ArrangementOrder ao = f.ArrangementOrder;
+
                     f.AI.SetBehaviorWeight<BehaviorDefend>(2f);
+                    f.ArrangementOrder = ao;
                     break;
                 case PlanOrderEnum.Flank:
                     f.AI.ResetBehaviorWeights();
@@ -465,7 +476,7 @@ namespace CunningLords.PlanDefinition
                     break;
                 case PlanOrderEnum.ProtectFlank:
                     f.AI.ResetBehaviorWeights();
-                    f.AI.SetBehaviorWeight<BehaviorProtectFlank>(2f);
+                    f.AI.SetBehaviorWeight<BehaviorProtectFlank>(2f); 
                     break;
                 case PlanOrderEnum.Advance:
                     f.AI.ResetBehaviorWeights();
@@ -478,7 +489,7 @@ namespace CunningLords.PlanDefinition
             }
         }
 
-        public PlanStateEnum GetMissionState()
+        public PlanStateEnum GetMissionState(Team team)
         {
             PlanStateEnum result = PlanStateEnum.Prepare;
 
@@ -494,12 +505,12 @@ namespace CunningLords.PlanDefinition
                     {
                         positionCounter++;
                         return PlanStateEnum.Position;
-                    }
+                    } 
 
 
                     if (!isEngaged)
                     {
-                        foreach (Formation f in Mission.Current.MainAgent.Team.Formations)
+                        foreach (Formation f in team.Formations)
                         {
                             Formation closestsFormation;
                             if (f.QuerySystem.ClosestEnemyFormation != null)
@@ -540,9 +551,9 @@ namespace CunningLords.PlanDefinition
                     }
                     else if (isEngaged && (MissionOverride.FrameCounter - engageCounterStart) > 2500)
                     {
-                        List<Team> enemyTeams = (from t in Mission.Current.Teams where t.Side != Mission.Current.MainAgent.Team.Side select t).ToList<Team>();
+                        List<Team> enemyTeams = (from t in Mission.Current.Teams where t.Side != team.Side select t).ToList<Team>();
 
-                        List<Team> alliedTeams = (from t in Mission.Current.Teams where t.Side == Mission.Current.MainAgent.Team.Side select t).ToList<Team>();
+                        List<Team> alliedTeams = (from t in Mission.Current.Teams where t.Side == team.Side select t).ToList<Team>();
 
                         float enemyCasualityRatio = 0.0f;
 
@@ -614,6 +625,10 @@ namespace CunningLords.PlanDefinition
                         {
                             return PlanStateEnum.Engage;
                         }
+                    }
+                    else if(isEngaged)
+                    {
+                        return PlanStateEnum.Engage;
                     }
                     else
                     {

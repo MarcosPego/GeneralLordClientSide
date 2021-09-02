@@ -277,6 +277,7 @@ namespace GeneralLord
             if (woundedTroopGroup.totalWoundedTroops > 0) PartyUtilsHandler.WoundedTroopArmy.WoundedTroopsGroup.Add(woundedTroopGroup);
         }
 
+
         public static void RecoverTroopGroupReforged()
         {
             WoundedTroopGroup woundedTroopGroupToRecover = WoundedTroopArmy.WoundedTroopsGroup.First();

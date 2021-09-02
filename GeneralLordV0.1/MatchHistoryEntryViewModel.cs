@@ -172,18 +172,18 @@ namespace GeneralLord
 				this.AttackerElo = "Elo: " + matchHistory.PlayerElo.ToString();
 				this.AttackerTotalArmyCount = "Troops: " + matchHistory.PlayerTroopCount.ToString();
 				this.AttackerArmyStrength = GetAverageStrength(matchHistory.PlayerArmyStrength, matchHistory.EnemyArmyStrength);
-				this.AttackerSidePartyName = matchHistory.EnemyName + "'s Party";
+				this.AttackerSidePartyName = matchHistory.PlayerName + "'s Party";
 
-				attackerArmy = _displayEnemyArmy;
-				attackerFallenArmy = _displayFallenEnemyArmy;
-				defenderArmy = _displayPlayerArmy;
-				defenderFallenArmy = _displayFallenPlayerArmy;
+				attackerArmy = _displayPlayerArmy;
+				attackerFallenArmy = _displayFallenPlayerArmy;
+				defenderArmy = _displayEnemyArmy;
+				defenderFallenArmy = _displayFallenEnemyArmy;
 
 				this.DefenderName = matchHistory.EnemyName;
 				this.DefenderElo = "Elo: " + matchHistory.EnemyElo.ToString();
 				this.DefenderTotalArmyCount = "Troops: " + matchHistory.EnemyTroopCount.ToString();
 				this.DefenderArmyStrength = GetAverageStrength(matchHistory.EnemyArmyStrength, matchHistory.PlayerArmyStrength);
-				this.DefenderSidePartyName = matchHistory.PlayerName + "'s Party";
+				this.DefenderSidePartyName = matchHistory.EnemyName + "'s Party";
 
 				this.EloChange = "EloChange: " + matchHistory.EnemyEloChange.ToString();
 

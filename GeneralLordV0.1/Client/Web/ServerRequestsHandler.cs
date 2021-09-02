@@ -164,5 +164,31 @@ namespace GeneralLord.Client.Web
                 }
             }
         }
+        public static async Task<bool> GetIsCurrentVersion(string Version, int counter = 0)
+        {
+            try
+            {
+
+                var boolResult = await WebRequests.PostAsync<bool>(UrlHandler.GetUrlFromString(UrlHandler.IsCurrentVersion), Version);
+                return boolResult.ServerResponse;
+
+            }
+            catch (Exception e)
+            {
+
+                if (counter < 3)
+                {
+
+                    InformationManager.DisplayMessage(new InformationMessage("Attempting to connect to server!"));
+                    return await GetIsCurrentVersion(Version, counter + 1);
+                }
+                else
+                {
+                    InformationManager.DisplayMessage(new InformationMessage("Unexpected error trying to open opponent selection! Please try again later or contact the support in Discord"));
+                    return false;
+                }
+            }
+        }
+
     }
 }

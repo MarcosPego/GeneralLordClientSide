@@ -12,9 +12,8 @@ namespace GeneralLordWebApiClient.Model
 
         public int EnemyId;
         public int Id;
-        public string PlayerName;
         public string EnemyName;
-
+        public string PlayerName;
         public string BattleResult;
 
         public float PlayerArmyStrength;

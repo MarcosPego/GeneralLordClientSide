@@ -108,7 +108,7 @@ namespace GeneralLord
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "sturgian_warrior_son", 999);
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "vlandian_squire", 999);
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_youth", 999);
-
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "battanian_highborn_youth", 999);
 			}
 
 			if (PartyBase.MainParty.LeaderHero.Clan.Tier >= 3)
@@ -170,6 +170,13 @@ namespace GeneralLord
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_trained_archer", 999);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_veteran_archer", 999);
 			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "imperial_palatine_guard", 999);
+
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_raider", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_hunter", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_horseman", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_qanqli", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_horse_archer", 999);
+			JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_heavy_lancer", 999);
 
 			return troopRosterA;
 		}
