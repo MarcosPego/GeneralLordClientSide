@@ -68,8 +68,8 @@ namespace GeneralLord
 			//_generalConfig = new BattleGeneralConfig();
 
 			//BattleConfig.Instance = this._generalConfig._config;
-			this.BuyRenown = new TextObject("{=ATBuyRenown} Purchase reputation for your clan: ", null).ToString();
-			this.Train = new TextObject("{=ATTrain} Train your stewardship: ", null).ToString();
+			this.BuyRenown = new TextObject("{=ATBuyRenown} Purchase reputation for your clan (Hold Shift to buy 10 times): ", null).ToString();
+			this.Train = new TextObject("{=ATTrain} Train your stewardship (Hold Shift to buy 10 times): ", null).ToString();
 			this.HealHeroText = new TextObject("{=ATHealHeroText} Pay a visit to the doctor to heal your wounds: ", null).ToString();
 
 			this.WoundedTroopText = new TextObject("{=ATWoundedTroopText} Check Toops in Infirmary: ", null).ToString();

@@ -17,7 +17,7 @@ namespace GeneralLord
 			PartyScreenManager.OpenScreenWithCondition(new PartyScreenLogic.IsTroopTransferableDelegate(TroopTransferableDelegate), 
 				new PartyPresentationDoneButtonConditionDelegate(PartyScreenDoneCondition), 
 				new PartyPresentationDoneButtonDelegate(PartyScreenDoneClicked), 
-				PartyScreenLogic.TransferState.TransferableWithTrade, PartyScreenLogic.TransferState.NotTransferable, new TextObject("Test"), 150, false);
+				PartyScreenLogic.TransferState.TransferableWithTrade, PartyScreenLogic.TransferState.NotTransferable, new TextObject("Test"), 150, false, false);
 		}
 
 		public static void OpenNPCRecruitmentRoster()
@@ -109,6 +109,8 @@ namespace GeneralLord
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "vlandian_squire", 999);
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "aserai_youth", 999);
 				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "battanian_highborn_youth", 999);
+				JsonBattleConfig.TryAddCharacterToRoster(troopRosterA, "khuzait_noble_son", 999);
+				
 			}
 
 			if (PartyBase.MainParty.LeaderHero.Clan.Tier >= 3)

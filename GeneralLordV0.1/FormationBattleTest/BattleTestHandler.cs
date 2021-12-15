@@ -25,7 +25,9 @@ namespace GeneralLord.FormationBattleTest
         {
 			CurrentPlayerHealth = PartyBase.MainParty.LeaderHero.HitPoints;
 			BattleTestEnabled = BattleTestEnabledState.BattleTest;
-			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
+
+			//Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout() && x.IsActive);
+			Settlement closestHideout = SettlementHelper.FindNearestSettlement((Settlement x) => x.IsHideout && x.IsActive);
 			Clan clan = Clan.BanditFactions.FirstOrDefault((Clan t) => t.Culture == closestHideout.Culture);
 
 			//randomSettlement = SettlementHelper.FindRandomSettlement((Settlement x) => x.IsTown);

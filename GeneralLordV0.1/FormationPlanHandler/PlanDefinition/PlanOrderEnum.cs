@@ -15,6 +15,7 @@ namespace CunningLords.PlanDefinition
         HideBehind,
         ProtectFlank,
         Advance,
-        CautiousAdvance
+        CautiousAdvance,
+        Retreat
     }
 }

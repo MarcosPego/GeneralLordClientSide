@@ -54,7 +54,7 @@ namespace GeneralLord
 
 
 			UrlHandler.ReleaseVersion(true);
-			ProfileHandler.GameVersion = "1.0.3";
+			ProfileHandler.GameVersion = "1.0.10";
 			ProfileHandler.IsCurrentVersion =  ServerRequestsHandler.GetIsCurrentVersion(ProfileHandler.GameVersion).Result;
 		}
 

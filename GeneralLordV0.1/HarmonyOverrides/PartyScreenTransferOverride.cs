@@ -19,6 +19,20 @@ namespace GeneralLord.HarmonyOverrides
     {
         private static int GoldValue = 100;
 
+        private static List<string> NobleTroops = new List<string>
+        {
+            "imperial_vigla_recruit",
+            "sturgian_warrior_son",
+            "vlandian_squire",
+            "aserai_youth",
+            "battanian_highborn_youth",
+            "khuzait_noble_son",
+            "karakhuzaits_tier_1",
+            "beni_zilal_tier_1",
+            "ghilman_tier_1",  
+            "skolderbrotva_tier_1"
+        };
+
 
         [HarmonyPatch(typeof(PartyCharacterVM))]
         [HarmonyPatch("ExecuteTransferSingle")]
@@ -155,7 +169,7 @@ namespace GeneralLord.HarmonyOverrides
             {
                 if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
                 {
-                    if(__instance.Side == PartyScreenLogic.PartyRosterSide.Left) __instance.Name = __instance.Name + "   Cost: " + (__instance.Character.Tier* GoldValue).ToString();
+                    if(__instance.Side == PartyScreenLogic.PartyRosterSide.Left) __instance.Name = __instance.Name + "   Cost: " + CalculateGoldValue(__instance).ToString();
                 }
             }
         }
@@ -167,7 +181,7 @@ namespace GeneralLord.HarmonyOverrides
         {
             static bool Prefix(PartyCharacterVM __instance)
             {
-                if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
+                if (__instance != null && (PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen || PartyScreenState.currentState == PartyScreenStateEnum.GarrisonScreen))
                 {
                     return false;
                 } else
@@ -183,7 +197,7 @@ namespace GeneralLord.HarmonyOverrides
         {
             static bool Prefix(PartyCharacterVM __instance)
             {
-                if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
+                if (__instance != null && (PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen || PartyScreenState.currentState == PartyScreenStateEnum.GarrisonScreen))
                 {
                     return false;
                 }
@@ -200,7 +214,7 @@ namespace GeneralLord.HarmonyOverrides
         {
             static bool Prefix(PartyCharacterVM __instance)
             {
-                if (__instance != null && PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen)
+                if (__instance != null && (PartyScreenState.currentState == PartyScreenStateEnum.RecruitmentScreen || PartyScreenState.currentState == PartyScreenStateEnum.GarrisonScreen))
                 {
                     return false;
                 }
@@ -250,10 +264,10 @@ namespace GeneralLord.HarmonyOverrides
 
         public static int CalculateGoldValue(PartyCharacterVM __instance)
         {
+            int goldMultiplier = GoldValue;
+            if (NobleTroops.Contains(__instance.Character.StringId)) goldMultiplier *= 3;
 
-
-
-            return __instance.Character.Tier * GoldValue;
+            return __instance.Character.Tier * goldMultiplier;
         }
 
     }

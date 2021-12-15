@@ -16,6 +16,8 @@ using System.Reflection;
 using CunningLords.PlanDefinition;
 using GeneralLord.FormationBattleTest;
 using GeneralLord.FormationPlanHandler;
+using TaleWorlds.CampaignSystem;
+using GeneralLord;
 
 namespace CunningLords.Patches
 {
@@ -46,6 +48,13 @@ namespace CunningLords.Patches
                 {
                     return;
                 }
+             
+                               
+                /*CharacterObject characterObject = CharacterObject.Find("vlandian_recruit");
+                int index = OpponentPartyHandler.PreBattleTroopRoster.FindIndexOfTroop(characterObject);
+                InformationManager.DisplayMessage(new InformationMessage("Enemy Vlandian Recruit: " + OpponentPartyHandler.PreBattleTroopRoster.GetCharacterAtIndex(index).GetPower()));
+                index = PartyBase.MainParty.MemberRoster.FindIndexOfTroop(characterObject);
+                InformationManager.DisplayMessage(new InformationMessage("My Vlandian Recruit: " + PartyBase.MainParty.MemberRoster.GetCharacterAtIndex(index).GetPower()));*/
 
                 if (MissionOverride.FrameCounter == 0)
                 {
@@ -70,6 +79,7 @@ namespace CunningLords.Patches
                     }
 
                 }
+
 
 
                 MissionOverride.FrameCounter++;

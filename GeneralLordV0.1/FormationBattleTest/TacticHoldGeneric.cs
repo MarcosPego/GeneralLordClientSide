@@ -33,6 +33,14 @@ namespace GeneralLord.FormationBattleTest
 			{
 				return;
 			}
+			else if (this._mainInfantry == null)
+			{
+				return;
+			}
+			else if (this._mainInfantry.AI == null)
+			{
+				return;
+			}
 			else 
 			{
 				this._mainInfantry.AI.ResetBehaviorWeights();

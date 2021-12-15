@@ -191,7 +191,7 @@ namespace GeneralLordWebApiClient.Model
 
 
             }
-            catch (Exception e)
+            catch
             {
                 var result = new ArmyContainer();
                 Serialize(result);

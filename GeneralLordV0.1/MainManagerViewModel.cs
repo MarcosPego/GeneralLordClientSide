@@ -497,27 +497,27 @@ namespace GeneralLord
 		{
 			List<TooltipProperty> list = new List<TooltipProperty>();
 			list.Add(new TooltipProperty("", "General Lord", 0, false, TooltipProperty.TooltipPropertyFlags.Title));
-			list.Add(new TooltipProperty("General Lord is a new game mod that uses Bannerlord's party and character progression and uses it to create a semi-multiplayer game mode.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
-			list.Add(new TooltipProperty("Where you can bring your own personal army to fight several battles agaisnt other player's armies.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
-			list.Add(new TooltipProperty("You start with alone in your endeavours and must recruit and train soldiers to help you climb to the top of the ladder.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("General Lord is a new game mod that uses Bannerlord's party and character progression to create a semi-multiplayer game mode.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("Where you can bring your own personal army to fight several battles against other player's armies.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("You start alone in your endeavours and must recruit and train soldiers to help you climb to the top of the ladder.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 
 			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 
 
-			list.Add(new TooltipProperty("For new players we recommend you spend your initial gold recruiting troops to your army as fighting alone could prove too hard in the future", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("For new players, we recommend you spend your initial gold recruiting troops to your army, as fighting alone could prove too hard in the future.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 
 			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 
 			list.Add(new TooltipProperty("", "Garrison Manager:", 0, false, TooltipProperty.TooltipPropertyFlags.None));
-			list.Add(new TooltipProperty("In the garrison manager ou are free to store away your troops (as many as you want) in the garrison.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("In the garrison manager you are free to store away your troops (as many as you want) in the garrison.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 			list.Add(new TooltipProperty("These troops will not go to battle until you retrieve them again to the main party. ", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 
 			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 			list.Add(new TooltipProperty("", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 
 			list.Add(new TooltipProperty("", "Wounded Troops:", 0, false, TooltipProperty.TooltipPropertyFlags.None));
-			list.Add(new TooltipProperty("After every battle some of the troops will be instatly restored but others will be incapacitaded for half an hour.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
+			list.Add(new TooltipProperty("After every battle some of the troops will instantly be restored, whilst others will be incapacitaded for half an hour.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 			list.Add(new TooltipProperty("You can see on the right column which troops will recover next and can check all wounded troops in the Infirmary.", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 			list.Add(new TooltipProperty("Altough the timer keeps counting offline, the troops will only recover after a few minutes loading the game. So you may consider waiting a bit so the troops fully recover", "", 0, false, TooltipProperty.TooltipPropertyFlags.None));
 

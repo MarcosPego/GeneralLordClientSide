@@ -223,7 +223,14 @@ namespace GeneralLord
                 if (Input.IsKeyReleased(InputKey.K))
                 {
                     //PartyBase.MainParty.MemberRoster.WoundNumberOfTroopsRandomly(3);
+
+                    GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, 1832, false);
                     RecruitmentManager.OpenNPCRecruitmentRoster();
+                }
+                if (Input.IsKeyReleased(InputKey.L))
+                {
+                    //PartyBase.MainParty.MemberRoster.WoundNumberOfTroopsRandomly(3);
+                    PartyUtilsCalculator.calculateIntoSheet();
                 }
             }
         }

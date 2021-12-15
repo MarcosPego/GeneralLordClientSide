@@ -7,6 +7,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.CharacterDevelopment.Managers;
 using TaleWorlds.Core;
+using TaleWorlds.InputSystem;
 
 namespace GeneralLord
 {
@@ -20,29 +21,66 @@ namespace GeneralLord
 
         public static void HandleRenownBuy()
         {
-            if (PartyBase.MainParty.LeaderHero.Gold - BuyRenownPrice < 0)
+
+            int trainValue = BuyRenownPrice;
+            int trainXp = RenownBought;
+
+            if (Input.IsKeyDown(InputKey.LeftShift))
             {
-                InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Buy Renown! "));
+                trainValue *= 10;
+                trainXp *= 10;
+            }
+
+
+            if (PartyBase.MainParty.LeaderHero.Gold - trainValue < 0)
+            {
+
+                if (trainValue == BuyRenownPrice)
+                {
+                    InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Buy Renown 1 time! "));
+                }
+                else
+                {
+                    InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Buy Renown 10 times! "));
+                }
+
+                //InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Buy Renown! "));
                 return;
             }
             else
             {
-                GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, -BuyRenownPrice, false);
-                GainRenownAction.Apply(PartyBase.MainParty.LeaderHero, RenownBought, false);
+                GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, -trainValue, false);
+                GainRenownAction.Apply(PartyBase.MainParty.LeaderHero, trainXp, false);
             }
         }
 
         public static void HandleTrainSteward()
         {
-            if (PartyBase.MainParty.LeaderHero.Gold - TrainStewardship < 0)
+
+            int trainValue = TrainStewardship;
+            int trainXp = StewardXP;
+
+            if (Input.IsKeyDown(InputKey.LeftShift))
             {
-                InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Train Stewardship! "));
+                trainValue *= 10;
+                trainXp *= 10;
+            }
+
+            if (PartyBase.MainParty.LeaderHero.Gold - trainValue < 0)
+            {
+                if (trainValue == TrainStewardship){
+                    InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Train Stewardship 1 time! "));
+                } else
+                {
+                    InformationManager.DisplayMessage(new InformationMessage("Not Enough Money To Train Stewardship 10 times! "));
+                }
+                
                 return;
             }
             else
             {
-                GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, -TrainStewardship, false);
-                PartyBase.MainParty.LeaderHero.HeroDeveloper.AddSkillXp(DefaultSkills.Steward, StewardXP, true, true);
+                GiveGoldAction.ApplyBetweenCharacters(null, PartyBase.MainParty.LeaderHero, -trainValue, false);
+                PartyBase.MainParty.LeaderHero.HeroDeveloper.AddSkillXp(DefaultSkills.Steward, trainXp, true, true);
             }
 
 

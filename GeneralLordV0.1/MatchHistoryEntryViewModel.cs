@@ -203,24 +203,24 @@ namespace GeneralLord
 			}
 
 			_attackerInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerArmy, FormationClass.Infantry));
-			_attackerRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerArmy, FormationClass.Cavalry));
-			_attackerCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerArmy, FormationClass.Ranged));
+			_attackerRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerArmy, FormationClass.Ranged));
+			_attackerCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerArmy, FormationClass.Cavalry));
 			_attackerHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerArmy, FormationClass.HorseArcher));
 
 			_defenderInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderArmy, FormationClass.Infantry));
-			_defenderRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderArmy, FormationClass.Cavalry));
-			_defenderCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderArmy, FormationClass.Ranged));
+			_defenderRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderArmy, FormationClass.Ranged));
+			_defenderCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderArmy, FormationClass.Cavalry));
 			_defenderHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderArmy, FormationClass.HorseArcher));
 
 
 			_fallenAttackerInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerFallenArmy, FormationClass.Infantry));
-			_fallenAttackerRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerFallenArmy, FormationClass.Cavalry));
-			_fallenAttackerCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerFallenArmy, FormationClass.Ranged));
+			_fallenAttackerRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerFallenArmy, FormationClass.Ranged));
+			_fallenAttackerCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerFallenArmy, FormationClass.Cavalry));
 			_fallenAttackerHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(attackerFallenArmy, FormationClass.HorseArcher));
 
 			_fallenDefenderInfantryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderFallenArmy, FormationClass.Infantry));
-			_fallenDefenderRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderFallenArmy, FormationClass.Cavalry));
-			_fallenDefenderCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderFallenArmy, FormationClass.Ranged));
+			_fallenDefenderRangedHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderFallenArmy, FormationClass.Ranged));
+			_fallenDefenderCavalryHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderFallenArmy, FormationClass.Cavalry));
 			_fallenDefenderHorseArcherHint = new BasicTooltipViewModel(() => JsonBattleConfig.GetPartyTroopInfo(defenderFallenArmy, FormationClass.HorseArcher));
 
 

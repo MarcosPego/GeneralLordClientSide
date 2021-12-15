@@ -502,7 +502,7 @@ namespace GeneralLord
 			}
 			else
 			{
-				InformationManager.DisplayMessage(new InformationMessage("CustomTroopRoster: " + characterId + " id not found."));
+				//InformationManager.DisplayMessage(new InformationMessage(characterId + " id not found."));
 			}
 		}
 
@@ -518,7 +518,7 @@ namespace GeneralLord
 
 			}
 
-			InformationManager.DisplayMessage(new InformationMessage("Item Id: " + itemId + " id not found."));
+			//InformationManager.DisplayMessage(new InformationMessage("Item Id: " + itemId + " id not found."));
 		}
 	}
 }

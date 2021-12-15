@@ -42,7 +42,7 @@ namespace GeneralLord.Client.Web
                 EnemyFormationHandler.UseDefensiveSettings = result.ServerResponse.UseDefensiveOrder;
                 Serializer.JsonSerialize(result.ServerResponse, "playerprofile.json");
             }
-            catch (Exception e)
+            catch
             {
 
                 if (counter < 3)
@@ -92,7 +92,7 @@ namespace GeneralLord.Client.Web
             {
                 await WebRequests.PostAsync(UrlHandler.GetUrlFromString(UrlHandler.PostBattleProcess), matchHistory);
             }
-            catch (Exception e)
+            catch
             {
 
                 if (counter < 3)
@@ -173,7 +173,7 @@ namespace GeneralLord.Client.Web
                 return boolResult.ServerResponse;
 
             }
-            catch (Exception e)
+            catch
             {
 
                 if (counter < 3)

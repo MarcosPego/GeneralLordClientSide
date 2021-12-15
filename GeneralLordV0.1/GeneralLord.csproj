@@ -134,6 +134,7 @@
     <Compile Include="HarmonyOverrides\PartyScreenTransferOverride.cs" />
     <Compile Include="HarmonyOverrides\PlayerEncounterOverride.cs" />
     <Compile Include="HarmonyOverrides\RecruitmentCostOverride.cs" />
+    <Compile Include="HarmonyOverrides\TroopRosterOverride.cs" />
     <Compile Include="ItemRosterGeneratorHandler.cs" />
     <Compile Include="JsonBattleConfig.cs" />
     <Compile Include="MainManager.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="OpponentSelectorViewModel.cs" />
     <Compile Include="PartyCapacityLogicHandler.cs" />
     <Compile Include="PartyScreenState.cs" />
+    <Compile Include="PartyUtilsCalculator.cs" />
     <Compile Include="PartyUtilsHandler.cs" />
     <Compile Include="RecruitmentManager.cs" />
     <Compile Include="SubModule.cs" />

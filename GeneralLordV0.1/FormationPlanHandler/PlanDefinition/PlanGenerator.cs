@@ -455,8 +455,20 @@ namespace CunningLords.PlanDefinition
                     f.ArrangementOrder = ao;
                     break;
                 case PlanOrderEnum.Flank:
-                    f.AI.ResetBehaviorWeights();
-                    f.AI.SetBehaviorWeight<BehaviorFlank>(2f);
+                    Formation mainFormation = GetFormationPriority(Mission.Current);
+                    float offset = CalculateXYOffsetsBasedOnWorldPosition(mainFormation, f).X;
+                    if (offset > 0)
+                    {
+                        f.AI.ResetBehaviorWeights();
+                        f.AI.SetBehaviorWeight<BehaviorFlank>(2f);
+                        f.AI.Side = FormationAI.BehaviorSide.Right;
+                    }
+                    else
+                    {
+                        f.AI.ResetBehaviorWeights();
+                        f.AI.SetBehaviorWeight<BehaviorFlank>(2f);
+                        f.AI.Side = FormationAI.BehaviorSide.Left;
+                    }
                     break;
                 case PlanOrderEnum.Skirmish:
                     if(f.FormationIndex == FormationClass.HorseArcher)
@@ -475,8 +487,20 @@ namespace CunningLords.PlanDefinition
                     f.AI.SetBehaviorWeight<BehaviorHideBehind>(2f);
                     break;
                 case PlanOrderEnum.ProtectFlank:
-                    f.AI.ResetBehaviorWeights();
-                    f.AI.SetBehaviorWeight<BehaviorProtectFlank>(2f); 
+                    Formation mainFormation2 = GetFormationPriority(Mission.Current);
+                    float offset2 = CalculateXYOffsetsBasedOnWorldPosition(mainFormation2, f).X;
+                    if (offset2 > 0)
+                    {
+                        f.AI.ResetBehaviorWeights();
+                        f.AI.SetBehaviorWeight<BehaviorProtectFlank>(2f);
+                        f.AI.Side = FormationAI.BehaviorSide.Right;
+                    }
+                    else
+                    {
+                        f.AI.ResetBehaviorWeights();
+                        f.AI.SetBehaviorWeight<BehaviorProtectFlank>(2f);
+                        f.AI.Side = FormationAI.BehaviorSide.Left;
+                    }
                     break;
                 case PlanOrderEnum.Advance:
                     f.AI.ResetBehaviorWeights();
@@ -485,6 +509,10 @@ namespace CunningLords.PlanDefinition
                 case PlanOrderEnum.CautiousAdvance:
                     f.AI.ResetBehaviorWeights();
                     f.AI.SetBehaviorWeight<BehaviorCautiousAdvance>(2f);
+                    break;
+                case PlanOrderEnum.Retreat:
+                    f.AI.ResetBehaviorWeights();
+                    f.AI.SetBehaviorWeight<BehaviorRetreat>(2f);
                     break;
             }
         }
@@ -526,7 +554,9 @@ namespace CunningLords.PlanDefinition
                             {
                                 float distance = f.QuerySystem.AveragePosition.Distance(closestsFormation.QuerySystem.AveragePosition);
 
-                                if (distance < 20.0f)
+                                float res = ProximityPercentage(Mission.Current, f, 30);
+
+                                if (res > 0.10f)
                                 {
                                     if (engageCounterStart == -1 && isEngaged == false)
                                     {
@@ -535,7 +565,7 @@ namespace CunningLords.PlanDefinition
                                     }
                                     return PlanStateEnum.Engage;
                                 }
-                                else if (distance >= 20.0f && distance < 60.0f)
+                                else if (distance >= 30.0f && distance < 90.0f)
                                 {
                                     return PlanStateEnum.Ranged;
                                 }
@@ -545,11 +575,11 @@ namespace CunningLords.PlanDefinition
                             }
                             else
                             {
-                                return PlanStateEnum.Prepare;
+                                return this.previousState;
                             }
                         }
                     }
-                    else if (isEngaged && (MissionOverride.FrameCounter - engageCounterStart) > 2500)
+                    else if (isEngaged && (MissionOverride.FrameCounter - engageCounterStart) > 1000)
                     {
                         List<Team> enemyTeams = (from t in Mission.Current.Teams where t.Side != team.Side select t).ToList<Team>();
 
@@ -613,11 +643,11 @@ namespace CunningLords.PlanDefinition
 
                         //InformationManager.DisplayMessage(new InformationMessage("ENEMY: " + averageEnemyPower.ToString()));
 
-                        if ((averageEnemyPower * 0.75) > averageAlliedPower)
+                        if ((averageEnemyPower * 0.5) > averageAlliedPower)
                         {
                             return PlanStateEnum.Losing;
                         }
-                        else if ((averageAlliedPower * 0.75) > averageEnemyPower)
+                        else if ((averageAlliedPower * 0.5) > averageEnemyPower)
                         {
                             return PlanStateEnum.Winning;
                         }
@@ -725,6 +755,85 @@ namespace CunningLords.PlanDefinition
                     f.ArrangementOrder = ArrangementOrder.ArrangementOrderSquare;
                     break;
             }
+        }
+
+        private static Vec2 CalculateXYOffsetsBasedOnWorldPosition(Formation mainFormation, Formation formation)
+        {
+            double num = (double)formation.CurrentPosition.X;
+            double num2 = (double)formation.CurrentPosition.Y;
+            double num3 = (double)mainFormation.CurrentPosition.X;
+            double num4 = (double)mainFormation.CurrentPosition.Y;
+            double num5 = Math.Atan2((double)mainFormation.Direction.Y, (double)mainFormation.Direction.X);
+            num -= num3;
+            num2 -= num4;
+            double num6 = num * Math.Sin(num5) - num2 * Math.Cos(num5);
+            double num7 = num * Math.Cos(num5) + num2 * Math.Sin(num5);
+            return new Vec2((float)num6, (float)num7);
+        }
+
+        public Formation GetFormationPriority(Mission mission)
+        {
+            Formation infantry = mission.MainAgent.Team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.Infantry);
+            Formation archers = mission.MainAgent.Team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.Ranged);
+            Formation cavalry = mission.MainAgent.Team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.Cavalry);
+            Formation horseArcher = mission.MainAgent.Team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.HorseArcher);
+            Formation skirmisher = mission.MainAgent.Team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.Skirmisher);
+            Formation heavyInfantry = mission.MainAgent.Team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.HeavyInfantry);
+            Formation lightCavalry = mission.MainAgent.Team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.LightCavalry);
+            Formation heavyCavalry = mission.MainAgent.Team.Formations.FirstOrDefault((Formation f) => f.FormationIndex == FormationClass.HeavyInfantry);
+
+            List<Formation> formations = new List<Formation>();
+
+            formations.Add(infantry);
+            formations.Add(archers);
+            formations.Add(cavalry);
+            formations.Add(horseArcher);
+            formations.Add(skirmisher);
+            formations.Add(heavyInfantry);
+            formations.Add(lightCavalry);
+            formations.Add(heavyCavalry);
+
+            foreach (Formation f in formations)
+            {
+                if (f != null)
+                {
+                    return f;
+                }
+            }
+
+            return null;
+        }
+
+        public static float ProximityPercentage(Mission __instance, Formation formation, float distance)
+        {
+            List<Formation> list = new List<Formation>();
+            List<Team> allEnemyTeams = (from t in __instance.Teams where t.Side != MissionOverride.PlayerBattleSide select t).ToList<Team>();
+            bool notNullorZeroVerifier = allEnemyTeams != null && allEnemyTeams.Count > 0;
+
+            float armyNumber = 1.0f;
+            float closestTroops = 0.0f;
+
+            if (notNullorZeroVerifier)
+            {
+                foreach (Team t in allEnemyTeams)
+                {
+                    armyNumber += t.QuerySystem.MemberCount;
+                    foreach (Formation f in t.FormationsIncludingSpecial)
+                    {
+                        float dist = formation.QuerySystem.AveragePosition.Distance(f.QuerySystem.AveragePosition);
+
+
+
+                        if (dist < distance)
+                        {
+                            closestTroops += f.CountOfUnits;
+                        }
+                    }
+                }
+            }
+            float res = (closestTroops / armyNumber);
+
+            return res;
         }
     }
 }

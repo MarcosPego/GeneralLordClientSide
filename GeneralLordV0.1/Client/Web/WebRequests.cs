@@ -167,7 +167,7 @@ namespace GeneralLordWebApiClient
                     return result;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 // If deserialize failed then set error message
                 result.ErrorMessage = "Failed to deserialize server response to the expected type";
