@@ -10,7 +10,7 @@ namespace GeneralLordWebApiClient
     public class UrlHandler
     {
 
-        public static string urlBase = "http://localhost:40519/values/";
+        public static string urlBase = "http://localhost:*****/values/";
 
         public static string GetMatchHistory = "getMatchHistoryRecord";
         public static string GetPartyUtils = "getPartyUtils";
@@ -30,11 +30,11 @@ namespace GeneralLordWebApiClient
         {
             if (isRelease)
             {
-                urlBase = "http://192.92.147.26/values";
+                urlBase = "http://192.***.***.**/values";
             }
             else
             {
-                urlBase = "http://localhost:40519/values/";
+                urlBase = "http://localhost:*****/values/";
             }
         }
 
